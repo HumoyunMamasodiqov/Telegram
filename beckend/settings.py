@@ -85,11 +85,12 @@ USE_I18N = True
 USE_TZ = True
 
 
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-
-
-STATIC_URL = 'static/'
+# Static fayllar uchun URL
+STATIC_URL = '/static/'
 
 # Loyihadagi umumiy static papka
 STATICFILES_DIRS = [
@@ -98,7 +99,5 @@ STATICFILES_DIRS = [
 
 # Deployment (collectstatic) uchun
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

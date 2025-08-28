@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Telegram Sidebar - Expandable Menu</title>
+  <title>Telegram - Shukurullah Ergashev</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -19,6 +19,12 @@
       display: flex;
       height: 100vh;
       overflow: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.light-mode {
+      background-color: #f0f2f5;
+      color: #333;
     }
 
     .sidebar {
@@ -32,15 +38,14 @@
       border-right: 1px solid #0e1621;
       flex-shrink: 0;
       overflow-y: auto;
-      transition: width 0.3s ease;
+      transition: width 0.3s ease, background-color 0.3s ease;
       position: relative;
       z-index: 100;
     }
 
-    .sidebar.expanded {
-      width: 260px;
-      align-items: flex-start;
-      padding: 10px;
+    body.light-mode .sidebar {
+      background-color: #ffffff;
+      border-right: 1px solid #d3d9de;
     }
 
     .menu-item {
@@ -60,13 +65,8 @@
       overflow: hidden;
     }
 
-    .sidebar.expanded .menu-item {
-      width: 100%;
-      flex-direction: row;
-      justify-content: flex-start;
-      padding: 0 12px;
-      height: 40px;
-      margin: 4px 0;
+    body.light-mode .menu-item {
+      color: #707579;
     }
 
     .menu-item.active {
@@ -74,26 +74,24 @@
       color: #71aaeb;
     }
 
+    body.light-mode .menu-item.active {
+      background-color: #e6f2ff;
+      color: #0088cc;
+    }
+
     .menu-item:hover:not(.active) {
       background-color: #222e3a;
       color: #a5b5c3;
     }
 
+    body.light-mode .menu-item:hover:not(.active) {
+      background-color: #f5f5f5;
+      color: #555;
+    }
+
     .menu-item i {
       font-size: 20px;
       margin-bottom: 3px;
-    }
-
-    .sidebar.expanded .menu-item i {
-      margin-bottom: 0;
-      margin-right: 12px;
-      width: 24px;
-      text-align: center;
-    }
-
-    .sidebar.expanded .menu-item span {
-      font-size: 14px;
-      white-space: nowrap;
     }
 
     .unread-count {
@@ -113,52 +111,458 @@
       font-weight: 500;
     }
     
-    .sidebar.expanded .unread-count {
-      position: static;
-      margin-left: auto;
-    }
-
     .content {
       flex-grow: 1;
       background-color: #0e1621;
       overflow-y: auto;
-      padding: 20px;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
       position: relative;
+      transition: background-color 0.3s ease;
     }
 
-    .content h1 {
+    body.light-mode .content {
+      background-color: #f0f2f5;
+    }
+
+    /* Search bar styles */
+    .search-container {
+      padding: 12px 14px;
+      background-color: #17212b;
+      border-bottom: 1px solid #0e1621;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.light-mode .search-container {
+      background-color: #ffffff;
+      border-bottom: 1px solid #d3d9de;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background-color: #242f3d;
+      border-radius: 8px;
+      padding: 8px 12px;
+      transition: background-color 0.3s ease;
+    }
+
+    body.light-mode .search-box {
+      background-color: #f0f2f5;
+    }
+
+    .search-box i {
+      color: #6b7b8c;
+      margin-right: 8px;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .search-box i {
+      color: #707579;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: #e6e6e6;
+      font-size: 14px;
+      outline: none;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .search-box input {
+      color: #333;
+    }
+
+    .search-box input::placeholder {
+      color: #6b7b8c;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .search-box input::placeholder {
+      color: #707579;
+    }
+
+    /* Chats list styles */
+    .chats-container {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .chat-section-title {
+      font-size: 14px;
+      color: #6b7b8c;
+      padding: 12px 16px 8px;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .chat-section-title {
+      color: #707579;
+    }
+
+    .chat-item {
+      display: flex;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    body.light-mode .chat-item {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-item:hover {
+      background-color: #222e3a;
+    }
+
+    body.light-mode .chat-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .chat-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #70b1e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: white;
+      margin-right: 12px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .chat-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .chat-name {
+      font-weight: 500;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+
+    .chat-time {
+      font-size: 12px;
+      color: #6b7b8c;
+      flex-shrink: 0;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .chat-time {
+      color: #707579;
+    }
+
+    .chat-preview {
+      font-size: 13px;
+      color: #6b7b8c;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .chat-preview {
+      color: #707579;
+    }
+
+    .chat-preview i {
+      margin-right: 4px;
+      font-size: 12px;
+    }
+
+    .chat-status {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
+    .chat-unread {
+      background-color: #70b1e4;
+      color: white;
+      border-radius: 10px;
+      min-width: 20px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      font-weight: 500;
+    }
+
+    .chat-check {
+      color: #70b1e4;
+      font-size: 14px;
+    }
+
+    /* Chat view styles */
+    .chat-view {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #0e1621;
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    body.light-mode .chat-view {
+      background-color: #ffffff;
+    }
+
+    .chat-view.active {
+      transform: translateX(0);
+    }
+
+    .chat-header-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      background-color: #17212b;
+      border-bottom: 1px solid #0e1621;
+    }
+
+    body.light-mode .chat-header-bar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #d3d9de;
+    }
+
+    .back-button {
       color: #71aaeb;
-      margin-bottom: 20px;
-      text-align: center;
+      font-size: 20px;
+      margin-right: 15px;
+      cursor: pointer;
     }
 
-    .content p {
-      color: #a5b5c3;
-      max-width: 600px;
-      text-align: center;
-      line-height: 1.6;
+    .chat-header-info {
+      flex: 1;
     }
-    
-    /* Expandable menu styles */
-    .expandable-menu {
+
+    .chat-title {
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 2px;
+    }
+
+    .chat-status-text {
+      font-size: 13px;
+      color: #6b7b8c;
+    }
+
+    .chat-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .chat-action-btn {
+      color: #6b7b8c;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .messages-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 10px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .message-incoming {
+      align-self: flex-start;
+      background-color: #182533;
+    }
+
+    body.light-mode .message-incoming {
+      background-color: #f0f0f0;
+    }
+
+    .message-outgoing {
+      align-self: flex-end;
+      background-color: #2b5278;
+    }
+
+    body.light-mode .message-outgoing {
+      background-color: #e3f2fd;
+    }
+
+    .message-text {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: #6b7b8c;
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    .message-input-container {
+      padding: 10px 16px;
+      background-color: #17212b;
+      border-top: 1px solid #0e1621;
+      display: flex;
+      align-items: center;
+    }
+
+    body.light-mode .message-input-container {
+      background-color: #ffffff;
+      border-top: 1px solid #d3d9de;
+    }
+
+    .message-input {
+      flex: 1;
+      background-color: #242f3d;
+      border-radius: 20px;
+      padding: 9px 15px;
+      border: none;
+      color: #e6e6e6;
+      font-size: 14px;
+      outline: none;
+    }
+
+    body.light-mode .message-input {
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 15px;
+      margin: 0 15px;
+    }
+
+    .input-action-btn {
+      color: #6b7b8c;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .send-button {
+      background-color: #70b1e4;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Full screen image modal */
+    .image-modal {
       position: fixed;
       top: 0;
-      left: 68px;
-      width: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .image-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Slide-out menu styles */
+    .slide-out-menu {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 320px;
       height: 100vh;
       background-color: #17212b;
       border-right: 1px solid #0e1621;
-      overflow: hidden;
-      transition: width 0.3s ease;
+      overflow-y: auto;
+      transition: left 0.3s ease, background-color 0.3s ease;
       z-index: 90;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    body.light-mode .slide-out-menu {
+      background-color: #ffffff;
+      border-right: 1px solid #d3d9de;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     }
     
-    .expandable-menu.active {
-      width: 260px;
+    .slide-out-menu.active {
+      left: 0;
+      z-index: 555555555555555;
     }
     
     .menu-header {
@@ -166,6 +570,13 @@
       border-bottom: 1px solid #0e1621;
       display: flex;
       align-items: center;
+      background-color: #1f2c3a;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.light-mode .menu-header {
+      background-color: #f5f5f5;
+      border-bottom: 1px solid #d3d9de;
     }
     
     .menu-header .avatar {
@@ -179,6 +590,14 @@
       font-weight: bold;
       font-size: 16px;
       margin-right: 12px;
+      color: white;
+      overflow: hidden;
+    }
+    
+    .menu-header .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     
     .menu-header .user-info {
@@ -188,11 +607,38 @@
     .menu-header .user-name {
       font-weight: 500;
       margin-bottom: 2px;
+      color: white;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .menu-header .user-name {
+      color: #333;
     }
     
     .menu-header .user-status {
       font-size: 12px;
       color: #70b1e4;
+      cursor: pointer;
+    }
+    
+    .menu-header .close-btn {
+      color: #6b7b8c;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 5px;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .menu-header .close-btn {
+      color: #707579;
+    }
+    
+    .menu-header .close-btn:hover {
+      color: #a5b5c3;
+    }
+
+    body.light-mode .menu-header .close-btn:hover {
+      color: #555;
     }
     
     .menu-content {
@@ -208,6 +654,11 @@
       color: #6b7b8c;
       margin-bottom: 8px;
       padding-left: 8px;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .menu-section-title {
+      color: #707579;
     }
     
     .menu-option {
@@ -217,27 +668,63 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.2s ease;
+      margin-bottom: 4px;
     }
     
     .menu-option:hover {
       background-color: #222e3a;
+    }
+
+    body.light-mode .menu-option:hover {
+      background-color: #f5f5f5;
     }
     
     .menu-option i {
       width: 24px;
       margin-right: 12px;
       color: #6b7b8c;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .menu-option i {
+      color: #707579;
     }
     
     .menu-option span {
       font-size: 14px;
       color: #e6e6e6;
+      flex-grow: 1;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .menu-option span {
+      color: #333;
+    }
+    
+    .menu-option .badge {
+      background-color: #70b1e4;
+      color: white;
+      border-radius: 10px;
+      min-width: 20px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      font-weight: 500;
     }
     
     .menu-divider {
       height: 1px;
       background-color: #0e1621;
       margin: 10px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    body.light-mode .menu-divider {
+      background-color: #d3d9de;
     }
     
     .overlay {
@@ -249,61 +736,312 @@
       background-color: rgba(0, 0, 0, 0.5);
       display: none;
       z-index: 80;
+      transition: background-color 0.3s ease;
     }
     
     .overlay.active {
       display: block;
     }
+    
+    /* Toggle switch styles */
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      background: #374151;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .toggle-switch.active {
+      background: #3b82f6;
+    }
+    
+    .toggle-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    .toggle-switch.active .toggle-knob {
+      transform: translateX(20px);
+    }
 
-    @media (max-width: 768px) {
+    /* Theme switcher */
+    .theme-switcher {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #17212b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+      z-index: 1000;
+    }
+
+    body.light-mode .theme-switcher {
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-switcher i {
+      font-size: 24px;
+      color: #71aaeb;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .theme-switcher i {
+      color: #0088cc;
+    }
+
+    /* Night mode toggle in menu */
+    .night-mode-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    /* Media queries for responsiveness */
+    
+    /* Tablets and small screens */
+    @media (max-width: 1024px) {
       .sidebar {
         width: 60px;
       }
       
       .menu-item {
-        width: 38px;
-        height: 38px;
-        margin: 5px 0;
+        width: 60px;
+        font-size: 10px;
       }
       
       .menu-item i {
         font-size: 18px;
       }
       
-      .expandable-menu {
-        left: 60px;
-      }
-      
-      .sidebar.expanded {
-        width: 100%;
-        z-index: 110;
-      }
-      
-      .overlay.active {
-        display: block;
+      .slide-out-menu {
+        width: 300px;
+        left: -300px;
       }
     }
-
-    @media (max-width: 480px) {
+    
+    /* Large phones and small tablets */
+    @media (max-width: 768px) {
       .sidebar {
-        position: fixed;
-        left: -68px;
-        z-index: 110;
-        transition: left 0.3s ease;
+        width: 55px;
       }
       
-      .sidebar.expanded {
-        left: 0;
+      .menu-item {
+        width: 55px;
+        height: 45px;
+        font-size: 9px;
+      }
+      
+      .menu-item i {
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+      
+      .unread-count {
+        font-size: 9px;
+        min-width: 14px;
+        height: 14px;
+        right: 8px;
+      }
+      
+      .slide-out-menu {
+        width: 280px;
+        left: -280px;
+      }
+      
+      .theme-switcher {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+      }
+      
+      .theme-switcher i {
+        font-size: 20px;
+      }
+    }
+    
+    /* Phones in landscape */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .sidebar {
+        width: 50px;
+        padding: 8px 0;
+      }
+      
+      .menu-item {
+        width: 50px;
+        height: 40px;
+        margin: 4px 0;
+        font-size: 8px;
+      }
+      
+      .menu-item i {
+        font-size: 15px;
+        margin-bottom: 1px;
+      }
+    }
+    
+    /* Phones in portrait */
+    @media (max-width: 576px) {
+      body {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+      }
+      
+      .sidebar {
         width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 5px;
+        border-right: none;
+        border-bottom: 1px solid #0e1621;
+        justify-content: flex-start;
       }
       
-      .expandable-menu {
-        left: 0;
-        z-index: 100;
+      body.light-mode .sidebar {
+        border-bottom: 1px solid #d3d9de;
+      }
+      
+      .menu-item {
+        width: auto;
+        min-width: 50px;
+        height: 50px;
+        margin: 0 5px;
+        padding: 0 8px;
+        flex-shrink: 0;
+      }
+      
+      .menu-item span {
+        display: none;
+      }
+      
+      .menu-item i {
+        margin-bottom: 0;
+        font-size: 18px;
+      }
+      
+      .unread-count {
+        top: 5px;
+        right: 5px;
       }
       
       .content {
+        min-height: calc(100vh - 60px);
+      }
+      
+      .slide-out-menu {
+        width: 100%;
+        left: -100%;
+      }
+      
+      .menu-header {
         padding: 15px;
+      }
+      
+      .menu-section {
+        padding: 8px 15px;
+      }
+      
+      .theme-switcher {
+        bottom: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+      }
+      
+      .theme-switcher i {
+        font-size: 18px;
+      }
+    }
+    
+    /* Small phones */
+    @media (max-width: 380px) {
+      .menu-header {
+        flex-wrap: wrap;
+      }
+      
+      .menu-header .close-btn {
+        order: -1;
+        margin-right: 10px;
+      }
+      
+      .menu-header .avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+      }
+      
+      .menu-header .user-name {
+        font-size: 14px;
+      }
+      
+      .menu-header .user-status {
+        font-size: 11px;
+      }
+      
+      .menu-option {
+        padding: 8px 10px;
+      }
+      
+      .menu-option i {
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      
+      .menu-option span {
+        font-size: 13px;
+      }
+      
+      .chat-item {
+        padding: 8px 12px;
+      }
+      
+      .chat-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      
+      .chat-name {
+        font-size: 14px;
+      }
+      
+      .chat-preview {
+        font-size: 12px;
+      }
+    }
+    
+    /* Short screens */
+    @media (max-height: 600px) {
+      .sidebar {
+        overflow-y: auto;
+      }
+      
+      .menu-item {
+        height: 45px;
+        margin: 4px 0;
       }
     }
   </style>
@@ -365,25 +1103,197 @@
     </a>
   </div>
 
-  <div class="expandable-menu" id="expandable-menu">
+  <div class="content">
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search" id="search-input">
+      </div>
+    </div>
+    
+    <div class="chats-container" id="chats-list">
+      <div class="chat-section-title">Archived chats</div>
+      
+      <div class="chat-item" data-chat="it-house">
+        <div class="chat-avatar">
+          <img src="https://placehold.co/48x48/70b1e4/white?text=IT" alt="IT House">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">IT House /DChj/ 16:00 Frontend Shukurulloh. IT ...</div>
+            <div class="chat-time">16:00</div>
+          </div>
+          <div class="chat-preview">Frontend darslari bo'yicha muzokara</div>
+        </div>
+      </div>
+      
+      <div class="chat-item" data-chat="shukurulloh">
+        <div class="chat-avatar">
+          <img src="https://placehold.co/48x48/2b5278/white?text=S" alt="Shukurulloh">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">Shukurulloh Ergashev</div>
+            <div class="chat-time">21:28</div>
+          </div>
+          <div class="chat-preview">Ha</div>
+        </div>
+      </div>
+      
+      <div class="chat-item" data-chat="it-spsh">
+        <div class="chat-avatar">
+          <img src="https://placehold.co/48x48/70b1e4/white?text=IT" alt="IT SPSH">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">📌 IT House / SPSH / 09:30B Shukurullo</div>
+            <div class="chat-time">10:50</div>
+          </div>
+          <div class="chat-preview">Drafit</div>
+        </div>
+      </div>
+      
+      <div class="chat-item" data-chat="afshona">
+        <div class="chat-avatar">A</div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">Afshona </div>
+            <div class="chat-time">14:25</div>
+          </div>
+          <div class="chat-preview">Afshona  joined Telegram</div>
+        </div>
+      </div>
+      
+      <div class="chat-item" data-chat="telegram">
+        <div class="chat-avatar">
+          <img src="https://placehold.co/48x48/0088cc/white?text=T" alt="Telegram">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">Telegram  </div>
+            <div class="chat-time">09:44</div>
+          </div>
+          <div class="chat-preview">Код для входа в Telegram:  . Не давайте код H...</div>
+        </div>
+      </div>
+      
+      <div class="chat-item" data-chat="jasurbek">
+        <div class="chat-avatar">
+          <img src="https://placehold.co/48x48/182533/white?text=J" alt="Jasurbek">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">Jasurbek</div>
+            <div class="chat-time">Wed</div>
+          </div>
+          <div class="chat-preview">17:30 da ketgan</div>
+          <div class="chat-status">
+            <i class="fas fa-check-double chat-check"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-item" data-chat="xona">
+        <div class="chat-avatar">
+          <img src="https://placehold.co/48x48/70b1e4/white?text=16" alt="16 xona">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <div class="chat-name">16 xona</div>
+            <div class="chat-time">21/08/2025</div>
+          </div>
+          <div class="chat-preview">menga boshqa yasab koringchi</div>
+          <div class="chat-status">
+            <i class="fas fa-check-double chat-check"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat view for Shukurulloh -->
+  <div class="chat-view" id="chat-view">
+    <div class="chat-header-bar">
+      <div class="back-button" id="back-button">
+        <i class="fas fa-arrow-left"></i>
+      </div>
+      <div class="chat-header-info">
+        <div class="chat-title">Shukurulloh Ergashev</div>
+        <div class="chat-status-text">last seen just now</div>
+      </div>
+      <div class="chat-actions">
+        <div class="chat-action-btn">
+          <i class="fas fa-search"></i>
+        </div>
+        <div class="chat-action-btn">
+          <i class="fas fa-ellipsis-v"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="messages-container" id="messages-container">
+      <!-- Messages will be inserted here by JavaScript -->
+    </div>
+    
+    <div class="message-input-container">
+      <div class="input-actions">
+        <div class="input-action-btn">
+          <i class="far fa-smile"></i>
+        </div>
+        <div class="input-action-btn">
+          <i class="fas fa-paperclip"></i>
+        </div>
+      </div>
+      <input type="text" class="message-input" placeholder="Message" id="message-input">
+      <div class="input-actions">
+        <div class="input-action-btn">
+          <i class="fas fa-microphone"></i>
+        </div>
+      </div>
+      <div class="send-button" id="send-button">
+        <i class="fas fa-paper-plane"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image modal for full screen view -->
+  <div class="image-modal" id="image-modal">
+    <div class="close-modal" id="close-modal">
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="modal-content">
+      <img id="modal-image" src="" alt="">
+    </div>
+  </div>
+
+  <div class="slide-out-menu" id="slide-out-menu">
     <div class="menu-header">
-      <div class="avatar">HM</div>
+      <div class="avatar">
+        <img src="https://humoyun731.netlify.app/humoyun731logo.png" alt="Humoyun">
+      </div>
       <div class="user-info">
         <div class="user-name">Humoyun Mamasodiqov</div>
         <div class="user-status">Set Emoji Status</div>
       </div>
+      <div class="close-btn" id="close-menu">
+        <i class="fas fa-times"></i>
+      </div>
     </div>
     
-    <div class="menu-content">
-      <div class="menu-section">
+    <div class="menu-content ">
+      <div class="menu-section ">
         <div class="menu-section-title">ACCOUNT</div>
-        <div class="menu-option">
-          <i class="fa-solid fa-user"></i>
+        <div class="menu-option gap-[10px]">
+          <div class="avatar" style="width: 30px; height: 30px; font-size: 14px;">
+            <img src="https://humoyun731.netlify.app/humoyun731logo.png" alt="Humoyun">
+          </div>
           <span>HUMOYUN</span>
-          <span class="unread-count">117</span>
+          <span class="badge">117</span>
         </div>
-        <div class="menu-option">
-          <i class="fa-solid fa-user"></i>
+        <div class="menu-option gap-[10px]">
+          <div class="avatar" style="width: 30px; height: 30px; font-size: 14px;">
+            <img src="https://humoyun731.netlify.app/humoyun731logo.png" alt="Humoyun">
+          </div>
           <span>Humoyun Mamasodiqov</span>
         </div>
         <div class="menu-option">
@@ -428,10 +1338,12 @@
       <div class="menu-divider"></div>
       
       <div class="menu-section">
-        <div class="menu-option">
-          <i class="fa-solid fa-moon"></i>
-          <span>Night Mode</span>
-          <div class="toggle-switch active">
+        <div class="menu-option night-mode-toggle">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-moon"></i>
+            <span style="margin-left: 12px;">Night Mode</span>
+          </div>
+          <div class="toggle-switch" id="night-mode-toggle">
             <div class="toggle-knob"></div>
           </div>
         </div>
@@ -441,46 +1353,113 @@
 
   <div class="overlay" id="overlay"></div>
 
-  <div class="content">
-    <h1>Telegram Desktop</h1>
-    <p>Bu yerda sizning xabarlaringiz va suhbatlaringiz ko'rsatiladi. Xabarlaringizni boshqarish va yangi suhbatlarni boshlash uchun chap tomondagi menyudan foydalaning.</p>
+  <div class="theme-switcher" id="theme-switcher">
+    <i class="fa-solid fa-moon"></i>
   </div>
 
   <script>
+    // Sample messages data
+    const messagesData = {
+      "shukurulloh": [
+        { text: "Salom, qalaysiz?", time: "21:20", incoming: true },
+        { text: "Yaxshi, rahmat. Sizchi?", time: "21:22", incoming: false },
+        { text: "Yaxshi, darslar qalay ketayotgani?", time: "21:23", incoming: true },
+        { text: "Juda yaxshi, frontend darslari ajoyib ketmoqda", time: "21:25", incoming: false },
+        { text: "Bugun CSS flexbox va grid haqida gaplashamiz", time: "21:26", incoming: true },
+        { text: "Ajoyib, men ham shu mavzuni o'rganmoqchiman", time: "21:28", incoming: false }
+      ],
+      "it-house": [
+        { text: "Frontend darslari bo'yicha muzokara", time: "15:45", incoming: true },
+        { text: "Hamma darsga tayyorlangan holda keling", time: "15:50", incoming: true },
+        { text: "Dars 16:00 da boshlanadi", time: "15:55", incoming: true }
+      ],
+      "it-spsh": [
+        { text: "Drafit", time: "10:45", incoming: true }
+      ],
+      "afshona": [
+        { text: "Afshona joined Telegram", time: "14:20", incoming: true }
+      ],
+      "telegram": [
+        { text: "Код для входа в Telegram: . Не давайте код никому.", time: "09:40", incoming: true }
+      ],
+      "jasurbek": [
+        { text: "17:30 da ketgan", time: "17:30", incoming: true }
+      ],
+      "xona": [
+        { text: "menga boshqa yasab koringchi", time: "21/08/2025", incoming: true }
+      ]
+    };
+
     const menuToggle = document.getElementById('menu-toggle');
-    const expandableMenu = document.getElementById('expandable-menu');
+    const slideOutMenu = document.getElementById('slide-out-menu');
+    const closeMenu = document.getElementById('close-menu');
     const overlay = document.getElementById('overlay');
-    const sidebar = document.querySelector('.sidebar');
+    const nightModeToggle = document.getElementById('night-mode-toggle');
+    const themeSwitcher = document.getElementById('theme-switcher');
+    const themeIcon = themeSwitcher.querySelector('i');
+    const searchInput = document.getElementById('search-input');
+    const chatsList = document.getElementById('chats-list');
+    const chatItems = chatsList.querySelectorAll('.chat-item');
+    const chatView = document.getElementById('chat-view');
+    const backButton = document.getElementById('back-button');
+    const messagesContainer = document.getElementById('messages-container');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const imageModal = document.getElementById('image-modal');
+    const modalImage = document.getElementById('modal-image');
+    const closeModal = document.getElementById('close-modal');
     
-    menuToggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      expandableMenu.classList.toggle('active');
-      overlay.classList.toggle('active');
+    // Mavzu (tungi/kunduzgi) ni o'zgartirish
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
       
-      // Mobil versiyada sidebar ham ochiladi
-      if (window.innerWidth <= 480) {
-        sidebar.classList.toggle('expanded');
+      if (document.body.classList.contains('light-mode')) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        nightModeToggle.classList.remove('active');
+        localStorage.setItem('theme', 'light');
+      } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        nightModeToggle.classList.add('active');
+        localStorage.setItem('theme', 'dark');
       }
-    });
-    
-    overlay.addEventListener('click', function() {
-      expandableMenu.classList.remove('active');
-      overlay.classList.remove('active');
-      
-      if (window.innerWidth <= 480) {
-        sidebar.classList.remove('expanded');
-      }
-    });
-    
-    // Toggle switch funksionalligi
-    const toggleSwitch = document.querySelector('.toggle-switch');
-    if (toggleSwitch) {
-      toggleSwitch.addEventListener('click', function() {
-        this.classList.toggle('active');
-      });
     }
     
-    // Menu items funksionalligi
+    // Toggle switch uchun ham ishlaydigan qilish
+    themeSwitcher.addEventListener('click', toggleTheme);
+    nightModeToggle.addEventListener('click', toggleTheme);
+    
+    // Saqlangan mavzuni yuklash
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+      nightModeToggle.classList.remove('active');
+    } else {
+      nightModeToggle.classList.add('active');
+    }
+    
+    // Menu toggle
+    menuToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      slideOutMenu.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    // Menu yopish
+    function closeMenuFunc() {
+      slideOutMenu.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+    
+    closeMenu.addEventListener('click', closeMenuFunc);
+    overlay.addEventListener('click', closeMenuFunc);
+    
+    // Menu items active holati
     const menuItems = document.querySelectorAll('.menu-item');
     menuItems.forEach(item => {
       item.addEventListener('click', function(e) {
@@ -490,6 +1469,133 @@
           this.classList.add('active');
         }
       });
+    });
+
+    // Qidiruv funksionalligi
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      chatItems.forEach(chat => {
+        const chatName = chat.querySelector('.chat-name').textContent.toLowerCase();
+        const chatPreview = chat.querySelector('.chat-preview').textContent.toLowerCase();
+        
+        if (chatName.includes(searchTerm) || chatPreview.includes(searchTerm)) {
+          chat.style.display = 'flex';
+        } else {
+          chat.style.display = 'none';
+        }
+      });
+      
+      // Bo'sh qidiruv uchun barcha chatlarni ko'rsatish
+      if (searchTerm === '') {
+        chatItems.forEach(chat => {
+          chat.style.display = 'flex';
+        });
+      }
+    });
+    
+    // Chat items funksionalligi
+    chatItems.forEach(chat => {
+      chat.addEventListener('click', function() {
+        const chatId = this.getAttribute('data-chat');
+        openChat(chatId);
+      });
+    });
+    
+    // Chat ochish
+    function openChat(chatId) {
+      // Chat viewni ko'rsatish
+      chatView.classList.add('active');
+      
+      // Chat nomini yangilash
+      const chatTitle = chatView.querySelector('.chat-title');
+      const chatItem = document.querySelector(`.chat-item[data-chat="${chatId}"]`);
+      const name = chatItem.querySelector('.chat-name').textContent;
+      chatTitle.textContent = name;
+      
+      // Xabarlarni tozalash va yangilarini qo'shish
+      messagesContainer.innerHTML = '';
+      
+      if (messagesData[chatId]) {
+        messagesData[chatId].forEach(msg => {
+          const messageEl = document.createElement('div');
+          messageEl.classList.add('message');
+          messageEl.classList.add(msg.incoming ? 'message-incoming' : 'message-outgoing');
+          
+          messageEl.innerHTML = `
+            <div class="message-text">${msg.text}</div>
+            <div class="message-time">${msg.time}</div>
+          `;
+          
+          messagesContainer.appendChild(messageEl);
+        });
+      }
+      
+      // Xabarlar konteynerga scroll qilish
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Chatdan chiqish
+    backButton.addEventListener('click', function() {
+      chatView.classList.remove('active');
+    });
+    
+    // Xabar yuborish
+    sendButton.addEventListener('click', function() {
+      const text = messageInput.value.trim();
+      if (text) {
+        const now = new Date();
+        const time = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+        
+        const messageEl = document.createElement('div');
+        messageEl.classList.add('message');
+        messageEl.classList.add('message-outgoing');
+        
+        messageEl.innerHTML = `
+          <div class="message-text">${text}</div>
+          <div class="message-time">${time}</div>
+        `;
+        
+        messagesContainer.appendChild(messageEl);
+        messageInput.value = '';
+        
+        // Xabarlar konteynerga scroll qilish
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    });
+    
+    // Enter bosganda xabar yuborish
+    messageInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendButton.click();
+      }
+    });
+    
+    // Rasmlarga full screen funksionalligi
+    document.querySelectorAll('.chat-avatar img').forEach(img => {
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        modalImage.src = this.src;
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    
+    // Modalni yopish
+    closeModal.addEventListener('click', function() {
+      imageModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    });
+    
+    // Escape tugmasi bilan menyuni yopish
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeMenuFunc();
+        if (imageModal.classList.contains('active')) {
+          imageModal.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        }
+      }
     });
   </script>
 
