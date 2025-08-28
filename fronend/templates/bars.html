@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Sidebar - Expandable Menu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #0e1621;
+      color: #e6e6e6;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 68px;
+      height: 100vh;
+      background-color: #17212b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      border-right: 1px solid #0e1621;
+      flex-shrink: 0;
+      overflow-y: auto;
+      transition: width 0.3s ease;
+      position: relative;
+      z-index: 100;
+    }
+
+    .sidebar.expanded {
+      width: 260px;
+      align-items: flex-start;
+      padding: 10px;
+    }
+
+    .menu-item {
+      position: relative;
+      width: 68px;
+      height: 49px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6b7b8c;
+      margin: 6px 0; 
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-size: 11px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .sidebar.expanded .menu-item {
+      width: 100%;
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 0 12px;
+      height: 40px;
+      margin: 4px 0;
+    }
+
+    .menu-item.active {
+      background-color: #3e546a;
+      color: #71aaeb;
+    }
+
+    .menu-item:hover:not(.active) {
+      background-color: #222e3a;
+      color: #a5b5c3;
+    }
+
+    .menu-item i {
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .sidebar.expanded .menu-item i {
+      margin-bottom: 0;
+      margin-right: 12px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar.expanded .menu-item span {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .unread-count {
+      position: absolute;
+      top: -3px;
+      right: 10px;
+      background-color: #70b1e4;
+      color: white;
+      border-radius: 10px;
+      min-width: 16px;
+      height: 16px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      font-weight: 500;
+    }
+    
+    .sidebar.expanded .unread-count {
+      position: static;
+      margin-left: auto;
+    }
+
+    .content {
+      flex-grow: 1;
+      background-color: #0e1621;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .content h1 {
+      color: #71aaeb;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .content p {
+      color: #a5b5c3;
+      max-width: 600px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    
+    /* Expandable menu styles */
+    .expandable-menu {
+      position: fixed;
+      top: 0;
+      left: 68px;
+      width: 0;
+      height: 100vh;
+      background-color: #17212b;
+      border-right: 1px solid #0e1621;
+      overflow: hidden;
+      transition: width 0.3s ease;
+      z-index: 90;
+    }
+    
+    .expandable-menu.active {
+      width: 260px;
+    }
+    
+    .menu-header {
+      padding: 20px;
+      border-bottom: 1px solid #0e1621;
+      display: flex;
+      align-items: center;
+    }
+    
+    .menu-header .avatar {
+      width: 42px;
+      height: 42px;
+      background-color: #70b1e4;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 12px;
+    }
+    
+    .menu-header .user-info {
+      flex-grow: 1;
+    }
+    
+    .menu-header .user-name {
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    
+    .menu-header .user-status {
+      font-size: 12px;
+      color: #70b1e4;
+    }
+    
+    .menu-content {
+      padding: 10px 0;
+    }
+    
+    .menu-section {
+      padding: 10px 20px;
+    }
+    
+    .menu-section-title {
+      font-size: 12px;
+      color: #6b7b8c;
+      margin-bottom: 8px;
+      padding-left: 8px;
+    }
+    
+    .menu-option {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    
+    .menu-option:hover {
+      background-color: #222e3a;
+    }
+    
+    .menu-option i {
+      width: 24px;
+      margin-right: 12px;
+      color: #6b7b8c;
+    }
+    
+    .menu-option span {
+      font-size: 14px;
+      color: #e6e6e6;
+    }
+    
+    .menu-divider {
+      height: 1px;
+      background-color: #0e1621;
+      margin: 10px 0;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 80;
+    }
+    
+    .overlay.active {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .menu-item {
+        width: 38px;
+        height: 38px;
+        margin: 5px 0;
+      }
+      
+      .menu-item i {
+        font-size: 18px;
+      }
+      
+      .expandable-menu {
+        left: 60px;
+      }
+      
+      .sidebar.expanded {
+        width: 100%;
+        z-index: 110;
+      }
+      
+      .overlay.active {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        position: fixed;
+        left: -68px;
+        z-index: 110;
+        transition: left 0.3s ease;
+      }
+      
+      .sidebar.expanded {
+        left: 0;
+        width: 100%;
+      }
+      
+      .expandable-menu {
+        left: 0;
+        z-index: 100;
+      }
+      
+      .content {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="sidebar">
+    <a href="#" class="menu-item" id="menu-toggle">
+      <i class="fa-solid fa-bars"></i>
+      <span>Menu</span>
+    </a>
+    <a href="#" class="menu-item active">
+      <i class="fa-solid fa-comments"></i>
+      <span>All chats</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-book"></i>
+      <span>IT House</span>
+      <span class="unread-count">3</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-bullhorn"></i>
+      <span>Kanallar</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-music"></i>
+      <span>blog</span>
+      <span class="unread-count">12</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-robot"></i>
+      <span>telegram bot</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-folder"></i>
+      <span>it guruhlar</span>
+      <span class="unread-count">1</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-clipboard"></i>
+      <span>musiqa</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span>teacher</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-users"></i>
+      <span>tanishlar</span>
+      <span class="unread-count">5</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-folder"></i>
+      <span>oquvchilar</span>
+    </a>
+    <a href="#" class="menu-item">
+      <i class="fa-solid fa-sliders"></i>
+      <span>Edit</span>
+    </a>
+  </div>
+
+  <div class="expandable-menu" id="expandable-menu">
+    <div class="menu-header">
+      <div class="avatar">HM</div>
+      <div class="user-info">
+        <div class="user-name">Humoyun Mamasodiqov</div>
+        <div class="user-status">Set Emoji Status</div>
+      </div>
+    </div>
+    
+    <div class="menu-content">
+      <div class="menu-section">
+        <div class="menu-section-title">ACCOUNT</div>
+        <div class="menu-option">
+          <i class="fa-solid fa-user"></i>
+          <span>HUMOYUN</span>
+          <span class="unread-count">117</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-user"></i>
+          <span>Humoyun Mamasodiqov</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Account</span>
+        </div>
+      </div>
+      
+      <div class="menu-divider"></div>
+      
+      <div class="menu-section">
+        <div class="menu-option">
+          <i class="fa-solid fa-user"></i>
+          <span>My Profile</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-users"></i>
+          <span>New Group</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span>New Channel</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-address-book"></i>
+          <span>Contacts</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-phone"></i>
+          <span>Calls</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-bookmark"></i>
+          <span>Saved Messages</span>
+        </div>
+        <div class="menu-option">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </div>
+      </div>
+      
+      <div class="menu-divider"></div>
+      
+      <div class="menu-section">
+        <div class="menu-option">
+          <i class="fa-solid fa-moon"></i>
+          <span>Night Mode</span>
+          <div class="toggle-switch active">
+            <div class="toggle-knob"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="content">
+    <h1>Telegram Desktop</h1>
+    <p>Bu yerda sizning xabarlaringiz va suhbatlaringiz ko'rsatiladi. Xabarlaringizni boshqarish va yangi suhbatlarni boshlash uchun chap tomondagi menyudan foydalaning.</p>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const expandableMenu = document.getElementById('expandable-menu');
+    const overlay = document.getElementById('overlay');
+    const sidebar = document.querySelector('.sidebar');
+    
+    menuToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      expandableMenu.classList.toggle('active');
+      overlay.classList.toggle('active');
+      
+      // Mobil versiyada sidebar ham ochiladi
+      if (window.innerWidth <= 480) {
+        sidebar.classList.toggle('expanded');
+      }
+    });
+    
+    overlay.addEventListener('click', function() {
+      expandableMenu.classList.remove('active');
+      overlay.classList.remove('active');
+      
+      if (window.innerWidth <= 480) {
+        sidebar.classList.remove('expanded');
+      }
+    });
+    
+    // Toggle switch funksionalligi
+    const toggleSwitch = document.querySelector('.toggle-switch');
+    if (toggleSwitch) {
+      toggleSwitch.addEventListener('click', function() {
+        this.classList.toggle('active');
+      });
+    }
+    
+    // Menu items funksionalligi
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        if (this.id !== 'menu-toggle') {
+          e.preventDefault();
+          menuItems.forEach(item => item.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
