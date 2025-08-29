@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Chat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            telegram: {
+              dark: {
+                bg: '#0e1621',
+                sidebar: '#17212b',
+                active: '#3e546a',
+                hover: '#222e3a',
+                text: '#e6e6e6',
+                muted: '#6b7b8c',
+                border: '#0e1621',
+                search: '#242f3d',
+                accent: '#70b1e4',
+                accentText: '#71aaeb',
+                menuHeader: '#1f2c3a'
+              },
+              light: {
+                bg: '#f0f2f5',
+                sidebar: '#ffffff',
+                active: '#e6f2ff',
+                hover: '#f5f5f5',
+                text: '#333333',
+                muted: '#707579',
+                border: '#d3d9de',
+                search: '#f0f2f5',
+                accent: '#0088cc',
+                accentText: '#0088cc',
+                menuHeader: '#f5f5f5'
+              }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .waveform {
+      display: flex;
+      align-items: center;
+      height: 20px;
+    }
+    
+    .wave {
+      width: 3px;
+      height: 10px;
+      background-color: currentColor;
+      margin: 0 1px;
+      border-radius: 2px;
+      animation: wave 1.2s infinite ease-in-out;
+    }
+    
+    .wave:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .wave:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+    
+    .wave:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+    
+    .wave:nth-child(5) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes wave {
+      0%, 100% {
+        transform: scaleY(0.5);
+      }
+      50% {
+        transform: scaleY(1.5);
+      }
+    }
+    
+    .transition-all {
+      transition: all 0.3s ease;
+    }
+    
+    /* Voice message playback styles */
+    .voice-playback {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .voice-playback .progress {
+      width: 150px;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      margin: 0 10px;
+      overflow: hidden;
+    }
+    
+    .voice-playback .progress-bar {
+      height: 100%;
+      background-color: white;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    
+    /* Message animations */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .message {
+      animation: slideIn 0.2s ease-out;
+    }
+    
+    /* Recording animation */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    .recording {
+      animation: pulse 1s infinite;
+      color: #e53935 !important;
+    }
+    
+    /* Sticker panel animation */
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .slide-up {
+      animation: slideUp 0.3s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-telegram-dark-bg text-telegram-dark-text font-sans h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text">
+
+  <!-- Chat view -->
+  <div class="chat-view w-full max-w-[900px] mx-auto h-full bg-telegram-dark-bg flex flex-col transition-all dark:bg-telegram-light-bg">
+    <!-- Chat header -->
+    <div class="chat-header flex items-center justify-between px-4 py-3 bg-telegram-dark-sidebar border-b border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
+      <div class="flex items-center">
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted mr-2" id="back-button">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="chat-avatar w-10 h-10 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0">
+          <span class="text-xl">S</span>
+        </div>
+        <div>
+          <div class="chat-name font-medium text-sm transition-all">Shukurulloh Ergashev</div>
+          <div class="chat-status text-xs text-telegram-dark-muted transition-all dark:text-telegram-light-muted">last seen 10 minutes ago</div>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
+          <i class="fas fa-phone"></i>
+        </button>
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
+          <i class="fas fa-video"></i>
+        </button>
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
+          <i class="fas fa-search"></i>
+        </button>
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Messages container -->
+    <div class="messages-container flex-1 overflow-y-auto p-4 scrollbar-hide" id="messages-container">
+      <!-- Date separator -->
+      <div class="flex justify-center my-4">
+        <div class="text-xs text-telegram-dark-muted bg-telegram-dark-sidebar px-3 py-1 rounded-full transition-all dark:text-telegram-light-muted dark:bg-telegram-light-sidebar">
+          August 28
+        </div>
+      </div>
+      
+      <!-- Incoming messages (on the left) -->
+      <div class="flex mb-4">
+        <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
+          <span class="text-sm">S</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
+            <p class="text-sm">Menga ham tel qildi</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:20</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4">
+        <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
+          <span class="text-sm">S</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
+            <p class="text-sm">Ha keldi</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:20</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4">
+        <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
+          <span class="text-sm">S</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
+            <p class="text-sm">ha keldi deb yozvodim</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:21</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4">
+        <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
+          <span class="text-sm">S</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
+            <p class="text-sm">17:30 da dars lugagan edi</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:22</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4">
+        <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
+          <span class="text-sm">S</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
+            <p class="text-sm">Ha yahshi qibsiz</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:22</div>
+        </div>
+      </div>
+      
+      <!-- Outgoing messages (on the right) -->
+      <div class="flex mb-4 justify-end">
+        <div class="flex flex-col items-end">
+          <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
+            <p class="text-sm">2010 ska bitta kreslo kam ekan</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:25</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4 justify-end">
+        <div class="flex flex-col items-end">
+          <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
+            <p class="text-sm">Oshida endi sekin boladi</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:25</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4 justify-end">
+        <div class="flex flex-col items-end">
+          <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
+            <p class="text-sm">ha zor chiqibdi lekin yoniga 2 ta manttor qoshib olset undam zor boladi ekan</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:25</div>
+        </div>
+      </div>
+      
+      <div class="flex mb-4 justify-end">
+        <div class="flex flex-col items-end">
+          <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
+            <p class="text-sm">Ha</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:28</div>
+        </div>
+      </div>
+      
+      <!-- New date separator -->
+      <div class="flex justify-center my-4">
+        <div class="text-xs text-telegram-dark-muted bg-telegram-dark-sidebar px-3 py-1 rounded-full transition-all dark:text-telegram-light-muted dark:bg-telegram-light-sidebar">
+          Today
+        </div>
+      </div>
+      
+      <!-- Incoming message (on the left) -->
+      <div class="flex mb-4">
+        <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
+          <span class="text-sm">S</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
+            <p class="text-sm">Birga deflayin chorshanba kuni saat 14:30 gachay ediya</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:04</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Message input -->
+    <div class="message-input-container px-4 py-3 bg-telegram-dark-sidebar border-t border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
+      <div class="flex items-center">
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="sticker-button">
+          <i class="fas fa-smile"></i>
+        </button>
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="attach-button">
+          <i class="fas fa-paperclip"></i>
+        </button>
+        <div class="flex-1 bg-telegram-dark-search rounded-lg mx-2 transition-all dark:bg-telegram-light-search">
+          <input type="text" placeholder="Write a message..." class="w-full bg-transparent border-none outline-none py-2 px-3 text-telegram-dark-text text-sm transition-all dark:text-telegram-light-text" id="message-input">
+        </div>
+        <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="voice-message-button">
+          <i class="fas fa-microphone"></i>
+        </button>
+        <button class="p-2 text-telegram-dark-accent transition-all dark:text-telegram-light-accent hidden" id="send-button">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stickers panel (hidden by default) -->
+    <div class="stickers-panel hidden bg-telegram-dark-sidebar border-t border-telegram-dark-border p-4 transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border" id="stickers-panel">
+      <div class="grid grid-cols-6 gap-2">
+        <!-- Stickers will be loaded here -->
+        <div class="sticker p-2 text-center text-2xl">😀</div>
+        <div class="sticker p-2 text-center text-2xl">😂</div>
+        <div class="sticker p-2 text-center text-2xl">😍</div>
+        <div class="sticker p-2 text-center text-2xl">🤔</div>
+        <div class="sticker p-2 text-center text-2xl">😎</div>
+        <div class="sticker p-2 text-center text-2xl">🥳</div>
+        <div class="sticker p-2 text-center text-2xl">😭</div>
+        <div class="sticker p-2 text-center text-2xl">😡</div>
+        <div class="sticker p-2 text-center text-2xl">🤯</div>
+        <div class="sticker p-2 text-center text-2xl">🥶</div>
+        <div class="sticker p-2 text-center text-2xl">🤢</div>
+        <div class="sticker p-2 text-center text-2xl">👋</div>
+      </div>
+    </div>
+    
+    <!-- Voice message recorder (hidden by default) -->
+    <div class="voice-recorder hidden bg-telegram-dark-sidebar border-t border-telegram-dark-border p-4 items-center justify-center transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border" id="voice-recorder">
+      <div class="flex items-center">
+        <div class="waveform text-telegram-dark-accent mr-3 transition-all dark:text-telegram-light-accent">
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+        </div>
+        <span class="text-sm text-telegram-dark-text transition-all dark:text-telegram-light-text">Recording... <span id="recording-time">0:00</span></span>
+        <button class="ml-4 p-2 text-red-500" id="stop-recording">
+          <i class="fas fa-stop-circle"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const stickerButton = document.getElementById('sticker-button');
+    const stickersPanel = document.getElementById('stickers-panel');
+    const voiceMessageButton = document.getElementById('voice-message-button');
+    const voiceRecorder = document.getElementById('voice-recorder');
+    const stopRecording = document.getElementById('stop-recording');
+    const messageInput = document.getElementById('message-input');
+    const messagesContainer = document.getElementById('messages-container');
+    const sendButton = document.getElementById('send-button');
+    const recordingTime = document.getElementById('recording-time');
+    const backButton = document.getElementById('back-button');
+    const attachButton = document.getElementById('attach-button');
+    
+    let recordingInterval;
+    let recordingSeconds = 0;
+    let isRecording = false;
+    let pressTimer;
+    let playbackIntervals = {};
+    
+    // Initialize
+    function init() {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      
+      // Back button functionality
+      backButton.addEventListener('click', function() {
+        window.history.back();
+      });
+      
+      // Attach button functionality
+      attachButton.addEventListener('click', function() {
+        alert('File attachment functionality would be implemented here');
+      });
+      
+      // Set up message input behavior
+      messageInput.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          sendButton.classList.remove('hidden');
+          voiceMessageButton.classList.add('hidden');
+        } else {
+          sendButton.classList.add('hidden');
+          voiceMessageButton.classList.remove('hidden');
+        }
+      });
+      
+      // Send button
+      sendButton.addEventListener('click', sendMessage);
+      
+      // Sticker button
+      stickerButton.addEventListener('click', function() {
+        stickersPanel.classList.toggle('hidden');
+        voiceRecorder.classList.add('hidden');
+        if (!stickersPanel.classList.contains('hidden')) {
+          stickersPanel.classList.add('slide-up');
+        }
+      });
+      
+      // Voice message button - press and hold functionality
+      voiceMessageButton.addEventListener('mousedown', startRecording);
+      voiceMessageButton.addEventListener('touchstart', startRecording);
+      
+      voiceMessageButton.addEventListener('mouseup', cancelRecording);
+      voiceMessageButton.addEventListener('touchend', cancelRecording);
+      voiceMessageButton.addEventListener('mouseleave', cancelRecording);
+      
+      function startRecording(e) {
+        e.preventDefault();
+        isRecording = true;
+        voiceMessageButton.classList.add('recording');
+        pressTimer = setTimeout(function() {
+          voiceRecorder.classList.remove('hidden');
+          stickersPanel.classList.add('hidden');
+          startRecordingTimer();
+        }, 500);
+      }
+      
+      function cancelRecording(e) {
+        e.preventDefault();
+        clearTimeout(pressTimer);
+        if (isRecording) {
+          voiceMessageButton.classList.remove('recording');
+          if (voiceRecorder.classList.contains('hidden')) {
+            // Short tap - toggle voice recorder panel
+            voiceRecorder.classList.toggle('hidden');
+            stickersPanel.classList.add('hidden');
+          } else {
+            // Stop recording if it was active
+            stopRecordingHandler();
+          }
+        }
+        isRecording = false;
+      }
+      
+      // Stop recording button
+      stopRecording.addEventListener('click', stopRecordingHandler);
+      
+      // Stickers functionality
+      const stickers = document.querySelectorAll('.sticker');
+      stickers.forEach(sticker => {
+        sticker.addEventListener('click', function() {
+          const stickerMessage = document.createElement('div');
+          stickerMessage.className = 'flex mb-4 justify-end message';
+          stickerMessage.innerHTML = `
+            <div class="flex flex-col items-end">
+              <div class="text-4xl p-2">
+                ${this.textContent}
+              </div>
+              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">${getCurrentTime()}</div>
+            </div>
+          `;
+          messagesContainer.appendChild(stickerMessage);
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          stickersPanel.classList.add('hidden');
+        });
+      });
+      
+      // Send message on Enter key
+      messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && this.value.trim() !== '') {
+          sendMessage();
+        }
+      });
+      
+      // Add playback functionality to existing voice messages
+      document.querySelectorAll('.voice-playback').forEach((playback, index) => {
+        const playButton = playback.querySelector('.play-button');
+        const progressBar = playback.querySelector('.progress-bar');
+        const durationElement = playback.querySelector('.duration');
+        const totalDuration = parseInt(playback.getAttribute('data-duration')) || 10;
+        
+        playButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Stop all other playbacks
+          stopAllPlaybacks();
+          
+          if (this.classList.contains('fa-play-circle')) {
+            this.classList.remove('fa-play-circle');
+            this.classList.add('fa-pause-circle');
+            simulatePlayback(progressBar, durationElement, totalDuration, index, this);
+          } else {
+            this.classList.remove('fa-pause-circle');
+            this.classList.add('fa-play-circle');
+            if (playbackIntervals[index]) {
+              clearInterval(playbackIntervals[index]);
+              delete playbackIntervals[index];
+            }
+          }
+        });
+      });
+    }
+    
+    // Stop all audio playbacks
+    function stopAllPlaybacks() {
+      // Clear all intervals
+      Object.values(playbackIntervals).forEach(interval => {
+        clearInterval(interval);
+      });
+      playbackIntervals = {};
+      
+      // Reset all play buttons
+      document.querySelectorAll('.play-button').forEach(button => {
+        button.classList.remove('fa-pause-circle');
+        button.classList.add('fa-play-circle');
+      });
+      
+      // Reset all progress bars
+      document.querySelectorAll('.progress-bar').forEach(bar => {
+        bar.style.width = '0%';
+      });
+    }
+    
+    // Start recording timer
+    function startRecordingTimer() {
+      recordingSeconds = 0;
+      updateRecordingTime();
+      recordingInterval = setInterval(function() {
+        recordingSeconds++;
+        updateRecordingTime();
+      }, 1000);
+    }
+    
+    // Update recording time display
+    function updateRecordingTime() {
+      const minutes = Math.floor(recordingSeconds / 60);
+      const seconds = recordingSeconds % 60;
+      recordingTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    // Stop recording handler
+    function stopRecordingHandler() {
+      clearInterval(recordingInterval);
+      voiceRecorder.classList.add('hidden');
+      voiceMessageButton.classList.remove('recording');
+      
+      // Create a mock voice message
+      const voiceMessage = document.createElement('div');
+      const messageId = Date.now();
+      voiceMessage.className = 'flex mb-4 justify-end message';
+      voiceMessage.innerHTML = `
+        <div class="flex flex-col items-end">
+          <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs">
+            <div class="voice-playback" data-duration="${recordingSeconds}" data-id="${messageId}">
+              <i class="fas fa-play-circle mr-1 play-button"></i>
+              <div class="waveform text-white opacity-70 mx-2">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+              </div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <span class="text-xs ml-2 duration">${formatTime(recordingSeconds)}</span>
+            </div>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">${getCurrentTime()}</div>
+        </div>
+      `;
+      messagesContainer.appendChild(voiceMessage);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      
+      // Add playback functionality
+      const playButton = voiceMessage.querySelector('.play-button');
+      const progressBar = voiceMessage.querySelector('.progress-bar');
+      const durationElement = voiceMessage.querySelector('.duration');
+      const totalDuration = recordingSeconds;
+      
+      playButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        // Stop all other playbacks
+        stopAllPlaybacks();
+        
+        if (this.classList.contains('fa-play-circle')) {
+          this.classList.remove('fa-play-circle');
+          this.classList.add('fa-pause-circle');
+          simulatePlayback(progressBar, durationElement, totalDuration, messageId, this);
+        } else {
+          this.classList.remove('fa-pause-circle');
+          this.classList.add('fa-play-circle');
+          if (playbackIntervals[messageId]) {
+            clearInterval(playbackIntervals[messageId]);
+            delete playbackIntervals[messageId];
+          }
+        }
+      });
+    }
+    
+    // Simulate audio playback
+    function simulatePlayback(progressBar, durationElement, totalDuration, id, button) {
+      let currentTime = 0;
+      progressBar.style.width = '0%';
+      durationElement.textContent = formatTime(0);
+      
+      playbackIntervals[id] = setInterval(function() {
+        if (currentTime >= totalDuration) {
+          clearInterval(playbackIntervals[id]);
+          delete playbackIntervals[id];
+          button.classList.remove('fa-pause-circle');
+          button.classList.add('fa-play-circle');
+          progressBar.style.width = '0%';
+          durationElement.textContent = formatTime(totalDuration);
+          return;
+        }
+        
+        currentTime++;
+        const progress = (currentTime / totalDuration) * 100;
+        progressBar.style.width = `${progress}%`;
+        durationElement.textContent = formatTime(currentTime);
+      }, 1000);
+    }
+    
+    // Format time for display
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    // Send message function
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      if (message === '') return;
+      
+      messageInput.value = '';
+      sendButton.classList.add('hidden');
+      voiceMessageButton.classList.remove('hidden');
+      
+      const messageElement = document.createElement('div');
+      messageElement.className = 'flex mb-4 justify-end message';
+      messageElement.innerHTML = `
+        <div class="flex flex-col items-end">
+          <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs">
+            <p class="text-sm">${message}</p>
+          </div>
+          <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">${getCurrentTime()}</div>
+        </div>
+      `;
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Get current time in HH:mm format
+    function getCurrentTime() {
+      const now = new Date();
+      return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    }
+    
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+</body>
+</html>

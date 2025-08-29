@@ -5,3 +5,6 @@ def index(request):
 
 def bars(request):
     return render(request, 'bars.html')
+
+def user(request):
+    return render(request, 'user.html')
