@@ -61,9 +61,34 @@
         display: none;
       }
     }
+    .telegram-container {
+            width: 400px;
+            height: 400px;
+            overflow: hidden;
+        }
+        /* Custom scrollbar */
+        .settings-content::-webkit-scrollbar {
+            width: 5px;
+        }
+        .settings-content::-webkit-scrollbar-track {
+            background: #17212b;
+        }
+        .settings-content::-webkit-scrollbar-thumb {
+            background: #3e546a;
+            border-radius: 10px;
+        }
+        .toggle-switch {
+            transition: all 0.3s ease;
+        }
+        .toggle-switch.active {
+            background-color: #70b1e4;
+        }
+        .toggle-switch:not(.active) {
+            background-color: #465a6c;
+        }
   </style>
 </head>
-<body class="bg-telegram-dark-bg text-telegram-dark-text font-sans flex h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text">
+<body class="bg-telegram-dark-bg overflow-hidden text-telegram-dark-text font-sans flex h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text">
   
   <!-- Sidebar -->
   <div class="w-[68px] h-screen bg-telegram-dark-sidebar flex flex-col items-center py-2.5 border-r border-telegram-dark-border flex-shrink-0 overflow-y-auto scrollbar-hide transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
@@ -288,7 +313,7 @@
           <i class="fa-solid fa-bookmark text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
           <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Saved Messages</span>
         </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
+        <div class="menu-option setting-model flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
           <i class="fa-solid fa-gear text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
           <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Settings</span>
         </div>
@@ -316,8 +341,210 @@
   <!-- Theme switcher -->
   <div class="theme-switcher bg-telegram-dark-sidebarr cursor-pointer shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar" id="theme-switcher">
 
+
   </div>
 
+  <div class="absolute setiing_open left-[500px] w-[350px] h-[100dvh] top-[20px] bg-telegram-dark-sidebar rounded-lg shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar" style="display: none;" >
+    <div class="w-[350px] h-[100dvh] bg-dark-sidebar rounded-lg shadow-xl flex flex-col">
+      <!-- Header -->
+      <div class="bg-dark-menuHeader  p-4 flex items-center space-x-3 border-b border-dark-border">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">
+              H
+          </div>
+          <div>
+              <h2 class="font-semibold">Humoyun Mamasodiqov</h2>
+              <p class="text-dark-muted text-sm">+998 93 332 03 35</p>
+              <p class="text-dark-muted text-sm">@xumoyun.731</p>
+          </div>
+      </div>
+
+      <!-- Settings Content -->
+      <div class="settings-content flex-1 cursor-pointer overflow-y-auto">
+          <!-- My Account Section -->
+          <div class="py-2">
+              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">My Account</h3>
+              
+              <div class="space-y-0">
+                <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                  <div class="flex items-center">
+                      <i class="fas fa-user mr-3 text-dark-muted"></i>
+                      <span>My account</span>
+                  </div>
+                  <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+                
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-bell mr-3 text-dark-muted"></i>
+                          <span>Notifications and Sounds</span>
+                      </div>
+                      <div class="toggle-switch w-10 h-5 rounded-full relative cursor-pointer active">
+                          <div class="absolute w-4 h-4 rounded-full bg-white top-0.5 left-0.5 transition-transform transform translate-x-5"></div>
+                      </div>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-lock mr-3 text-dark-muted"></i>
+                          <span>Privacy and Security</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-comment-dots mr-3 text-dark-muted"></i>
+                          <span>Chat Settings</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-folder mr-3 text-dark-muted"></i>
+                          <span>Folders</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-cog mr-3 text-dark-muted"></i>
+                          <span>Advanced</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-volume-up mr-3 text-dark-muted"></i>
+                          <span>Speakers and Camera</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-battery-full mr-3 text-dark-muted"></i>
+                          <span>Battery and Animations</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <!-- Language Section -->
+<!-- Language Section -->
+<div class="flex items-center bg-dark-menuHeader justify-between px-4 py-3 hover:bg-dark-hover relative cursor-pointer" id="language-section">
+  <div class="flex items-center  bg-telegram-dark-modal">
+      <i class="fas fa-globe mr-3  text-dark-muted"></i>
+      <span>Language</span>
+  </div>
+  <span class="text-dark-muted" id="current-lang">English</span>
+</div>
+
+<!-- Language Modal (hidden by default) -->
+<div id="language-modal"  class="fixed bg-telegram-dark-modal inset-0  flex items-center justify-center z-50 hidden">
+  <div class=" rounded-lg shadow-xl  bg-[#17212B] h-[500px] w-[320px]">
+    
+    <!-- Header -->
+    <div class="p-4 border-b border-dark-border flex  bg-telegram-dark-modal justify-between items-center">
+      <h2 class="font-semibold">Choose Language</h2>
+      <button id="close-lang" class="text-dark-muted hover:text-white">✖</button>
+    </div>
+    
+    <!-- Options -->
+    <div class="flex flex-col   bg-telegram-dark-modal">
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="English">English</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="O‘zbek">O‘zbek</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Русский">Русский</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Deutsch">Deutsch (German)</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Français">Français (French)</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Español">Español (Spanish)</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Türkçe">Türkçe (Turkish)</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Қазақша">Қазақша (Kazakh)</div>
+      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Кыргызча">Кыргызча (Kyrgyz)</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+              </div>
+          </div>
+
+          <!-- Default Interface Scale -->
+          <div class="py-2 border-t border-dark-border">
+              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">Default Interface scale</h3>
+              <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                  <div class="flex items-center">
+                      <i class="fas fa-desktop mr-3 text-dark-muted"></i>
+                      <span>100%</span>
+                  </div>
+                  <div class="w-5 h-5 rounded-full border-2 border-dark-accent flex items-center justify-center">
+                      <div class="w-2.5 h-2.5 rounded-full bg-dark-accent"></div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Telegram Premium -->
+          <div class="py-2 border-t border-dark-border">
+              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">Telegram Premium</h3>
+              <div class="space-y-0">
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-crown mr-3 text-yellow-400"></i>
+                          <span class="text-yellow-400">Telegram Premium</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-star mr-3 text-yellow-400"></i>
+                          <span class="text-yellow-400">My Stars</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-briefcase mr-3 text-dark-accent"></i>
+                          <span>Telegram Business</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-gift mr-3 text-red-400"></i>
+                          <span>Send a Gift</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-certificate mr-3 text-green-400"></i>
+                          <span class="text-green-400">New</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Telegram FAQ -->
+          <div class="py-2 border-t border-dark-border">
+              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">Telegram FAQ</h3>
+              <div class="space-y-0">
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-list-alt mr-3 text-dark-accent"></i>
+                          <span>Telegram Features</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
+                      <div class="flex items-center">
+                          <i class="fas fa-question-circle mr-3 text-dark-accent"></i>
+                          <span>Ask a Question</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+      
+  </div>
   <script>
     const menuToggle = document.querySelector('.menu-toggle');
     const slideOutMenu = document.getElementById('slide-out-menu');
@@ -330,7 +557,64 @@
     const chatsList = document.getElementById('chats-list');
     const chatItems = chatsList.querySelectorAll('.chat-item');
     const menuItems = document.querySelectorAll('.menu-item');
-    
+    let setting = document.querySelector('.setting-model');
+let setiing_open = document.querySelector('.setiing_open');
+let langSection = document.getElementById("language-section");
+let currentLang = document.getElementById("current-lang");
+let langModal = document.getElementById("language-modal");
+let closeLang = document.getElementById("close-lang");
+
+// Language oynasini ochish
+langSection.addEventListener("click", () => {
+  langModal.classList.remove("hidden");
+});
+
+// Modal yopish tugmasi
+closeLang.addEventListener("click", () => {
+  langModal.classList.add("hidden");
+});
+
+// Modal tashqariga bosilganda yopish
+langModal.addEventListener("click", (e) => {
+  if (e.target === langModal) {
+    langModal.classList.add("hidden");
+  }
+});
+
+// Tilni tanlash
+langModal.querySelectorAll("[data-lang]").forEach(item => {
+  item.addEventListener("click", () => {
+    currentLang.textContent = item.getAttribute("data-lang"); // tanlangan tilni qo‘yadi
+    langModal.classList.add("hidden"); // modalni yopadi
+  });
+});
+
+
+// tashqariga bosilganda yopish
+document.addEventListener("click", (e) => {
+  if (!langSection.contains(e.target)) {
+    langDropdown.classList.add("hidden");
+  }
+});
+
+
+// setting tugmasini bosganda oynani ochish
+setting.addEventListener('click', (e) => {
+  e.stopPropagation(); // documentga ketmasin
+  setiing_open.style.display = 'block';
+});
+
+// document bo'ylab click kuzatish
+document.addEventListener('click', (e) => {
+  // agar setting_open yoki setting bosilmagan bo‘lsa → yopiladi
+  if (!setiing_open.contains(e.target) && !setting.contains(e.target)) {
+    setiing_open.style.display = 'none';
+  }
+});
+
+
+
+
     // Mavzu (tungi/kunduzgi) ni o'zgartirish
     function toggleTheme() {
       document.body.classList.toggle('dark');

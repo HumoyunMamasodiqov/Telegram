@@ -377,7 +377,7 @@
               <i class="fas fa-search"></i>
             </button>
             <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="menu-button">
-              <i class="fas fa-ellipsis-v"></i>
+              <i class="fas fa-ellipsis-v info_icon"></i>
             </button>
           </div>
         </div>
@@ -511,7 +511,7 @@
         </div>
         
         <!-- Message input -->
-        <div class="message-input-container px-4 py-3 bg-telegram-dark-sidebar border-t border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
+        <div class="message-input-container p-[2px] bg-telegram-dark-sidebar border-t border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
           <div class="flex items-center">
             <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="attach-button">
               <i class="fas fa-paperclip"></i>
@@ -759,10 +759,9 @@
       <div class="fullscreen-modal    w-[791px] border-[1px] border-[#222e3a] p-[20px] h-[585px] bg-telegram-dark-bg absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg flex flex-col" style="display: none;">
 
         <div class="gap-[25px] justify-end items-center flex">
-          <i class="fa-solid fa-minus"></i>
-          <i class="fa-solid fa-expand"></i>
-          <i class="fa-solid fa-xmark"></i>
-
+          <i class="fa-solid fa-minus hover:cursor-pointer hover:scale-[1.2]"></i>
+          <i class="fa-solid fa-expand hover:cursor-pointer hover:scale-[1.2]"></i>
+          <i class="fa-solid fa-xmark p-[10px]  rounded-full  hover:cursor-pointer hover:scale-[1.2]"></i>
         </div>
         <div class="flex items-center flex-col justify-center mt-[100px]">
           <img class="chat-avatar w-[150px] h-[150px] rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0" src="{% static 'img/shukrulloh-aka.png' %}" alt="">
@@ -780,7 +779,7 @@
     </div>
 
     <!-- Cancel -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center x">
       <button class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-black hover:bg-gray-400">
         <i class="fas fa-times text-lg pt-[5px] "></i>
       </button>
@@ -796,6 +795,39 @@
     </div>
   </div>
 
+      </div>
+
+      <div class="info transition-all   w-[200px] h-[256px] absolute right-[30px] top-[40px] bg-[#0f172a] text-white rounded-md p-2 text-sm flex flex-col justify-start"v style="opacity: 0;">
+    
+        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
+          <i class="fa-solid fa-bell-slash"></i>
+          <span>Mute notifications</span>
+        </div>
+        
+        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
+          <i class="fa-solid fa-user"></i>
+          <span>View profile</span>
+        </div>
+        
+        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
+          <i class="fa-solid fa-paint-roller"></i>
+          <span>Set Wallpaper</span>
+        </div>
+        
+        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
+          <i class="fa-solid fa-file-export"></i>
+          <span>Export chat history</span>
+        </div>
+        
+        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
+          <i class="fa-solid fa-broom"></i>
+          <span>Clear history</span>
+        </div>
+        
+        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2 text-red-500">
+          <i class="fa-solid fa-trash"></i>
+          <span>Delete chat</span>
+        </div>
       </div>
 
       <script>
@@ -820,6 +852,41 @@ let minus = document.querySelector('.fa-minus');
 let close = document.querySelector('.fa-xmark');
 let fullscreen = document.querySelector('.fullscreen-modal');
 let call = document.querySelector('.call')
+let x = document.querySelector('.x')
+let info = document.querySelector('.info');
+let info_icon = document.querySelector('.info_icon');
+
+let isOpen = false;
+
+info_icon.addEventListener('click', function () {
+  isOpen = true;
+  info.style.opacity = 1;
+  info.style.pointerEvents = "auto"; // hover ishlashi uchun
+});
+
+// Agar info ichiga kirsa yopilmaydi
+info.addEventListener('mouseenter', () => {
+  isOpen = true;
+});
+
+// Agar info dan chiqib ketsa yopiladi
+info.addEventListener('mouseleave', () => {
+  info.style.opacity = 0;
+  info.style.pointerEvents = "none";
+  isOpen = false;
+});
+
+// Agar iconni bosgandan keyin info ichiga kirmay boshqa joyga chiqsa ham yopilsin
+document.addEventListener('click', function (e) {
+  if (isOpen && !info.contains(e.target) && !info_icon.contains(e.target)) {
+    info.style.opacity = 0;
+    info.style.pointerEvents = "none";
+    isOpen = false;
+  }
+});
+
+
+
 
 // Fullscreen qilish
 expand.addEventListener('click', () => {
@@ -841,7 +908,9 @@ call.addEventListener('click', () => {
 close.addEventListener('click', () => {
   fullscreen.style.display = "none"; // butunlay yopadi
 });
-
+x.addEventListener('click', () => {
+  fullscreen.style.display = "none"; // butunlay yopadi
+});
 // Minimize (− bosilganda)
 minus.addEventListener('click', () => {
   // Agar fullscreen rejimida bo'lsa chiqib ketadi
