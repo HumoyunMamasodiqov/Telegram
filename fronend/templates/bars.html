@@ -589,7 +589,7 @@
               class="fa-solid fa-users text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
             ></i>
             <span
-              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              class="new_group text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
               >New Group</span
             >
           </div>
@@ -600,7 +600,7 @@
               class="fa-solid fa-bullhorn text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
             ></i>
             <span
-              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              class=" new_channel text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
               >New Channel</span
             >
           </div>
@@ -1092,9 +1092,16 @@
 
 
  <!-- Overlay -->
- <div id="channelModalOverlay" class="fixed inset-0 absolute traform z-50   bg-black/50 flex items-center justify-center">
+ <!-- Overlay -->
+ <div id="channelModalOverlay" class="hidden z-50 absolute fixed inset-0 bg-black/50 flex items-center justify-center">
   <!-- Modal -->
-  <div id="channelModalBox" class="bg-slate-800 rounded-xl p-6 w-[380px] text-slate-200">
+  <div id="channelModalBox" class="bg-slate-800 rounded-xl p-6 w-[380px] text-slate-200 relative">
+    
+    <!-- Close button (X) -->
+    <button id="closeBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-xl">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
     <div class="flex items-start gap-4">
       <!-- Avatar -->
       <label for="fileInput" class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center cursor-pointer overflow-hidden">
@@ -1124,9 +1131,6 @@
 
 
 
-
-
-
     <script>
       const menuToggle = document.querySelector(".menu-toggle");
       const slideOutMenu = document.getElementById("slide-out-menu");
@@ -1148,41 +1152,61 @@
       let my = document.querySelector(".my");
       let profile = document.querySelector(".profile-card");
       let xs = document.querySelector(".xs");
-
       const modalOverlay = document.getElementById('channelModalOverlay');
-    const modalBox = document.getElementById('channelModalBox');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const createBtn = document.getElementById('createBtn');
-    const fileInput = document.getElementById('fileInput');
-    const avatarPreview = document.getElementById('avatarPreview');
-    const cameraIcon = document.getElementById('cameraIcon');
+const cancelBtn = document.getElementById('cancelBtn');
+const createBtn = document.getElementById('createBtn');
+const closeBtn = document.getElementById('closeBtn');
+const newGroupBtn = document.querySelector('.new_group');
+const newChannelBtn = document.querySelector('.new_channel');
+const newChanelBtn = document.querySelector('.new_chanel'); // ikkala yozilishi ham
 
-    // Rasm yuklash preview
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      avatarPreview.src = url;
-      avatarPreview.classList.remove('hidden');
-      cameraIcon.classList.add('hidden');
-    });
+const fileInput = document.getElementById('fileInput');
+const avatarPreview = document.getElementById('avatarPreview');
+const cameraIcon = document.getElementById('cameraIcon');
 
-    // Cancel bosilsa yopiladi
-    cancelBtn.addEventListener('click', () => {
-      modalOverlay.classList.add('hidden');
-    });
+// --- Modal ochish funksiyasi ---
+function openModal() {
+  modalOverlay.classList.remove('hidden');
+}
 
-    // Create bosilsa — alert va yopiladi
-    createBtn.addEventListener('click', () => {
-      const name = document.getElementById('channelName').value.trim();
-      if (!name) {
-        alert("Channel nomini kiriting!");
-        return;
+// --- Modal yopish funksiyasi ---
+function closeModal() {
+  modalOverlay.classList.add('hidden');
+}
+
+// --- Tugmalardan modalni ochish ---
+if (newGroupBtn) newGroupBtn.addEventListener('click', openModal);
+if (newChannelBtn) newChannelBtn.addEventListener('click', openModal);
+if (newChanelBtn) newChanelBtn.addEventListener('click', openModal);
+
+// --- Tugmalar orqali modalni yopish ---
+cancelBtn.addEventListener('click', closeModal);
+createBtn.addEventListener('click', closeModal);
+closeBtn.addEventListener('click', closeModal);
+
+// --- Rasm yuklash preview ---
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  avatarPreview.src = url;
+  avatarPreview.classList.remove('hidden');
+  cameraIcon.classList.add('hidden');
+});
+
+
+    // Modal tashqarisiga bosilsa yopiladi
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        closeModal();
       }
-      alert("Channel yaratildi: " + name);
-      modalOverlay.classList.add('hidden');
     });
-
+    // Modal tashqarisiga bosilsa yopiladi
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.add('hidden');
+      }
+    });
     // Modal tashqarisiga bosilsa yopiladi
     modalOverlay.addEventListener('click', (e) => {
       if (e.target === modalOverlay) {
