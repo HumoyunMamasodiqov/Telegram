@@ -576,6 +576,7 @@ closeLang.addEventListener("click", () => {
 
 // Modal tashqariga bosilganda yopish
 langModal.addEventListener("click", (e) => {
+  // faqat modalning o‘ziga bosilganda yopiladi (ichidagi elementlarda emas)
   if (e.target === langModal) {
     langModal.classList.add("hidden");
   }

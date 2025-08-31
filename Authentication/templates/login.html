@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
+    <div class="w-full h-[100dvh] bg-[#212121]">
+      <div class="flex items-center justify-center flex-col">
+        <div>
+          <img
+            class="w-[260px] h-[240px] mt-[40px]"
+            src="{% static 'img/qr.png' %}"
+            alt=""
+          />
+        </div>
+        <h1 class="text-[32px] font-bold text-white mt-[35px]">
+          Log in to Telegram by QR Code
+        </h1>
+
+        <ol class="qr-description mt-[30px]  text-white text-[16px]">
+          <li><span class="i18n">1.Open Telegram on your phone</span></li>
+          <li class="mt-[10px] mb-[10px]">
+            <span class="i18n  text-white text-[16px] "
+              >2.Go to <b>Settings</b> &gt; <b>Devices</b> &gt;
+              <b>Link Desktop Device</b></span
+            >
+          </li>
+          <li>
+            <span class="i18n text-white text-[16px]"
+              >3.Point your phone at this screen to confirm login</span
+            >
+          </li>
+        </ol>
+        <a href="{% url 'register' %}">
+        <div class="w-[360px] cursor-pointer h-[54px] text-[#6F74E1] text-[16px] mt-[30px] text-center rounded-lg flex items-center justify-center hover:bg-[#292730]">
+            <h1 class=" text-[20px]">
+                Вход по номеру телефона
+            </h1>
+        </div>
+    </a>
+      </div>
+    </div>
+  </body>
+</html> 
