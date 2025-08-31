@@ -14,7 +14,7 @@
     .telegram-logo {
       width: 120px;
       height: 120px;
-      background: linear-gradient(135deg, #8774E1 0%, #6B59D3 100%);
+      
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -38,9 +38,7 @@
 <body class="min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-md">
     <!-- Telegram logo -->
-    <div class="telegram-logo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-    </div>
+      <img class="telegram-logo" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
 
     <h1 class="text-3xl font-semibold text-center mb-4">Войти в Telegram</h1>
     <p class="text-gray-300 text-center mb-8">
@@ -83,12 +81,12 @@
 
       <!-- Button -->
       <a href="{% url 'index' %}">
-      <button class="w-full py-4 rounded-lg font-medium text-lg bg-[#8774E1] hover:bg-[#6B59D3] transition">
+      <button class="w-full mt-[30px] pt-[10px] pb-[10px] rounded-lg font-medium text-lg bg-[#8774E1] hover:bg-[#6B59D3] transition">
         ДАЛЕЕ
       </button>
     </a>
       <!-- QR link -->
-      <div class="text-center pt-4">
+      <div class="w-[450px] cursor-pointer h-[54px] text-[#6F74E1] text-[16px] mt-[30px] text-center rounded-lg flex items-center justify-center hover:bg-[#292730]">
         <a href="{% url 'login' %}" class="text-[#8774E1] hover:text-[#6B59D3] text-base font-medium">ВХОД ПО QR-КОДУ</a>
       </div>
     </div>

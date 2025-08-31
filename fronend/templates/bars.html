@@ -1,728 +1,1393 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="uz">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Telegram Sidebar - Day/Night Mode</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            telegram: {
-              dark: {
-                bg: '#0e1621',
-                sidebar: '#17212b',
-                active: '#3e546a',
-                hover: '#222e3a',
-                text: '#e6e6e6',
-                muted: '#6b7b8c',
-                border: '#0e1621',
-                search: '#242f3d',
-                accent: '#70b1e4',
-                accentText: '#71aaeb',
-                menuHeader: '#1f2c3a'
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram Sidebar - Day/Night Mode</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              telegram: {
+                dark: {
+                  bg: "#0e1621",
+                  sidebar: "#17212b",
+                  active: "#3e546a",
+                  hover: "#222e3a",
+                  text: "#e6e6e6",
+                  muted: "#6b7b8c",
+                  border: "#0e1621",
+                  search: "#242f3d",
+                  accent: "#70b1e4",
+                  accentText: "#71aaeb",
+                  menuHeader: "#1f2c3a",
+                },
+                light: {
+                  bg: "#f0f2f5",
+                  sidebar: "#ffffff",
+                  active: "#e6f2ff",
+                  hover: "#f5f5f5",
+                  text: "#333333",
+                  muted: "#707579",
+                  border: "#d3d9de",
+                  search: "#f0f2f5",
+                  accent: "#0088cc",
+                  accentText: "#0088cc",
+                  menuHeader: "#f5f5f5",
+                },
               },
-              light: {
-                bg: '#f0f2f5',
-                sidebar: '#ffffff',
-                active: '#e6f2ff',
-                hover: '#f5f5f5',
-                text: '#333333',
-                muted: '#707579',
-                border: '#d3d9de',
-                search: '#f0f2f5',
-                accent: '#0088cc',
-                accentText: '#0088cc',
-                menuHeader: '#f5f5f5'
-              }
-            }
-          }
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .transition-all {
+          transition: all 0.3s ease;
+        }
+
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       }
-    }
-  </script>
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .transition-all {
+      .telegram-container {
+        width: 400px;
+        height: 400px;
+        overflow: hidden;
+      }
+      /* Custom scrollbar */
+      .settings-content::-webkit-scrollbar {
+        width: 5px;
+      }
+      .settings-content::-webkit-scrollbar-track {
+        background: #17212b;
+      }
+      .settings-content::-webkit-scrollbar-thumb {
+        background: #3e546a;
+        border-radius: 10px;
+      }
+      .toggle-switch {
         transition: all 0.3s ease;
       }
-      
-      .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+      .toggle-switch.active {
+        background-color: #70b1e4;
       }
-      
-      .scrollbar-hide::-webkit-scrollbar {
+      .toggle-switch:not(.active) {
+        background-color: #465a6c;
+      }
+      .profile-card {
+        width: 391px;
+        height: 650px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         display: none;
       }
-    }
-    .telegram-container {
-            width: 400px;
-            height: 400px;
-            overflow: hidden;
-        }
-        /* Custom scrollbar */
-        .settings-content::-webkit-scrollbar {
-            width: 5px;
-        }
-        .settings-content::-webkit-scrollbar-track {
-            background: #17212b;
-        }
-        .settings-content::-webkit-scrollbar-thumb {
-            background: #3e546a;
-            border-radius: 10px;
-        }
-        .toggle-switch {
-            transition: all 0.3s ease;
-        }
-        .toggle-switch.active {
-            background-color: #70b1e4;
-        }
-        .toggle-switch:not(.active) {
-            background-color: #465a6c;
-        }
-  </style>
-</head>
-<body class="bg-telegram-dark-bg overflow-hidden text-telegram-dark-text font-sans flex h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text">
-  
-  <!-- Sidebar -->
-  <div class="w-[68px] h-screen bg-telegram-dark-sidebar flex flex-col items-center py-2.5 border-r border-telegram-dark-border flex-shrink-0 overflow-y-auto scrollbar-hide transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
-    <a href="#" class="menu-toggle relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-bars text-xl mb-0.5"></i>
-      <span>Menu</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden bg-telegram-dark-active text-telegram-dark-accentText dark:bg-telegram-light-active dark:text-telegram-light-accent">
-      <i class="fa-solid fa-comments text-xl mb-0.5"></i>
-      <span>All chats</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-book text-xl mb-0.5"></i>
-      <span>IT House</span>
-      <span class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium">3</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-bullhorn text-xl mb-0.5"></i>
-      <span>Kanallar</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-music text-xl mb-0.5"></i>
-      <span>blog</span>
-      <span class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium">12</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-robot text-xl mb-0.5"></i>
-      <span>telegram bot</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-folder text-xl mb-0.5"></i>
-      <span>it guruhlar</span>
-      <span class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium">1</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-clipboard text-xl mb-0.5"></i>
-      <span>musiqa</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-graduation-cap text-xl mb-0.5"></i>
-      <span>teacher</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-users text-xl mb-0.5"></i>
-      <span>tanishlar</span>
-      <span class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium">5</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-folder text-xl mb-0.5"></i>
-      <span>oquvchilar</span>
-    </a>
-    <a href="#" class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted">
-      <i class="fa-solid fa-sliders text-xl mb-0.5"></i>
-      <span>Edit</span>
-    </a>
-  </div>
+      .profile-card.active {
+        display: block;
+      }
+      .profile-image {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-telegram-dark-bg overflow-hidden text-telegram-dark-text font-sans flex h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text"
+  >
+    <!-- Sidebar -->
+    <div
+      class="w-[68px] h-screen bg-telegram-dark-sidebar flex flex-col items-center py-2.5 border-r border-telegram-dark-border flex-shrink-0 overflow-y-auto scrollbar-hide transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+    >
+      <a
+        href="#"
+        class="menu-toggle relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-bars text-xl mb-0.5"></i>
+        <span>Menu</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden bg-telegram-dark-active text-telegram-dark-accentText dark:bg-telegram-light-active dark:text-telegram-light-accent"
+      >
+        <i class="fa-solid fa-comments text-xl mb-0.5"></i>
+        <span>All chats</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-book text-xl mb-0.5"></i>
+        <span>IT House</span>
+        <span
+          class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium"
+          >3</span
+        >
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-bullhorn text-xl mb-0.5"></i>
+        <span>Kanallar</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-music text-xl mb-0.5"></i>
+        <span>blog</span>
+        <span
+          class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium"
+          >12</span
+        >
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-robot text-xl mb-0.5"></i>
+        <span>telegram bot</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-folder text-xl mb-0.5"></i>
+        <span>it guruhlar</span>
+        <span
+          class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium"
+          >1</span
+        >
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-clipboard text-xl mb-0.5"></i>
+        <span>musiqa</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-graduation-cap text-xl mb-0.5"></i>
+        <span>teacher</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-users text-xl mb-0.5"></i>
+        <span>tanishlar</span>
+        <span
+          class="unread-count absolute -top-0.5 right-2.5 bg-telegram-dark-accent text-white rounded-full min-w-[16px] h-4 text-xs flex items-center justify-center px-1 font-medium"
+          >5</span
+        >
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-folder text-xl mb-0.5"></i>
+        <span>oquvchilar</span>
+      </a>
+      <a
+        href="#"
+        class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
+      >
+        <i class="fa-solid fa-sliders text-xl mb-0.5"></i>
+        <span>Edit</span>
+      </a>
+    </div>
 
-  <!-- Content -->
-  <div class="content flex-grow bg-telegram-dark-bg overflow-y-auto flex flex-col relative transition-all dark:bg-telegram-light-bg">
-    <!-- Search bar -->
-    <div class="search-container px-3.5 py-3 bg-telegram-dark-sidebar border-b border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
-      <div class="search-box flex items-center bg-telegram-dark-search rounded-lg px-3 py-2 transition-all dark:bg-telegram-light-search">
-        <i class="fas fa-search text-telegram-dark-muted mr-2 text-base transition-all dark:text-telegram-light-muted"></i>
-        <input type="text" placeholder="Search" id="search-input" class="flex-1 border-none bg-transparent text-telegram-dark-text text-sm outline-none transition-all dark:text-telegram-light-text placeholder-telegram-dark-muted dark:placeholder-telegram-light-muted">
+    <!-- Content -->
+    <div
+      class="content flex-grow bg-telegram-dark-bg overflow-y-auto flex flex-col relative transition-all dark:bg-telegram-light-bg"
+    >
+      <!-- Search bar -->
+      <div
+        class="search-container px-3.5 py-3 bg-telegram-dark-sidebar border-b border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+      >
+        <div
+          class="search-box flex items-center bg-telegram-dark-search rounded-lg px-3 py-2 transition-all dark:bg-telegram-light-search"
+        >
+          <i
+            class="fas fa-search text-telegram-dark-muted mr-2 text-base transition-all dark:text-telegram-light-muted"
+          ></i>
+          <input
+            type="text"
+            placeholder="Search"
+            id="search-input"
+            class="flex-1 border-none bg-transparent text-telegram-dark-text text-sm outline-none transition-all dark:text-telegram-light-text placeholder-telegram-dark-muted dark:placeholder-telegram-light-muted"
+          />
+        </div>
+      </div>
+
+      <!-- Chats list -->
+      <div
+        class="chats-container flex-1 overflow-y-auto scrollbar-hide"
+        id="chats-list"
+      >
+        <div
+          class="chat-section-title text-sm text-telegram-dark-muted px-4 py-3 transition-all dark:text-telegram-light-muted"
+        >
+          Archived chats
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <img
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+            src="{% static 'img/IT.png' %}"
+            alt=""
+          />
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                IT House /DChj/ 16:00 Frontend Shukurulloh. IT ...
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                16:00
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              Frontend darslari bo'yicha muzokara
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <img
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+            src="{% static 'img/shukrulloh-aka.png' %}"
+            alt=""
+          />
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                Shukurulloh Ergashev
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                21:28
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              Ha
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <img
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+            src="{% static 'img/IT.png' %}"
+            alt=""
+          />
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                📌 IT House / SPSH / 09:30B Shukurullo
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                10:50
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              Drafit
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <div
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+          >
+            A
+          </div>
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                Afshona
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                14:25
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              Afshona joined Telegram
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <img
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+            src="{% static 'img/telegram.png' %}"
+            alt=""
+          />
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                Telegram
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                09:44
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              Код для входа в Telegram: . Не давайте код H...
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <div
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+          >
+            <img
+              class="rounded-full"
+              src="{% static 'img/jasurbek.png' %}"
+              alt=""
+            />
+          </div>
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                Jasurbek
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                Wed
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              17:30 da ketgan
+            </div>
+            <div class="chat-status flex items-center justify-end mt-1">
+              <i
+                class="fas fa-check-double text-telegram-dark-accent text-sm transition-all dark:text-telegram-light-accent"
+              ></i>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
+        >
+          <div
+            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+          >
+            <img
+              class="rounded-full"
+              src="{% static 'img/16xona.png' %}"
+              alt=""
+            />
+          </div>
+          <div class="chat-info flex-1 min-w-0">
+            <div class="chat-header flex justify-between items-center mb-1">
+              <div
+                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+              >
+                16 xona
+              </div>
+              <div
+                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+              >
+                21/08/2025
+              </div>
+            </div>
+            <div
+              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+            >
+              menga boshqa yasab koringchi
+            </div>
+            <div class="chat-status flex items-center justify-end mt-1">
+              <i
+                class="fas fa-check-double text-telegram-dark-accent text-sm transition-all dark:text-telegram-light-accent"
+              ></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    
-    <!-- Chats list -->
-    <div class="chats-container flex-1 overflow-y-auto scrollbar-hide" id="chats-list">
-      <div class="chat-section-title text-sm text-telegram-dark-muted px-4 py-3 transition-all dark:text-telegram-light-muted">Archived chats</div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <img class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0" src="{% static 'img/IT.png' %}" alt="">
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">IT House /DChj/ 16:00 Frontend Shukurulloh. IT ...</div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">16:00</div>
+
+    <!-- Slide-out menu -->
+    <div
+      class="slide-out-menu fixed top-0 left-[-320px] w-80 h-screen bg-telegram-dark-sidebar border-r border-telegram-dark-border overflow-y-auto scrollbar-hide transition-all z-50 shadow-xl dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+      id="slide-out-menu"
+    >
+      <div
+        class="menu-header px-5 py-5 border-b border-telegram-dark-border flex items-center bg-telegram-dark-menuHeader transition-all dark:bg-telegram-light-menuHeader dark:border-telegram-light-border"
+      >
+        <div
+          class="avatar w-10 h-10 bg-telegram-dark-accent rounded-full flex items-center justify-center font-bold text-base text-white mr-3"
+        >
+          <img
+            class="rounded-full"
+            src="https://humoyun731.netlify.app/humoyun731logo.png"
+            alt=""
+          />
+        </div>
+        <div class="user-info flex-grow">
+          <div
+            class="user-name font-medium text-white mb-0.5 transition-all dark:text-telegram-light-text"
+          >
+            Humoyun Mamasodiqov
           </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">Frontend darslari bo'yicha muzokara</div>
+          <div
+            class="user-status text-xs text-telegram-dark-accent cursor-pointer transition-all dark:text-telegram-light-accent"
+          >
+            Set Emoji Status
+          </div>
+        </div>
+        <div
+          class="close-btn text-telegram-dark-muted text-xl cursor-pointer p-1.5 transition-all dark:text-telegram-light-muted"
+          id="close-menu"
+        >
+          <i class="fas fa-times"></i>
         </div>
       </div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <img class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0" src="{% static 'img/shukrulloh-aka.png' %}" alt="">
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">Shukurulloh Ergashev</div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">21:28</div>
+
+      <div class="menu-content py-2.5">
+        <div class="menu-section py-2.5 px-5">
+          <div
+            class="menu-section-title text-xs text-telegram-dark-muted mb-2 pl-2 transition-all dark:text-telegram-light-muted"
+          >
+            ACCOUNT
           </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">Ha</div>
-        </div>
-      </div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <img class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0" src="{% static 'img/IT.png' %}" alt="">
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">📌 IT House / SPSH / 09:30B Shukurullo</div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">10:50</div>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <div
+              class="avatar w-7 h-7 bg-telegram-dark-accent rounded-full flex items-center justify-center font-bold text-sm text-white mr-3"
+            >
+              <img
+                class="rounded-full"
+                src="https://humoyun731.netlify.app/humoyun731logo.png"
+                alt=""
+              />
+            </div>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >HUMOYUN</span
+            >
+            <span
+              class="badge bg-telegram-dark-accent text-white rounded-full min-w-[20px] h-4.5 text-xs flex items-center justify-center px-1.5 font-medium transition-all"
+              >117</span
+            >
           </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">Drafit</div>
-        </div>
-      </div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <div class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0">A</div>
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">Afshona </div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">14:25</div>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <div
+              class="avatar w-7 h-7 bg-telegram-dark-accent rounded-full flex items-center justify-center font-bold text-sm text-white mr-3"
+            >
+              <img
+                class="rounded-full"
+                src="https://humoyun731.netlify.app/humoyun731logo.png"
+                alt=""
+              />
+            </div>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >Humoyun Mamasodiqov</span
+            >
           </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">Afshona  joined Telegram</div>
-        </div>
-      </div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <img class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0" src="{% static 'img/telegram.png' %}" alt="">
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">Telegram  </div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">09:44</div>
-          </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">Код для входа в Telegram:  . Не давайте код H...</div>
-        </div>
-      </div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <div class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0">
-          <img class="rounded-full" src="{% static 'img/jasurbek.png' %}" alt="">
-        </div>
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">Jasurbek</div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">Wed</div>
-          </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">17:30 da ketgan</div>
-          <div class="chat-status flex items-center justify-end mt-1">
-            <i class="fas fa-check-double text-telegram-dark-accent text-sm transition-all dark:text-telegram-light-accent"></i>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-plus text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >Add Account</span
+            >
           </div>
         </div>
-      </div>
-      
-      <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-        <div class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0">
-          <img class="rounded-full" src="{% static 'img/16xona.png' %}" alt="">
-        </div>
-        <div class="chat-info flex-1 min-w-0">
-          <div class="chat-header flex justify-between items-center mb-1">
-            <div class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all">16 xona</div>
-            <div class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted">21/08/2025</div>
+
+        <div
+          class="menu-divider h-px bg-telegram-dark-border my-2.5 transition-all dark:bg-telegram-light-border"
+        ></div>
+
+        <div class="menu-section py-2.5 px-5">
+          <div
+            class="menu-option my flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-user text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >My Profile</span
+            >
           </div>
-          <div class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted">menga boshqa yasab koringchi</div>
-          <div class="chat-status flex items-center justify-end mt-1">
-            <i class="fas fa-check-double text-telegram-dark-accent text-sm transition-all dark:text-telegram-light-accent"></i>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-users text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >New Group</span
+            >
+          </div>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-bullhorn text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >New Channel</span
+            >
+          </div>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-address-book text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >Contacts</span
+            >
+          </div>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-phone text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >Calls</span
+            >
+          </div>
+          <div
+            class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-bookmark text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >Saved Messages</span
+            >
+          </div>
+          <div
+            class="menu-option setting-model flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <i
+              class="fa-solid fa-gear text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
+            ></i>
+            <span
+              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              >Settings</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="menu-divider h-px bg-telegram-dark-border my-2.5 transition-all dark:bg-telegram-light-border"
+        ></div>
+
+        <div class="menu-section py-2.5 px-5">
+          <div
+            class="menu-option night-mode-toggle flex items-center justify-between w-full px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1"
+          >
+            <div class="flex items-center">
+              <i
+                class="fa-solid fa-moon text-telegram-dark-muted text-lg w-6 transition-all dark:text-telegram-light-muted"
+              ></i>
+              <span
+                class="text-sm text-telegram-dark-text ml-3 transition-all dark:text-telegram-light-text"
+                >Night Mode</span
+              >
+            </div>
+            <div
+              class="toggle-switch w-10 h-5 bg-gray-700 rounded-full cursor-pointer transition-all relative dark:bg-blue-500"
+              id="night-mode-toggle"
+            >
+              <div
+                class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-all"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Slide-out menu -->
-  <div class="slide-out-menu fixed top-0 left-[-320px] w-80 h-screen bg-telegram-dark-sidebar border-r border-telegram-dark-border overflow-y-auto scrollbar-hide transition-all z-50 shadow-xl dark:bg-telegram-light-sidebar dark:border-telegram-light-border" id="slide-out-menu">
-    <div class="menu-header px-5 py-5 border-b border-telegram-dark-border flex items-center bg-telegram-dark-menuHeader transition-all dark:bg-telegram-light-menuHeader dark:border-telegram-light-border">
-      <div class="avatar w-10 h-10 bg-telegram-dark-accent rounded-full flex items-center justify-center font-bold text-base text-white mr-3">
-        <img class="rounded-full" src="https://humoyun731.netlify.app/humoyun731logo.png" alt="">
-      </div>
-      <div class="user-info flex-grow">
-        <div class="user-name font-medium text-white mb-0.5 transition-all dark:text-telegram-light-text">Humoyun Mamasodiqov</div>
-        <div class="user-status text-xs text-telegram-dark-accent cursor-pointer transition-all dark:text-telegram-light-accent">Set Emoji Status</div>
-      </div>
-      <div class="close-btn text-telegram-dark-muted text-xl cursor-pointer p-1.5 transition-all dark:text-telegram-light-muted" id="close-menu">
-        <i class="fas fa-times"></i>
-      </div>
-    </div>
-    
-    <div class="menu-content py-2.5">
-      <div class="menu-section py-2.5 px-5">
-        <div class="menu-section-title text-xs text-telegram-dark-muted mb-2 pl-2 transition-all dark:text-telegram-light-muted">ACCOUNT</div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <div class="avatar w-7 h-7 bg-telegram-dark-accent rounded-full flex items-center justify-center font-bold text-sm text-white mr-3">
-            <img class="rounded-full" src="https://humoyun731.netlify.app/humoyun731logo.png" alt="">
-          </div>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">HUMOYUN</span>
-          <span class="badge bg-telegram-dark-accent text-white rounded-full min-w-[20px] h-4.5 text-xs flex items-center justify-center px-1.5 font-medium transition-all">117</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <div class="avatar w-7 h-7 bg-telegram-dark-accent rounded-full flex items-center justify-center font-bold text-sm text-white mr-3">
-            <img class="rounded-full" src="https://humoyun731.netlify.app/humoyun731logo.png" alt="">
-          </div>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Humoyun Mamasodiqov</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-plus text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Add Account</span>
-        </div>
-      </div>
-      
-      <div class="menu-divider h-px bg-telegram-dark-border my-2.5 transition-all dark:bg-telegram-light-border"></div>
-      
-      <div class="menu-section py-2.5 px-5">
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-user text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">My Profile</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-users text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">New Group</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-bullhorn text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">New Channel</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-address-book text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Contacts</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-phone text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Calls</span>
-        </div>
-        <div class="menu-option flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-bookmark text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Saved Messages</span>
-        </div>
-        <div class="menu-option setting-model flex items-center px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <i class="fa-solid fa-gear text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"></i>
-          <span class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text">Settings</span>
-        </div>
-      </div>
-      
-      <div class="menu-divider h-px bg-telegram-dark-border my-2.5 transition-all dark:bg-telegram-light-border"></div>
-      
-      <div class="menu-section py-2.5 px-5">
-        <div class="menu-option night-mode-toggle flex items-center justify-between w-full px-3 py-2.5 rounded-lg cursor-pointer transition-all mb-1">
-          <div class="flex items-center">
-            <i class="fa-solid fa-moon text-telegram-dark-muted text-lg w-6 transition-all dark:text-telegram-light-muted"></i>
-            <span class="text-sm text-telegram-dark-text ml-3 transition-all dark:text-telegram-light-text">Night Mode</span>
-          </div>
-          <div class="toggle-switch w-10 h-5 bg-gray-700 rounded-full cursor-pointer transition-all relative dark:bg-blue-500" id="night-mode-toggle">
-            <div class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-all"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- Overlay -->
+    <div
+      class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden z-40 transition-all"
+      id="overlay"
+    ></div>
 
-  <!-- Overlay -->
-  <div class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden z-40 transition-all" id="overlay"></div>
+    <!-- Theme switcher -->
+    <div
+      class="theme-switcher bg-telegram-dark-sidebarr cursor-pointer shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar"
+      id="theme-switcher"
+    ></div>
 
-  <!-- Theme switcher -->
-  <div class="theme-switcher bg-telegram-dark-sidebarr cursor-pointer shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar" id="theme-switcher">
-
-
-  </div>
-
-  <div class="absolute setiing_open left-[500px] w-[350px] h-[100dvh] top-[20px] bg-telegram-dark-sidebar rounded-lg shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar" style="display: none;" >
-    <div class="w-[350px] h-[100dvh] bg-dark-sidebar rounded-lg shadow-xl flex flex-col">
-      <!-- Header -->
-      <div class="bg-dark-menuHeader  p-4 flex items-center space-x-3 border-b border-dark-border">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">
-              H
+    <div
+      class="absolute setiing_open left-[500px] w-[350px] h-[100dvh] top-[20px] bg-telegram-dark-sidebar rounded-lg shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar"
+      style="display: none"
+    >
+      <div
+        class="w-[350px] h-[100dvh] bg-dark-sidebar rounded-lg shadow-xl flex flex-col"
+      >
+        <!-- Header -->
+        <div
+          class="bg-dark-menuHeader p-4 flex items-center space-x-3 border-b border-dark-border"
+        >
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold"
+          >
+            H
           </div>
           <div>
-              <h2 class="font-semibold">Humoyun Mamasodiqov</h2>
-              <p class="text-dark-muted text-sm">+998 93 332 03 35</p>
-              <p class="text-dark-muted text-sm">@xumoyun.731</p>
+            <h2 class="font-semibold">Humoyun Mamasodiqov</h2>
+            <p class="text-dark-muted text-sm">+998 93 332 03 35</p>
+            <p class="text-dark-muted text-sm">@xumoyun.731</p>
           </div>
-      </div>
+        </div>
 
-      <!-- Settings Content -->
-      <div class="settings-content flex-1 cursor-pointer overflow-y-auto">
+        <!-- Settings Content -->
+        <div class="settings-content flex-1 cursor-pointer overflow-y-auto">
           <!-- My Account Section -->
           <div class="py-2">
-              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">My Account</h3>
-              
-              <div class="space-y-0">
-                <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                  <div class="flex items-center">
-                      <i class="fas fa-user mr-3 text-dark-muted"></i>
-                      <span>My account</span>
-                  </div>
-                  <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+            <h3
+              class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
+            >
+              My Account
+            </h3>
+
+            <div class="space-y-0">
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-user mr-3 text-dark-muted"></i>
+                  <span>My account</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
               </div>
-                
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-bell mr-3 text-dark-muted"></i>
-                          <span>Notifications and Sounds</span>
-                      </div>
-                      <div class="toggle-switch w-10 h-5 rounded-full relative cursor-pointer active">
-                          <div class="absolute w-4 h-4 rounded-full bg-white top-0.5 left-0.5 transition-transform transform translate-x-5"></div>
-                      </div>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-lock mr-3 text-dark-muted"></i>
-                          <span>Privacy and Security</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-comment-dots mr-3 text-dark-muted"></i>
-                          <span>Chat Settings</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-folder mr-3 text-dark-muted"></i>
-                          <span>Folders</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-cog mr-3 text-dark-muted"></i>
-                          <span>Advanced</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-volume-up mr-3 text-dark-muted"></i>
-                          <span>Speakers and Camera</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-battery-full mr-3 text-dark-muted"></i>
-                          <span>Battery and Animations</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <!-- Language Section -->
-<!-- Language Section -->
-<div class="flex items-center bg-dark-menuHeader justify-between px-4 py-3 hover:bg-dark-hover relative cursor-pointer" id="language-section">
-  <div class="flex items-center  bg-telegram-dark-modal">
-      <i class="fas fa-globe mr-3  text-dark-muted"></i>
-      <span>Language</span>
-  </div>
-  <span class="text-dark-muted" id="current-lang">English</span>
-</div>
 
-<!-- Language Modal (hidden by default) -->
-<div id="language-modal"  class="fixed bg-telegram-dark-modal inset-0  flex items-center justify-center z-50 hidden">
-  <div class=" rounded-lg shadow-xl  bg-[#17212B] h-[500px] w-[320px]">
-    
-    <!-- Header -->
-    <div class="p-4 border-b border-dark-border flex  bg-telegram-dark-modal justify-between items-center">
-      <h2 class="font-semibold">Choose Language</h2>
-      <button id="close-lang" class="text-dark-muted hover:text-white">✖</button>
-    </div>
-    
-    <!-- Options -->
-    <div class="flex flex-col   bg-telegram-dark-modal">
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="English">English</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="O‘zbek">O‘zbek</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Русский">Русский</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Deutsch">Deutsch (German)</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Français">Français (French)</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Español">Español (Spanish)</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Türkçe">Türkçe (Turkish)</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Қазақша">Қазақша (Kazakh)</div>
-      <div class="px-4 py-3 hover:bg-black/50 cursor-pointer" data-lang="Кыргызча">Кыргызча (Kyrgyz)</div>
-
-
-
-    </div>
-  </div>
-</div>
-
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-bell mr-3 text-dark-muted"></i>
+                  <span>Notifications and Sounds</span>
+                </div>
+                <div
+                  class="toggle-switch w-10 h-5 rounded-full relative cursor-pointer active"
+                >
+                  <div
+                    class="absolute w-4 h-4 rounded-full bg-white top-0.5 left-0.5 transition-transform transform translate-x-5"
+                  ></div>
+                </div>
               </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-lock mr-3 text-dark-muted"></i>
+                  <span>Privacy and Security</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-comment-dots mr-3 text-dark-muted"></i>
+                  <span>Chat Settings</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-folder mr-3 text-dark-muted"></i>
+                  <span>Folders</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-cog mr-3 text-dark-muted"></i>
+                  <span>Advanced</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-volume-up mr-3 text-dark-muted"></i>
+                  <span>Speakers and Camera</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-battery-full mr-3 text-dark-muted"></i>
+                  <span>Battery and Animations</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <!-- Language Section -->
+              <!-- Language Section -->
+              <div
+                class="flex items-center bg-dark-menuHeader justify-between px-4 py-3 hover:bg-dark-hover relative cursor-pointer"
+                id="language-section"
+              >
+                <div class="flex items-center bg-telegram-dark-modal">
+                  <i class="fas fa-globe mr-3 text-dark-muted"></i>
+                  <span>Language</span>
+                </div>
+                <span class="text-dark-muted" id="current-lang">English</span>
+              </div>
+
+              <!-- Language Modal (hidden by default) -->
+              <div
+                id="language-modal"
+                class="fixed bg-telegram-dark-modal inset-0 flex items-center justify-center z-50 hidden"
+              >
+                <div
+                  class="rounded-lg shadow-xl bg-[#17212B] h-[500px] w-[320px]"
+                >
+                  <!-- Header -->
+                  <div
+                    class="p-4 border-b border-dark-border flex bg-telegram-dark-modal justify-between items-center"
+                  >
+                    <h2 class="font-semibold">Choose Language</h2>
+                    <button
+                      id="close-lang"
+                      class="text-dark-muted hover:text-white"
+                    >
+                      ✖
+                    </button>
+                  </div>
+
+                  <!-- Options -->
+                  <div class="flex flex-col bg-telegram-dark-modal">
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="English"
+                    >
+                      English
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="O‘zbek"
+                    >
+                      O‘zbek
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Русский"
+                    >
+                      Русский
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Deutsch"
+                    >
+                      Deutsch (German)
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Français"
+                    >
+                      Français (French)
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Español"
+                    >
+                      Español (Spanish)
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Türkçe"
+                    >
+                      Türkçe (Turkish)
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Қазақша"
+                    >
+                      Қазақша (Kazakh)
+                    </div>
+                    <div
+                      class="px-4 py-3 hover:bg-black/50 cursor-pointer"
+                      data-lang="Кыргызча"
+                    >
+                      Кыргызча (Kyrgyz)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Default Interface Scale -->
           <div class="py-2 border-t border-dark-border">
-              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">Default Interface scale</h3>
-              <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                  <div class="flex items-center">
-                      <i class="fas fa-desktop mr-3 text-dark-muted"></i>
-                      <span>100%</span>
-                  </div>
-                  <div class="w-5 h-5 rounded-full border-2 border-dark-accent flex items-center justify-center">
-                      <div class="w-2.5 h-2.5 rounded-full bg-dark-accent"></div>
-                  </div>
+            <h3
+              class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
+            >
+              Default Interface scale
+            </h3>
+            <div
+              class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-desktop mr-3 text-dark-muted"></i>
+                <span>100%</span>
               </div>
+              <div
+                class="w-5 h-5 rounded-full border-2 border-dark-accent flex items-center justify-center"
+              >
+                <div class="w-2.5 h-2.5 rounded-full bg-dark-accent"></div>
+              </div>
+            </div>
           </div>
 
           <!-- Telegram Premium -->
           <div class="py-2 border-t border-dark-border">
-              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">Telegram Premium</h3>
-              <div class="space-y-0">
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-crown mr-3 text-yellow-400"></i>
-                          <span class="text-yellow-400">Telegram Premium</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-star mr-3 text-yellow-400"></i>
-                          <span class="text-yellow-400">My Stars</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-briefcase mr-3 text-dark-accent"></i>
-                          <span>Telegram Business</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-gift mr-3 text-red-400"></i>
-                          <span>Send a Gift</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-certificate mr-3 text-green-400"></i>
-                          <span class="text-green-400">New</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
+            <h3
+              class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
+            >
+              Telegram Premium
+            </h3>
+            <div class="space-y-0">
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-crown mr-3 text-yellow-400"></i>
+                  <span class="text-yellow-400">Telegram Premium</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
               </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-star mr-3 text-yellow-400"></i>
+                  <span class="text-yellow-400">My Stars</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-briefcase mr-3 text-dark-accent"></i>
+                  <span>Telegram Business</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-gift mr-3 text-red-400"></i>
+                  <span>Send a Gift</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-certificate mr-3 text-green-400"></i>
+                  <span class="text-green-400">New</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+            </div>
           </div>
 
           <!-- Telegram FAQ -->
           <div class="py-2 border-t border-dark-border">
-              <h3 class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader">Telegram FAQ</h3>
-              <div class="space-y-0">
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-list-alt mr-3 text-dark-accent"></i>
-                          <span>Telegram Features</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
-                  <div class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover">
-                      <div class="flex items-center">
-                          <i class="fas fa-question-circle mr-3 text-dark-accent"></i>
-                          <span>Ask a Question</span>
-                      </div>
-                      <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
-                  </div>
+            <h3
+              class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
+            >
+              Telegram FAQ
+            </h3>
+            <div class="space-y-0">
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-list-alt mr-3 text-dark-accent"></i>
+                  <span>Telegram Features</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
               </div>
+              <div
+                class="flex items-center justify-between px-4 py-3 hover:bg-dark-hover"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-question-circle mr-3 text-dark-accent"></i>
+                  <span>Ask a Question</span>
+                </div>
+                <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
+              </div>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
+
+    <!-- End of Left Sidebar -->
+    <div
+      class="profile-card bg-gray-800 rounded-xl z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg text-white p-4 flex flex-col"
+    >
+      <!-- Header -->
+      <div class="flex items-center space-x-3 border-b border-gray-700 pb-4">
+        <div
+          class="w-12 h-12 rounded-full bg-black flex items-center justify-center text-yellow-500 text-xl font-bold"
+        >
+          <img
+            class="rounded-full"
+            src="https://humoyun731.netlify.app/humoyun731logo.png"
+            alt=""
+          />
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold">Humoyun Mamasodiqov</h2>
+            <p class="text-sm text-gray-400">last seen today at 16:24</p>
+          </div>
+          <div>
+            <i
+              class="fas fa-xmark text-gray-400 xs absolute top-[20px] right-[10px] cursor-pointer"
+            ></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="flex flex-col mt-4 space-y-4 text-sm">
+        <div>
+          <p class="text-gray-400">Mobile</p>
+          <p class="text-white">+998 93 332 03 35</p>
+        </div>
+        <div>
+          <p class="text-gray-400">Bio</p>
+          <p class="text-white">9 okt 2009 {16}</p>
+        </div>
+        <div>
+          <p class="text-gray-400">Username</p>
+          <p class="text-blue-400">@xumoyun731</p>
+        </div>
+        <div>
+          <p class="text-gray-400">Date of birth</p>
+          <p class="text-white">Jul 7, 2009 (16 years old)</p>
+        </div>
+      </div>
+
+      <!-- Story archive -->
+      <div class="border-t border-gray-700 mt-6 pt-4">
+        <p class="text-gray-300 mb-2">
+          Story Archive <span class="text-gray-400">2</span>
+        </p>
+        <div class="flex space-x-3">
+          <div
+            class="w-20 h-28 bg-gray-700 rounded-md flex items-center justify-center text-xs"
+          >
+            <span>0:30</span>
+          </div>
+          <div
+            class="w-20 h-28 bg-gray-700 rounded-md flex items-center justify-center text-xs"
+          >
+            <span>0:19</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Content -->
+
+      <!-- Footer -->
+      <div class="mt-auto pt-4 text-center text-xs text-gray-500">
+        Telegram • Updated today at 16:24
+      </div>
+    </div>
+    <!-- Right Sidebar -->
+
+
+
+
+
+ <!-- Overlay -->
+ <div id="channelModalOverlay" class="fixed inset-0 absolute traform z-50   bg-black/50 flex items-center justify-center">
+  <!-- Modal -->
+  <div id="channelModalBox" class="bg-slate-800 rounded-xl p-6 w-[380px] text-slate-200">
+    <div class="flex items-start gap-4">
+      <!-- Avatar -->
+      <label for="fileInput" class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center cursor-pointer overflow-hidden">
+        <input id="fileInput" type="file" accept="image/*" class="hidden" />
+        <img id="avatarPreview" class="w-full h-full object-cover hidden" />
+        <svg id="cameraIcon" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 17a4 4 0 100-8 4 4 0 000 8z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6.5l.71-.71A1 1 0 0118 6h2a1 1 0 011 1v2a1 1 0 01-.29.71L19 10.5M15 6H9l-2 2H4a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2v-8a2 2 0 00-2-2h-3l-2-2z"/>
+        </svg>
+      </label>
+
+      <!-- Inputs -->
+      <div class="flex-1">
+        <input id="channelName" type="text" placeholder="Channel name" class="w-full bg-transparent border-b border-slate-600 focus:border-sky-500 focus:outline-none py-1 mb-4 placeholder-slate-400" />
+        <input id="channelDesc" type="text" placeholder="Description (optional)" class="w-full bg-transparent border-b border-slate-600 focus:border-sky-500 focus:outline-none py-1 placeholder-slate-400" />
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-6 mt-6 text-sm">
+      <button id="cancelBtn" class="text-slate-400 hover:text-slate-200">Cancel</button>
+      <button id="createBtn" class="text-sky-400 hover:text-sky-300 font-medium">Create</button>
+    </div>
   </div>
-      
-  </div>
-  <script>
-    const menuToggle = document.querySelector('.menu-toggle');
-    const slideOutMenu = document.getElementById('slide-out-menu');
-    const closeMenu = document.getElementById('close-menu');
-    const overlay = document.getElementById('overlay');
-    const nightModeToggle = document.getElementById('night-mode-toggle');
-    const themeSwitcher = document.getElementById('theme-switcher');
-    const themeIcon = themeSwitcher.querySelector('i');
-    const searchInput = document.getElementById('search-input');
-    const chatsList = document.getElementById('chats-list');
-    const chatItems = chatsList.querySelectorAll('.chat-item');
-    const menuItems = document.querySelectorAll('.menu-item');
-    let setting = document.querySelector('.setting-model');
-let setiing_open = document.querySelector('.setiing_open');
-let langSection = document.getElementById("language-section");
-let currentLang = document.getElementById("current-lang");
-let langModal = document.getElementById("language-modal");
-let closeLang = document.getElementById("close-lang");
-
-// Language oynasini ochish
-langSection.addEventListener("click", () => {
-  langModal.classList.remove("hidden");
-});
-
-// Modal yopish tugmasi
-closeLang.addEventListener("click", () => {
-  langModal.classList.add("hidden");
-});
-
-// Modal tashqariga bosilganda yopish
-langModal.addEventListener("click", (e) => {
-  // faqat modalning o‘ziga bosilganda yopiladi (ichidagi elementlarda emas)
-  if (e.target === langModal) {
-    langModal.classList.add("hidden");
-  }
-});
-
-// Tilni tanlash
-langModal.querySelectorAll("[data-lang]").forEach(item => {
-  item.addEventListener("click", () => {
-    currentLang.textContent = item.getAttribute("data-lang"); // tanlangan tilni qo‘yadi
-    langModal.classList.add("hidden"); // modalni yopadi
-  });
-});
-
-
-// tashqariga bosilganda yopish
-document.addEventListener("click", (e) => {
-  if (!langSection.contains(e.target)) {
-    langDropdown.classList.add("hidden");
-  }
-});
-
-
-// setting tugmasini bosganda oynani ochish
-setting.addEventListener('click', (e) => {
-  e.stopPropagation(); // documentga ketmasin
-  setiing_open.style.display = 'block';
-});
-
-// document bo'ylab click kuzatish
-document.addEventListener('click', (e) => {
-  // agar setting_open yoki setting bosilmagan bo‘lsa → yopiladi
-  if (!setiing_open.contains(e.target) && !setting.contains(e.target)) {
-    setiing_open.style.display = 'none';
-  }
-});
+</div>
 
 
 
 
-    // Mavzu (tungi/kunduzgi) ni o'zgartirish
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-      
-      if (document.body.classList.contains('dark')) {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        nightModeToggle.classList.remove('dark:bg-blue-500');
-        nightModeToggle.classList.add('bg-gray-700');
-        localStorage.setItem('theme', 'light');
-      } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        nightModeToggle.classList.remove('bg-gray-700');
-        nightModeToggle.classList.add('dark:bg-blue-500');
-        localStorage.setItem('theme', 'dark');
+
+
+
+    <script>
+      const menuToggle = document.querySelector(".menu-toggle");
+      const slideOutMenu = document.getElementById("slide-out-menu");
+      const closeMenu = document.getElementById("close-menu");
+      const overlay = document.getElementById("overlay");
+      const nightModeToggle = document.getElementById("night-mode-toggle");
+      const themeSwitcher = document.getElementById("theme-switcher");
+      const themeIcon = themeSwitcher.querySelector("i");
+      const searchInput = document.getElementById("search-input");
+      const chatsList = document.getElementById("chats-list");
+      const chatItems = chatsList.querySelectorAll(".chat-item");
+      const menuItems = document.querySelectorAll(".menu-item");
+      let setting = document.querySelector(".setting-model");
+      let setiing_open = document.querySelector(".setiing_open");
+      let langSection = document.getElementById("language-section");
+      let currentLang = document.getElementById("current-lang");
+      let langModal = document.getElementById("language-modal");
+      let closeLang = document.getElementById("close-lang");
+      let my = document.querySelector(".my");
+      let profile = document.querySelector(".profile-card");
+      let xs = document.querySelector(".xs");
+
+      const modalOverlay = document.getElementById('channelModalOverlay');
+    const modalBox = document.getElementById('channelModalBox');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const createBtn = document.getElementById('createBtn');
+    const fileInput = document.getElementById('fileInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const cameraIcon = document.getElementById('cameraIcon');
+
+    // Rasm yuklash preview
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      avatarPreview.src = url;
+      avatarPreview.classList.remove('hidden');
+      cameraIcon.classList.add('hidden');
+    });
+
+    // Cancel bosilsa yopiladi
+    cancelBtn.addEventListener('click', () => {
+      modalOverlay.classList.add('hidden');
+    });
+
+    // Create bosilsa — alert va yopiladi
+    createBtn.addEventListener('click', () => {
+      const name = document.getElementById('channelName').value.trim();
+      if (!name) {
+        alert("Channel nomini kiriting!");
+        return;
       }
-    }
-    
-    // Toggle switch uchun ham ishlaydigan qilish
-    themeSwitcher.addEventListener('click', toggleTheme);
-    nightModeToggle.addEventListener('click', toggleTheme);
-    
-    // Saqlangan mavzuni yuklash
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.body.classList.add('dark');
-      themeIcon.classList.remove('fa-moon');
-      themeIcon.classList.add('fa-sun');
-      nightModeToggle.classList.remove('dark:bg-blue-500');
-      nightModeToggle.classList.add('bg-gray-700');
-    } else {
-      nightModeToggle.classList.remove('bg-gray-700');
-      nightModeToggle.classList.add('dark:bg-blue-500');
-    }
-    
-    // Menu toggle
-    menuToggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      slideOutMenu.classList.remove('left-[-320px]');
-      slideOutMenu.classList.add('left-0');
-      overlay.classList.remove('hidden');
-      overlay.classList.add('block');
-      document.body.style.overflow = 'hidden';
-    });
-   
-    function closeMenuFunc() {
-      slideOutMenu.classList.remove('left-0');
-      slideOutMenu.classList.add('left-[-320px]');
-      overlay.classList.remove('block');
-      overlay.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }
-    
-    closeMenu.addEventListener('click', closeMenuFunc);
-    overlay.addEventListener('click', closeMenuFunc);
-    
-    menuItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-        if (!this.classList.contains('menu-toggle')) {
-          e.preventDefault();
-          menuItems.forEach(item => item.classList.remove('bg-telegram-dark-active', 'text-telegram-dark-accentText', 'dark:bg-telegram-light-active', 'dark:text-telegram-light-accent'));
-          this.classList.add('bg-telegram-dark-active', 'text-telegram-dark-accentText', 'dark:bg-telegram-light-active', 'dark:text-telegram-light-accent');
-        }
-      });
+      alert("Channel yaratildi: " + name);
+      modalOverlay.classList.add('hidden');
     });
 
-    searchInput.addEventListener('input', function() {
-      const searchTerm = this.value.toLowerCase();
-      
-      chatItems.forEach(chat => {
-        const chatName = chat.querySelector('.chat-name').textContent.toLowerCase();
-        const chatPreview = chat.querySelector('.chat-preview').textContent.toLowerCase();
-        
-        if (chatName.includes(searchTerm) || chatPreview.includes(searchTerm)) {
-          chat.classList.remove('hidden');
-          chat.classList.add('flex');
-        } else {
-          chat.classList.remove('flex');
-          chat.classList.add('hidden');
+    // Modal tashqarisiga bosilsa yopiladi
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.add('hidden');
+      }
+    });
+
+    
+    // Modal tashqarisiga bosilsa yopiladi
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.add('hidden');
+      }
+    });
+
+      // my bosilganda ochilsin/yopilsin
+      my.addEventListener("click", (e) => {
+        profile.classList.toggle("active");
+      });
+
+      // ekrandagi boshqa joyga bosilganda yopilsin
+      xs.addEventListener("click", (e) => {
+        profile.classList.remove("active");
+      });
+
+      // Language oynasini ochish
+      langSection.addEventListener("click", () => {
+        langModal.classList.remove("hidden");
+      });
+
+      // Modal yopish tugmasi
+      closeLang.addEventListener("click", () => {
+        langModal.classList.add("hidden");
+      });
+
+      // Modal tashqariga bosilganda yopish
+      langModal.addEventListener("click", (e) => {
+        // faqat modalning o‘ziga bosilganda yopiladi (ichidagi elementlarda emas)
+        if (e.target === langModal) {
+          langModal.classList.add("hidden");
         }
       });
-      
-      // Bo'sh qidiruv uchun barcha chatlarni ko'rsatish
-      if (searchTerm === '') {
-        chatItems.forEach(chat => {
-          chat.classList.remove('hidden');
-          chat.classList.add('flex');
+
+      // Tilni tanlash
+      langModal.querySelectorAll("[data-lang]").forEach((item) => {
+        item.addEventListener("click", () => {
+          currentLang.textContent = item.getAttribute("data-lang"); // tanlangan tilni qo‘yadi
+          langModal.classList.add("hidden"); // modalni yopadi
         });
-      }
-    });
-    
-    // Chat items funksionalligi
-    chatItems.forEach(chat => {
-      chat.addEventListener('click', function() {
-        chatItems.forEach(item => item.classList.remove('bg-telegram-dark-hover', 'dark:bg-telegram-light-hover'));
-        this.classList.add('bg-telegram-dark-hover', 'dark:bg-telegram-light-hover');
       });
-    });
-    
-    // Escape tugmasi bilan menyuni yopish
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeMenuFunc();
-      }
-    });
-  </script>
 
-</body>
+      // tashqariga bosilganda yopish
+      document.addEventListener("click", (e) => {
+        if (!langSection.contains(e.target)) {
+          langDropdown.classList.add("hidden");
+        }
+      });
+
+      // setting tugmasini bosganda oynani ochish
+      setting.addEventListener("click", (e) => {
+        e.stopPropagation(); // documentga ketmasin
+        setiing_open.style.display = "block";
+      });
+
+      // document bo'ylab click kuzatish
+      document.addEventListener("click", (e) => {
+        // agar setting_open yoki setting bosilmagan bo‘lsa → yopiladi
+        if (!setiing_open.contains(e.target) && !setting.contains(e.target)) {
+          setiing_open.style.display = "none";
+        }
+      });
+
+      // Mavzu (tungi/kunduzgi) ni o'zgartirish
+      function toggleTheme() {
+        document.body.classList.toggle("dark");
+
+        if (document.body.classList.contains("dark")) {
+          themeIcon.classList.remove("fa-moon");
+          themeIcon.classList.add("fa-sun");
+          nightModeToggle.classList.remove("dark:bg-blue-500");
+          nightModeToggle.classList.add("bg-gray-700");
+          localStorage.setItem("theme", "light");
+        } else {
+          themeIcon.classList.remove("fa-sun");
+          themeIcon.classList.add("fa-moon");
+          nightModeToggle.classList.remove("bg-gray-700");
+          nightModeToggle.classList.add("dark:bg-blue-500");
+          localStorage.setItem("theme", "dark");
+        }
+      }
+
+      // Toggle switch uchun ham ishlaydigan qilish
+      themeSwitcher.addEventListener("click", toggleTheme);
+      nightModeToggle.addEventListener("click", toggleTheme);
+
+      // Saqlangan mavzuni yuklash
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "light") {
+        document.body.classList.add("dark");
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+        nightModeToggle.classList.remove("dark:bg-blue-500");
+        nightModeToggle.classList.add("bg-gray-700");
+      } else {
+        nightModeToggle.classList.remove("bg-gray-700");
+        nightModeToggle.classList.add("dark:bg-blue-500");
+      }
+
+      // Menu toggle
+      menuToggle.addEventListener("click", function (e) {
+        e.preventDefault();
+        slideOutMenu.classList.remove("left-[-320px]");
+        slideOutMenu.classList.add("left-0");
+        overlay.classList.remove("hidden");
+        overlay.classList.add("block");
+        document.body.style.overflow = "hidden";
+      });
+
+      function closeMenuFunc() {
+        slideOutMenu.classList.remove("left-0");
+        slideOutMenu.classList.add("left-[-320px]");
+        overlay.classList.remove("block");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+
+      closeMenu.addEventListener("click", closeMenuFunc);
+      overlay.addEventListener("click", closeMenuFunc);
+
+      menuItems.forEach((item) => {
+        item.addEventListener("click", function (e) {
+          if (!this.classList.contains("menu-toggle")) {
+            e.preventDefault();
+            menuItems.forEach((item) =>
+              item.classList.remove(
+                "bg-telegram-dark-active",
+                "text-telegram-dark-accentText",
+                "dark:bg-telegram-light-active",
+                "dark:text-telegram-light-accent"
+              )
+            );
+            this.classList.add(
+              "bg-telegram-dark-active",
+              "text-telegram-dark-accentText",
+              "dark:bg-telegram-light-active",
+              "dark:text-telegram-light-accent"
+            );
+          }
+        });
+      });
+
+      searchInput.addEventListener("input", function () {
+        const searchTerm = this.value.toLowerCase();
+
+        chatItems.forEach((chat) => {
+          const chatName = chat
+            .querySelector(".chat-name")
+            .textContent.toLowerCase();
+          const chatPreview = chat
+            .querySelector(".chat-preview")
+            .textContent.toLowerCase();
+
+          if (
+            chatName.includes(searchTerm) ||
+            chatPreview.includes(searchTerm)
+          ) {
+            chat.classList.remove("hidden");
+            chat.classList.add("flex");
+          } else {
+            chat.classList.remove("flex");
+            chat.classList.add("hidden");
+          }
+        });
+
+        // Bo'sh qidiruv uchun barcha chatlarni ko'rsatish
+        if (searchTerm === "") {
+          chatItems.forEach((chat) => {
+            chat.classList.remove("hidden");
+            chat.classList.add("flex");
+          });
+        }
+      });
+
+      // Chat items funksionalligi
+      chatItems.forEach((chat) => {
+        chat.addEventListener("click", function () {
+          chatItems.forEach((item) =>
+            item.classList.remove(
+              "bg-telegram-dark-hover",
+              "dark:bg-telegram-light-hover"
+            )
+          );
+          this.classList.add(
+            "bg-telegram-dark-hover",
+            "dark:bg-telegram-light-hover"
+          );
+        });
+      });
+
+      // Escape tugmasi bilan menyuni yopish
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeMenuFunc();
+        }
+      });
+    </script>
+  </body>
 </html>
