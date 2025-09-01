@@ -1,10 +1,14 @@
 from django.shortcuts import render
+from .models import Odam
 
 def index(request):
-    return render(request, 'index.html')
+    odam = Odam.objects.all() 
+    return render(request, 'index.html', {"odam": odam})
 
 def bars(request):
-    return render(request, 'bars.html')
+    odam = Odam.objects.all() 
+
+    return render(request, "bars.html", {"odam": odam})
 
 def user(request):
     return render(request, 'user.html')

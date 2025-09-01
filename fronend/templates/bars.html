@@ -103,6 +103,7 @@
         height: 48px;
         object-fit: cover;
       }
+      
     </style>
   </head>
   <body
@@ -276,198 +277,44 @@
             </div>
           </div>
         </div>
+   
+      
 
-        <div
-          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
-        >
-          <img
-            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-            src="{% static 'img/shukrulloh-aka.png' %}"
-            alt=""
-          />
-          <div class="chat-info flex-1 min-w-0">
-            <div class="chat-header flex justify-between items-center mb-1">
-              <div
-                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-              >
-                Shukurulloh Ergashev
-              </div>
-              <div
-                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-              >
-                21:28
-              </div>
-            </div>
-            <div
-              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-            >
-              Ha
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
-        >
-          <img
-            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-            src="{% static 'img/IT.png' %}"
-            alt=""
-          />
-          <div class="chat-info flex-1 min-w-0">
-            <div class="chat-header flex justify-between items-center mb-1">
-              <div
-                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-              >
-                📌 IT House / SPSH / 09:30B Shukurullo
-              </div>
-              <div
-                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-              >
-                10:50
+          {% for odam in odam %}
+            <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
+              <img
+                class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+                src="{% static 'img/IT.png' %}"
+                alt=""
+              />
+              <div class="chat-info flex-1 min-w-0">
+                <div class="chat-header flex justify-between items-center mb-1">
+                  <div
+                    class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
+                  >
+                    {{ odam.name }}
+                  </div>
+                  <div
+                    class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
+                  >
+                    10:50
+                  </div>
+                </div>
+                <div
+                  class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
+                >
+                  Drafit
+                </div>
               </div>
             </div>
-            <div
-              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-            >
-              Drafit
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
-        >
-          <div
-            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-          >
-            A
-          </div>
-          <div class="chat-info flex-1 min-w-0">
-            <div class="chat-header flex justify-between items-center mb-1">
-              <div
-                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-              >
-                Afshona
-              </div>
-              <div
-                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-              >
-                14:25
-              </div>
-            </div>
-            <div
-              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-            >
-              Afshona joined Telegram
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
-        >
-          <img
-            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-            src="{% static 'img/telegram.png' %}"
-            alt=""
-          />
-          <div class="chat-info flex-1 min-w-0">
-            <div class="chat-header flex justify-between items-center mb-1">
-              <div
-                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-              >
-                Telegram
-              </div>
-              <div
-                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-              >
-                09:44
-              </div>
-            </div>
-            <div
-              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-            >
-              Код для входа в Telegram: . Не давайте код H...
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
-        >
-          <div
-            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-          >
-            <img
-              class="rounded-full"
-              src="{% static 'img/jasurbek.png' %}"
-              alt=""
-            />
-          </div>
-          <div class="chat-info flex-1 min-w-0">
-            <div class="chat-header flex justify-between items-center mb-1">
-              <div
-                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-              >
-                Jasurbek
-              </div>
-              <div
-                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-              >
-                Wed
-              </div>
-            </div>
-            <div
-              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-            >
-              17:30 da ketgan
-            </div>
-            <div class="chat-status flex items-center justify-end mt-1">
-              <i
-                class="fas fa-check-double text-telegram-dark-accent text-sm transition-all dark:text-telegram-light-accent"
-              ></i>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black"
-        >
-          <div
-            class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-          >
-            <img
-              class="rounded-full"
-              src="{% static 'img/16xona.png' %}"
-              alt=""
-            />
-          </div>
-          <div class="chat-info flex-1 min-w-0">
-            <div class="chat-header flex justify-between items-center mb-1">
-              <div
-                class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-              >
-                16 xona
-              </div>
-              <div
-                class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-              >
-                21/08/2025
-              </div>
-            </div>
-            <div
-              class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-            >
-              menga boshqa yasab koringchi
-            </div>
-            <div class="chat-status flex items-center justify-end mt-1">
-              <i
-                class="fas fa-check-double text-telegram-dark-accent text-sm transition-all dark:text-telegram-light-accent"
-              ></i>
-            </div>
-          </div>
-        </div>
+          {% endfor %}
+        
+  
+        
+        
+       
+    
+        
       </div>
     </div>
 
@@ -600,7 +447,7 @@
               class="fa-solid fa-bullhorn text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
             ></i>
             <span
-              class=" new_channel text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              class="new_channel text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
               >New Channel</span
             >
           </div>
@@ -611,7 +458,7 @@
               class="fa-solid fa-address-book text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
             ></i>
             <span
-              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              class=" contacts_panel text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
               >Contacts</span
             >
           </div>
@@ -622,7 +469,7 @@
               class="fa-solid fa-phone text-telegram-dark-muted text-lg w-6 mr-3 transition-all dark:text-telegram-light-muted"
             ></i>
             <span
-              class="text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
+              class=" call_z text-sm text-telegram-dark-text flex-grow transition-all dark:text-telegram-light-text"
               >Calls</span
             >
           </div>
@@ -1087,46 +934,387 @@
     </div>
     <!-- Right Sidebar -->
 
+    <!-- Overlay -->
+    <!-- Overlay -->
+    <div
+      id="channelModalOverlay"
+      class="hidden z-50 absolute fixed inset-0 bg-black/50 flex items-center justify-center"
+    >
+      <!-- Modal -->
+      <div
+        id="channelModalBox"
+        class="bg-slate-800 rounded-xl p-6 w-[380px] text-slate-200 relative"
+      >
+        <!-- Close button (X) -->
+        <button
+          id="closeBtn"
+          class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-xl"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
 
+        <div class="flex items-start gap-4">
+          <!-- Avatar -->
+          <label
+            for="fileInput"
+            class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center cursor-pointer overflow-hidden"
+          >
+            <input id="fileInput" type="file" accept="image/*" class="hidden" />
+            <img id="avatarPreview" class="w-full h-full object-cover hidden" />
+            <svg
+              id="cameraIcon"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-7 h-7 text-slate-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 17a4 4 0 100-8 4 4 0 000 8z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16.5 6.5l.71-.71A1 1 0 0118 6h2a1 1 0 011 1v2a1 1 0 01-.29.71L19 10.5M15 6H9l-2 2H4a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2v-8a2 2 0 00-2-2h-3l-2-2z"
+              />
+            </svg>
+          </label>
 
+          <!-- Inputs -->
+          <div class="flex-1">
+            <input
+              id="channelName"
+              type="text"
+              placeholder="Channel name"
+              class="w-full bg-transparent border-b border-slate-600 focus:border-sky-500 focus:outline-none py-1 mb-4 placeholder-slate-400"
+            />
+            <input
+              id="channelDesc"
+              type="text"
+              placeholder="Description (optional)"
+              class="w-full bg-transparent border-b border-slate-600 focus:border-sky-500 focus:outline-none py-1 placeholder-slate-400"
+            />
+          </div>
+        </div>
 
-
- <!-- Overlay -->
- <!-- Overlay -->
- <div id="channelModalOverlay" class="hidden z-50 absolute fixed inset-0 bg-black/50 flex items-center justify-center">
-  <!-- Modal -->
-  <div id="channelModalBox" class="bg-slate-800 rounded-xl p-6 w-[380px] text-slate-200 relative">
-    
-    <!-- Close button (X) -->
-    <button id="closeBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-xl">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-
-    <div class="flex items-start gap-4">
-      <!-- Avatar -->
-      <label for="fileInput" class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center cursor-pointer overflow-hidden">
-        <input id="fileInput" type="file" accept="image/*" class="hidden" />
-        <img id="avatarPreview" class="w-full h-full object-cover hidden" />
-        <svg id="cameraIcon" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 17a4 4 0 100-8 4 4 0 000 8z"/>
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6.5l.71-.71A1 1 0 0118 6h2a1 1 0 011 1v2a1 1 0 01-.29.71L19 10.5M15 6H9l-2 2H4a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2v-8a2 2 0 00-2-2h-3l-2-2z"/>
-        </svg>
-      </label>
-
-      <!-- Inputs -->
-      <div class="flex-1">
-        <input id="channelName" type="text" placeholder="Channel name" class="w-full bg-transparent border-b border-slate-600 focus:border-sky-500 focus:outline-none py-1 mb-4 placeholder-slate-400" />
-        <input id="channelDesc" type="text" placeholder="Description (optional)" class="w-full bg-transparent border-b border-slate-600 focus:border-sky-500 focus:outline-none py-1 placeholder-slate-400" />
+        <!-- Buttons -->
+        <div class="flex justify-end gap-6 mt-6 text-sm">
+          <button id="cancelBtn" class="text-slate-400 hover:text-slate-200">
+            Cancel
+          </button>
+          <button
+            id="createBtn"
+            class="text-sky-400 hover:text-sky-300 font-medium"
+          >
+            Create
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Buttons -->
-    <div class="flex justify-end gap-6 mt-6 text-sm">
-      <button id="cancelBtn" class="text-slate-400 hover:text-slate-200">Cancel</button>
-      <button id="createBtn" class="text-sky-400 hover:text-sky-300 font-medium">Create</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="contacts_model z-50 w-[300px] h-[700px] bg-gray-800 flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style="display: none;">
+    
+      <!-- Header -->
+      <div class="p-4 flex justify-between items-center border-b border-gray-700">
+        <h2 class="text-lg font-semibold">Contacts</h2>
+        <button class=" close_btn text-gray-400 hover:text-white">x</button>
+      </div>
+  
+      <!-- Search -->
+      <div class="p-2">
+        <input id="searchInput" type="text" placeholder="Search" 
+               class="w-full px-3 py-2 rounded-md bg-gray-700 text-sm text-white placeholder-gray-400 focus:outline-none">
+      </div>
+  
+      <!-- Contact List -->
+      <div id="contactList" class="overflow-y-auto flex-1">
+  
+        <!-- Contact Item -->
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <img src="https://fazliddin.netlify.app/image/person.jpg" class="w-10 h-10 rounded-full" alt="">
+          <div class="ml-3">
+            <p class="text-sm">+998 90 257 20 27</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold">94</div>
+          <div class="ml-3">
+            <p class="text-sm">+998 95 166 01 46</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <img src="https://ibrohim.netlify.app/assets/css/images/IMG_4895.PNG" class="w-10 h-10 rounded-full" alt="">
+          <div class="ml-3">
+            <p class="text-sm">Akmalaka Shokirt Ibrohim</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <img src="https://mohloroy.netlify.app/moqi.jpg" class="w-10 h-10 rounded-full" alt="">
+          <div class="ml-3">
+            <p class="text-sm">Mohloroy</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <img src="https://nargiza.netlify.app/images/hijab.img.jpg" class="w-10 h-10 rounded-full" alt="">
+          <div class="ml-3">
+            <p class="text-sm">Chiroy. Opam</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold">DK</div>
+          <div class="ml-3">
+            <p class="text-sm">Dilafruz Karomat </p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+ <img class="w-10 h-10 rounded-full" src="https://asad.netlify.app/photo.jpg" alt="">
+          <div class="ml-3">
+            <p class="text-sm">Diyorbek Dosti</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-sm font-bold"><img class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-sm font-bold" src="https://malika.netlify.app/images/p1.jpg" alt=""></div>
+          <div class="ml-3">
+            <p class="text-sm">Abos aka  Ingliz</p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+        <div class="contact-item flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-sm font-bold"><img class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-sm font-bold" src="https://sevinch.netlify.app/images/photo_2021-08-17_22-09-19.jpg" alt=""></div>
+          <div class="ml-3">
+            <p class="text-sm">sevinch </p>
+            <span class="text-xs text-green-400">online</span>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Footer -->
+      <div class="flex justify-between p-3 border-t border-gray-700">
+        <button class="text-blue-400 hover:underline text-sm">Add Contact</button>
+        <button class="text-gray-400 hover:underline text-sm close_btn1">Close</button>
+      </div>
+  
     </div>
-  </div>
-</div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+    <div class="w-[360px] call_models z-50 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[650px] bg-[#17212B] text-white rounded-lg shadow-lg flex flex-col" style="display: none;">
+      <!-- Header -->
+      <div class="flex justify-between items-center px-4 py-3 border-b border-gray-700">
+        <h1 class="text-lg font-semibold">Calls</h1>
+        <button class="text-xl">⋮</button>
+      </div>
+  
+      <!-- Start Call -->
+      <div class="px-4 py-2 text-blue-400 hover:underline cursor-pointer">
+        + Start New Call
+      </div>
+      <p class="px-4 text-xs text-gray-400">You can add up to 200 participants to a call.</p>
+  
+      <!-- List -->
+      <div class="flex-1 overflow-y-auto mt-2">
+        <!-- Item -->
+        <div class="flex items-center px-4 py-3 hover:bg-[#222E3A] cursor-pointer">
+          <img src="{% static 'img/abdurahim.jpg' %}" class="w-10 h-10 rounded-full mr-3">
+          <div class="flex-1">
+            <p class="font-medium">Abdurahim </p>
+            <p class="text-xs text-gray-400"><i class="fas fa-arrow-down"></i> August 28 at 09:29</p>
+          </div>
+          <span class="text-gray-400"><i class="fas fa-phone"></i></span>
+        </div>
+  
+        <div class="flex items-center px-4 py-3 hover:bg-[#222E3A] cursor-pointer">
+          <img src="{% static 'img/shukrulloh-aka.png' %}" class="w-10 h-10 rounded-full mr-3">
+          <div class="flex-1">
+            <p class="font-medium">Shukurulloh Ergashev</p>
+            <p class="text-xs text-gray-400"><i class="fas fa-arrow-up"></i>  August 27 at 14:21</p>
+          </div>
+          <span class="text-gray-400"><i class="fas fa-phone"></i></span>
+        </div>
+  
+        <div class="flex items-center px-4 py-3 hover:bg-[#222E3A] cursor-pointer">
+          <img src="{% static 'img/abdulhalil.jpg' %}" class="w-10 h-10 rounded-full mr-3">
+          <div class="flex-1">
+            <p class="font-medium">ABDULHALIL OKA</p>
+            <p class="text-xs text-gray-400"><i class="fas fa-arrow-up"></i>  August 25 at 01:02</p>
+          </div>
+          <span class="text-gray-400"><i class="fas fa-video"></i></span>
+        </div>
+      </div>
+  
+      <!-- Footer -->
+      <div class="clos_call_btn p-3 border-t absolute bottom-[20px] right-[20px]  border-gray-700 text-center text-blue-400 cursor-pointer hover:underline">
+        Close
+      </div>
+    </div>
+
+
+<script>
+  let call_models = document.querySelector(".call_models");
+ let call_z = document.querySelector(".call_z");
+  let close_call_btn = document.querySelector(".clos_call_btn");
+
+call_z.addEventListener("click", function() {
+  if (call_models.style.display === "block") {
+    call_models.style.display = "none"; // yopish
+  } else {
+    call_models.style.display = "block"; // ochish
+  }
+});
+
+close_call_btn.addEventListener("click", function() {
+  call_models.style.display = "none";
+})
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- JS: Search Function -->
+    <script>
+      const searchInput1 = document.getElementById("searchInput");
+      const contactItems = document.querySelectorAll(".contact-item");
+      const contacts_panel = document.querySelector(".contacts_panel");
+  let contacts_model = document.querySelector(".contacts_model");
+  const close_btn = document.querySelector(".close_btn");
+  const close_btn1 = document.querySelector(".close_btn1");
+
+  // Ochiq / yopiq toggle
+  contacts_panel.addEventListener("click", function() {
+    if (contacts_model.style.display === "block") {
+      contacts_model.style.display = "none"; // yopish
+    } else {
+      contacts_model.style.display = "block"; // ochish
+    }
+  });
+
+  // Yopish tugmasi
+  close_btn.addEventListener("click", function() {
+    contacts_model.style.display = "none";
+  });
+  close_btn1.addEventListener("click", function() {
+    contacts_model.style.display = "none";
+  });
+      searchInput1.addEventListener("keyup", function () {
+        let filter = searchInput1.value.toLowerCase();
+        contactItems.forEach(item => {
+          let text = item.textContent.toLowerCase();
+          if (text.includes(filter)) {
+            item.style.display = "";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1152,75 +1340,73 @@
       let my = document.querySelector(".my");
       let profile = document.querySelector(".profile-card");
       let xs = document.querySelector(".xs");
-      const modalOverlay = document.getElementById('channelModalOverlay');
-const cancelBtn = document.getElementById('cancelBtn');
-const createBtn = document.getElementById('createBtn');
-const closeBtn = document.getElementById('closeBtn');
-const newGroupBtn = document.querySelector('.new_group');
-const newChannelBtn = document.querySelector('.new_channel');
-const newChanelBtn = document.querySelector('.new_chanel'); // ikkala yozilishi ham
+      const modalOverlay = document.getElementById("channelModalOverlay");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const createBtn = document.getElementById("createBtn");
+      const closeBtn = document.getElementById("closeBtn");
+      const newGroupBtn = document.querySelector(".new_group");
+      const newChannelBtn = document.querySelector(".new_channel");
+      const newChanelBtn = document.querySelector(".new_chanel"); // ikkala yozilishi ham
 
-const fileInput = document.getElementById('fileInput');
-const avatarPreview = document.getElementById('avatarPreview');
-const cameraIcon = document.getElementById('cameraIcon');
+      const fileInput = document.getElementById("fileInput");
+      const avatarPreview = document.getElementById("avatarPreview");
+      const cameraIcon = document.getElementById("cameraIcon");
 
-// --- Modal ochish funksiyasi ---
-function openModal() {
-  modalOverlay.classList.remove('hidden');
-}
-
-// --- Modal yopish funksiyasi ---
-function closeModal() {
-  modalOverlay.classList.add('hidden');
-}
-
-// --- Tugmalardan modalni ochish ---
-if (newGroupBtn) newGroupBtn.addEventListener('click', openModal);
-if (newChannelBtn) newChannelBtn.addEventListener('click', openModal);
-if (newChanelBtn) newChanelBtn.addEventListener('click', openModal);
-
-// --- Tugmalar orqali modalni yopish ---
-cancelBtn.addEventListener('click', closeModal);
-createBtn.addEventListener('click', closeModal);
-closeBtn.addEventListener('click', closeModal);
-
-// --- Rasm yuklash preview ---
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const url = URL.createObjectURL(file);
-  avatarPreview.src = url;
-  avatarPreview.classList.remove('hidden');
-  cameraIcon.classList.add('hidden');
-});
-
-
-    // Modal tashqarisiga bosilsa yopiladi
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) {
-        closeModal();
+      // --- Modal ochish funksiyasi ---
+      function openModal() {
+        modalOverlay.classList.remove("hidden");
       }
-    });
-    // Modal tashqarisiga bosilsa yopiladi
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) {
-        modalOverlay.classList.add('hidden');
-      }
-    });
-    // Modal tashqarisiga bosilsa yopiladi
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) {
-        modalOverlay.classList.add('hidden');
-      }
-    });
 
-    
-    // Modal tashqarisiga bosilsa yopiladi
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.classList.add('hidden');
+      // --- Modal yopish funksiyasi ---
+      function closeModal() {
+        modalOverlay.classList.add("hidden");
       }
-    });
+
+      // --- Tugmalardan modalni ochish ---
+      if (newGroupBtn) newGroupBtn.addEventListener("click", openModal);
+      if (newChannelBtn) newChannelBtn.addEventListener("click", openModal);
+      if (newChanelBtn) newChanelBtn.addEventListener("click", openModal);
+
+      // --- Tugmalar orqali modalni yopish ---
+      cancelBtn.addEventListener("click", closeModal);
+      createBtn.addEventListener("click", closeModal);
+      closeBtn.addEventListener("click", closeModal);
+
+      // --- Rasm yuklash preview ---
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        avatarPreview.src = url;
+        avatarPreview.classList.remove("hidden");
+        cameraIcon.classList.add("hidden");
+      });
+
+      // Modal tashqarisiga bosilsa yopiladi
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+          closeModal();
+        }
+      });
+      // Modal tashqarisiga bosilsa yopiladi
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+          modalOverlay.classList.add("hidden");
+        }
+      });
+      // Modal tashqarisiga bosilsa yopiladi
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+          modalOverlay.classList.add("hidden");
+        }
+      });
+
+      // Modal tashqarisiga bosilsa yopiladi
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+          overlay.classList.add("hidden");
+        }
+      });
 
       // my bosilganda ochilsin/yopilsin
       my.addEventListener("click", (e) => {

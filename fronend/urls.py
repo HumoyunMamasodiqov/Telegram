@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path   # <-- BU SHART
 from . import views
 
-urlpatterns = [
-    path('index/', views.index, name='index'), 
-    path('bars' , views.bars, name='bars'),
 
+
+urlpatterns = [
+    path('home/', views.index, name='index'),
+    path('bars/', views.bars, name='bars'),
 ]
