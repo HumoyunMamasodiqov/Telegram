@@ -69,7 +69,7 @@
         height: 400px;
         overflow: hidden;
       }
-      /* Custom scrollbar */
+
       .settings-content::-webkit-scrollbar {
         width: 5px;
       }
@@ -109,7 +109,7 @@
   <body
     class="bg-telegram-dark-bg overflow-hidden text-telegram-dark-text font-sans flex h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text"
   >
-    <!-- Sidebar -->
+
     <div
       class="w-[68px] h-screen bg-telegram-dark-sidebar flex flex-col items-center py-2.5 border-r border-telegram-dark-border flex-shrink-0 overflow-y-auto scrollbar-hide transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
     >
@@ -160,8 +160,8 @@
         href="#"
         class="menu-item relative w-[68px] h-12 flex flex-col items-center justify-center text-telegram-dark-muted my-1.5 no-underline transition-all text-xs rounded overflow-hidden dark:text-telegram-light-muted"
       >
-        <i class="fa-solid fa-robot text-xl mb-0.5"></i>
-        <span>telegram bot</span>
+        <i class="fa-solid fa-robot text-xl mb-0.5 text-center"></i>
+        <span class="text-center ml-[10px]">telegram bot</span>
       </a>
       <a
         href="#"
@@ -215,11 +215,10 @@
       </a>
     </div>
 
-    <!-- Content -->
     <div
       class="content flex-grow bg-telegram-dark-bg overflow-y-auto flex flex-col relative transition-all dark:bg-telegram-light-bg"
     >
-      <!-- Search bar -->
+  
       <div
         class="search-container px-3.5 py-3 bg-telegram-dark-sidebar border-b border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
       >
@@ -238,7 +237,7 @@
         </div>
       </div>
 
-      <!-- Chats list -->
+      
       <div
         class="chats-container flex-1 overflow-y-auto scrollbar-hide"
         id="chats-list"
@@ -280,34 +279,7 @@
    
       
 
-          {% for odam in odam %}
-            <div class="chat-item flex px-4 py-2.5 cursor-pointer transition-all border-b border-opacity-5 border-white dark:border-black">
-              <img
-                class="chat-avatar w-12 h-12 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
-                src="{% static 'img/IT.png' %}"
-                alt=""
-              />
-              <div class="chat-info flex-1 min-w-0">
-                <div class="chat-header flex justify-between items-center mb-1">
-                  <div
-                    class="chat-name font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-all"
-                  >
-                    {{ odam.name }}
-                  </div>
-                  <div
-                    class="chat-time text-xs text-telegram-dark-muted flex-shrink-0 transition-all dark:text-telegram-light-muted"
-                  >
-                    10:50
-                  </div>
-                </div>
-                <div
-                  class="chat-preview text-xs text-telegram-dark-muted whitespace-nowrap overflow-hidden text-ellipsis transition-all dark:text-telegram-light-muted"
-                >
-                  Drafit
-                </div>
-              </div>
-            </div>
-          {% endfor %}
+         
         
   
         
@@ -318,7 +290,7 @@
       </div>
     </div>
 
-    <!-- Slide-out menu -->
+   
     <div
       class="slide-out-menu fixed top-0 left-[-320px] w-80 h-screen bg-telegram-dark-sidebar border-r border-telegram-dark-border overflow-y-auto scrollbar-hide transition-all z-50 shadow-xl dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
       id="slide-out-menu"
@@ -527,13 +499,11 @@
       </div>
     </div>
 
-    <!-- Overlay -->
     <div
       class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden z-40 transition-all"
       id="overlay"
     ></div>
 
-    <!-- Theme switcher -->
     <div
       class="theme-switcher bg-telegram-dark-sidebarr cursor-pointer shadow-lg transition-all z-50 dark:bg-telegram-light-sidebar"
       id="theme-switcher"
@@ -562,9 +532,8 @@
           </div>
         </div>
 
-        <!-- Settings Content -->
         <div class="settings-content flex-1 cursor-pointer overflow-y-auto">
-          <!-- My Account Section -->
+   
           <div class="py-2">
             <h3
               class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
@@ -652,8 +621,8 @@
                 </div>
                 <i class="fas fa-chevron-right text-dark-muted text-xs"></i>
               </div>
-              <!-- Language Section -->
-              <!-- Language Section -->
+        
+         
               <div
                 class="flex items-center bg-dark-menuHeader justify-between px-4 py-3 hover:bg-dark-hover relative cursor-pointer"
                 id="language-section"
@@ -665,7 +634,6 @@
                 <span class="text-dark-muted" id="current-lang">English</span>
               </div>
 
-              <!-- Language Modal (hidden by default) -->
               <div
                 id="language-modal"
                 class="fixed bg-telegram-dark-modal inset-0 flex items-center justify-center z-50 hidden"
@@ -673,7 +641,6 @@
                 <div
                   class="rounded-lg shadow-xl bg-[#17212B] h-[500px] w-[320px]"
                 >
-                  <!-- Header -->
                   <div
                     class="p-4 border-b border-dark-border flex bg-telegram-dark-modal justify-between items-center"
                   >
@@ -686,7 +653,7 @@
                     </button>
                   </div>
 
-                  <!-- Options -->
+                 
                   <div class="flex flex-col bg-telegram-dark-modal">
                     <div
                       class="px-4 py-3 hover:bg-black/50 cursor-pointer"
@@ -748,7 +715,6 @@
             </div>
           </div>
 
-          <!-- Default Interface Scale -->
           <div class="py-2 border-t border-dark-border">
             <h3
               class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
@@ -770,7 +736,7 @@
             </div>
           </div>
 
-          <!-- Telegram Premium -->
+        
           <div class="py-2 border-t border-dark-border">
             <h3
               class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
@@ -826,7 +792,6 @@
             </div>
           </div>
 
-          <!-- Telegram FAQ -->
           <div class="py-2 border-t border-dark-border">
             <h3
               class="text-dark-accentText font-medium px-4 py-2 bg-dark-menuHeader"
@@ -858,11 +823,9 @@
       </div>
     </div>
 
-    <!-- End of Left Sidebar -->
     <div
       class="profile-card bg-gray-800 rounded-xl z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg text-white p-4 flex flex-col"
     >
-      <!-- Header -->
       <div class="flex items-center space-x-3 border-b border-gray-700 pb-4">
         <div
           class="w-12 h-12 rounded-full bg-black flex items-center justify-center text-yellow-500 text-xl font-bold"
@@ -886,7 +849,6 @@
         </div>
       </div>
 
-      <!-- Info -->
       <div class="flex flex-col mt-4 space-y-4 text-sm">
         <div>
           <p class="text-gray-400">Mobile</p>
@@ -906,7 +868,6 @@
         </div>
       </div>
 
-      <!-- Story archive -->
       <div class="border-t border-gray-700 mt-6 pt-4">
         <p class="text-gray-300 mb-2">
           Story Archive <span class="text-gray-400">2</span>
@@ -925,27 +886,22 @@
         </div>
       </div>
 
-      <!-- Additional Content -->
-
-      <!-- Footer -->
+      
       <div class="mt-auto pt-4 text-center text-xs text-gray-500">
         Telegram • Updated today at 16:24
       </div>
     </div>
-    <!-- Right Sidebar -->
-
-    <!-- Overlay -->
-    <!-- Overlay -->
+ 
     <div
       id="channelModalOverlay"
       class="hidden z-50 absolute fixed inset-0 bg-black/50 flex items-center justify-center"
     >
-      <!-- Modal -->
+    
       <div
         id="channelModalBox"
         class="bg-slate-800 rounded-xl p-6 w-[380px] text-slate-200 relative"
       >
-        <!-- Close button (X) -->
+      
         <button
           id="closeBtn"
           class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-xl"
@@ -954,7 +910,7 @@
         </button>
 
         <div class="flex items-start gap-4">
-          <!-- Avatar -->
+
           <label
             for="fileInput"
             class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center cursor-pointer overflow-hidden"
@@ -983,7 +939,6 @@
             </svg>
           </label>
 
-          <!-- Inputs -->
           <div class="flex-1">
             <input
               id="channelName"
@@ -1000,7 +955,6 @@
           </div>
         </div>
 
-        <!-- Buttons -->
         <div class="flex justify-end gap-6 mt-6 text-sm">
           <button id="cancelBtn" class="text-slate-400 hover:text-slate-200">
             Cancel
@@ -1220,9 +1174,9 @@
 
 call_z.addEventListener("click", function() {
   if (call_models.style.display === "block") {
-    call_models.style.display = "none"; // yopish
+    call_models.style.display = "none"; 
   } else {
-    call_models.style.display = "block"; // ochish
+    call_models.style.display = "block"; 
   }
 });
 
@@ -1257,7 +1211,6 @@ close_call_btn.addEventListener("click", function() {
 
 
 
-    <!-- JS: Search Function -->
     <script>
       const searchInput1 = document.getElementById("searchInput");
       const contactItems = document.querySelectorAll(".contact-item");

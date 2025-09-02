@@ -1,4 +1,4 @@
-from django.urls import path   # <-- BU SHART
+from django.urls import path   
 from . import views
 
 

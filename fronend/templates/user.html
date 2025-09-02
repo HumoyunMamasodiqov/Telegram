@@ -1,1097 +1,1277 @@
-    <!DOCTYPE html>
-    <html lang="uz">
-      {% load static %}
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Telegram Chat</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <script src="https://cdn.tailwindcss.com"></script>
-      <script>
-        tailwind.config = {
-          darkMode: 'class',
-          theme: {
-            extend: {
-              colors: {
-                telegram: {
-                  dark: {
-                    bg: '#0e1621',
-                    sidebar: '#17212b',
-                    active: '#3e546a',
-                    hover: '#222e3a',
-                    text: '#e6e6e6',
-                    muted: '#6b7b8c',
-                    border: '#0e1621',
-                    search: '#242f3d',
-                    accent: '#70b1e4',
-                    accentText: '#71aaeb',
-                    menuHeader: '#1f2c3a'
-                  },
-                  light: {
-                    bg: '#f0f2f5',
-                    sidebar: '#ffffff',
-                    active: '#e6f2ff',
-                    hover: '#f5f5f5',
-                    text: '#333333',
-                    muted: '#707579',
-                    border: '#d3d9de',
-                    search: '#f0f2f5',
-                    accent: '#0088cc',
-                    accentText: '#0088cc',
-                    menuHeader: '#f5f5f5'
-                  }
-                }
-              }
-            }
-          }
-        }
-        tailwind.config = {
-                theme: {
-                    extend: {
-                        colors: {
-                            telegram: {
-                                primary: '#8774e1',
-                                bg: '#1e1e1e',
-                                surface: '#2b2b2b',
-                                border: '#3d3d3d',
-                                text: {
-                                    primary: '#ffffff',
-                                    secondary: '#aaaaaa',
-                                    danger: '#eb5757'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-      </script>
-      <style>
+<!DOCTYPE html>
+<html lang="uz">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram Chat</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              telegram: {
+                dark: {
+                  bg: "#0e1621",
+                  sidebar: "#17212b",
+                  active: "#3e546a",
+                  hover: "#222e3a",
+                  text: "#e6e6e6",
+                  muted: "#6b7b8c",
+                  border: "#0e1621",
+                  search: "#242f3d",
+                  accent: "#70b1e4",
+                  accentText: "#71aaeb",
+                  menuHeader: "#1f2c3a",
+                },
+                light: {
+                  bg: "#f0f2f5",
+                  sidebar: "#ffffff",
+                  active: "#e6f2ff",
+                  hover: "#f5f5f5",
+                  text: "#333333",
+                  muted: "#707579",
+                  border: "#d3d9de",
+                  search: "#f0f2f5",
+                  accent: "#0088cc",
+                  accentText: "#0088cc",
+                  menuHeader: "#f5f5f5",
+                },
+              },
+            },
+          },
+        },
+      };
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              telegram: {
+                primary: "#8774e1",
+                bg: "#1e1e1e",
+                surface: "#2b2b2b",
+                border: "#3d3d3d",
+                text: {
+                  primary: "#ffffff",
+                  secondary: "#aaaaaa",
+                  danger: "#eb5757",
+                },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
 
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
 
-            .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            
-            .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-            }
-            
-            .toggle {
-                position: relative;
-                display: inline-block;
-                width: 44px;
-                height: 24px;
-            }
-            
-            .toggle input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #465a6d;
-                transition: .3s;
-                border-radius: 24px;
-            }
-            
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 20px;
-                width: 20px;
-                left: 2px;
-                bottom: 2px;
-                background-color: white;
-                transition: .3s;
-                border-radius: 50%;
-            }
-            
-            input:checked + .slider {
-                background-color: #70b1e4;
-            }
-            
-            input:checked + .slider:before {
-                transform: translateX(20px);
-            }
+      .toggle {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+      }
 
+      .toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
 
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #465a6d;
+        transition: 0.3s;
+        border-radius: 24px;
+      }
 
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #70b1e4;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+
+      .waveform {
+        display: flex;
+        align-items: center;
+        height: 20px;
+      }
+
+      .wave {
+        width: 3px;
+        height: 10px;
+        background-color: currentColor;
+        margin: 0 1px;
+        border-radius: 2px;
+        animation: wave 1.2s infinite ease-in-out;
+      }
+
+      .wave:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+
+      .wave:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+
+      .wave:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+
+      .wave:nth-child(5) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: scaleY(0.5);
         }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
+        50% {
+          transform: scaleY(1.5);
         }
-        
-        .waveform {
-          display: flex;
-          align-items: center;
-          height: 20px;
+      }
+
+      .transition-all {
+        transition: all 0.3s ease;
+      }
+
+      /* Voice message playback styles */
+      .voice-playback {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .voice-playback .progress {
+        width: 150px;
+        height: 4px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+        margin: 0 10px;
+        overflow: hidden;
+      }
+
+      .voice-playback .progress-bar {
+        height: 100%;
+        background-color: white;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      /* Message animations */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-        
-        .wave {
-          width: 3px;
-          height: 10px;
-          background-color: currentColor;
-          margin: 0 1px;
-          border-radius: 2px;
-          animation: wave 1.2s infinite ease-in-out;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        .wave:nth-child(2) {
-          animation-delay: 0.1s;
+      }
+
+      .message {
+        animation: slideIn 0.2s ease-out;
+      }
+
+      /* Recording animation */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
         }
-        
-        .wave:nth-child(3) {
-          animation-delay: 0.2s;
+        50% {
+          transform: scale(1.1);
         }
-        
-        .wave:nth-child(4) {
-          animation-delay: 0.3s;
+        100% {
+          transform: scale(1);
         }
-        
-        .wave:nth-child(5) {
-          animation-delay: 0.4s;
+      }
+
+      .recording {
+        animation: pulse 1s infinite;
+        color: #e53935 !important;
+      }
+
+      /* Sticker panel animation */
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+          opacity: 0;
         }
-        
-        @keyframes wave {
-          0%, 100% {
-            transform: scaleY(0.5);
-          }
-          50% {
-            transform: scaleY(1.5);
-          }
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
-        
-        .transition-all {
-          transition: all 0.3s ease;
+      }
+
+      .slide-up {
+        animation: slideUp 0.3s ease-out;
+      }
+
+      /* File panel animation */
+      @keyframes slideDown {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
         }
-        
-        /* Voice message playback styles */
-        .voice-playback {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
-        
-        .voice-playback .progress {
-          width: 150px;
-          height: 4px;
-          background-color: rgba(255, 255, 255, 0.3);
-          border-radius: 2px;
-          margin: 0 10px;
-          overflow: hidden;
-        }
-        
-        .voice-playback .progress-bar {
-          height: 100%;
-          background-color: white;
-          width: 0%;
-          transition: width 0.1s linear;
-        }
-        
-        /* Message animations */
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .message {
-          animation: slideIn 0.2s ease-out;
-        }
-        
-        /* Recording animation */
-        @keyframes pulse {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.1);
-          }
-          100% {
-            transform: scale(1);
-          }
-        }
-        
-        .recording {
-          animation: pulse 1s infinite;
-          color: #e53935 !important;
-        }
-        
-        /* Sticker panel animation */
-        @keyframes slideUp {
-          from {
-            transform: translateY(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        
-        .slide-up {
-          animation: slideUp 0.3s ease-out;
-        }
-        
-        /* File panel animation */
-        @keyframes slideDown {
-          from {
-            transform: translateY(-100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        
-        .slide-down {
-          animation: slideDown 0.3s ease-out;
-        }
-        
-        /* Context menu styles */
-        .context-menu {
-          position: absolute;
-          background-color: #17212b;
-          border-radius: 8px;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-          z-index: 1000;
-          overflow: hidden;
-          min-width: 150px;
-        }
-        
-        .context-menu-item {
-          padding: 10px 15px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          font-size: 14px;
-        }
-        
-        .context-menu-item:hover {
-          background-color: #222e3a;
-        }
-        
-        .context-menu-item i {
-          margin-right: 10px;
-          width: 16px;
-          text-align: center;
-        }
-        
-        /* File attachment panel */
-        .file-panel {
-          position: absolute;
-          bottom: 60px;
-          right: 10px;
-          background-color: #17212b;
-          border-radius: 12px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-          padding: 15px;
-          width: 250px;
-          z-index: 100;
-        }
-        
-        .file-option {
-          display: flex;
-          align-items: center;
-          padding: 12px;
-          cursor: pointer;
-          border-radius: 8px;
-        }
-        
-        .file-option:hover {
-          background-color: #222e3a;
-        }
-        
-        .file-option i {
-          margin-right: 12px;
-          font-size: 18px;
-          width: 24px;
-          text-align: center;
-        }
-        
-        /* Dark mode adjustments */
-        .dark .file-panel {
-          background-color: #ffffff;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .dark .file-option:hover {
-          background-color: #f5f5f5;
-        }
-        .user-panel {
-          transform: translateX(500px);
-        }
+      }
+
+      .slide-down {
+        animation: slideDown 0.3s ease-out;
+      }
+
+      /* Context menu styles */
+      .context-menu {
+        position: absolute;
+        background-color: #17212b;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        overflow: hidden;
+        min-width: 150px;
+      }
+
+      .context-menu-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+      }
+
+      .context-menu-item:hover {
+        background-color: #222e3a;
+      }
+
+      .context-menu-item i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+      }
+
+      /* File attachment panel */
+      .file-panel {
+        position: absolute;
+        bottom: 60px;
+        right: 10px;
+        background-color: #17212b;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        width: 250px;
+        z-index: 100;
+      }
+
+      .file-option {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+
+      .file-option:hover {
+        background-color: #222e3a;
+      }
+
+      .file-option i {
+        margin-right: 12px;
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+      }
+
+      /* Dark mode adjustments */
+      .dark .file-panel {
+        background-color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .dark .file-option:hover {
+        background-color: #f5f5f5;
+      }
+      .user-panel {
+        transform: translateX(500px);
+      }
       .user_icon_active {
-          transform: translateX(0);
-        }
-        .user_icon_active_n {
-          transform: translateX(500px);
-        }
-      </style>
-    </head>
-    <body class="bg-telegram-dark-bg text-telegram-dark-text font-sans h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text">
+        transform: translateX(0);
+      }
+      .user_icon_active_n {
+        transform: translateX(500px);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-telegram-dark-bg text-telegram-dark-text font-sans h-screen overflow-hidden transition-all dark:bg-telegram-light-bg dark:text-telegram-light-text"
+  >
+    <!-- Chat view -->
+    <div
+      class="chat-view w-full max-w-[900px] mx-auto h-full bg-telegram-dark-bg flex flex-col transition-all dark:bg-telegram-light-bg"
+    >
+      <!-- Chat header -->
+      <div
+        class="chat-header flex items-center justify-between px-4 py-[10px] bg-telegram-dark-sidebar border-b border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+      >
+        <div class="flex items-center">
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted mr-2"
+            id="back-button"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div
+            class="chat-avatar w-10 h-10 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+          >
+            <span class="text-xl">S</span>
+          </div>
+          <div>
+            <div class="chat-name font-medium text-sm transition-all">
+              Shukurulloh Ergashev
+            </div>
+            <div
+              class="chat-status text-xs text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+            >
+              last seen 10 minutes ago
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <button
+            class="call p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+          >
+            <i class="fas fa-phone call"></i>
+          </button>
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+          >
+            <img
+              class="w-6 h-6 user_icon"
+              src="{% static 'img/icons8-columns-48 (1).png' %}"
+              alt=""
+            />
+          </button>
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+          >
+            <i class="fas fa-search"></i>
+          </button>
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+            id="menu-button"
+          >
+            <i class="fas fa-ellipsis-v info_icon"></i>
+          </button>
+        </div>
+      </div>
 
-      <!-- Chat view -->
-      <div class="chat-view w-full max-w-[900px] mx-auto h-full bg-telegram-dark-bg flex flex-col transition-all dark:bg-telegram-light-bg">
-        <!-- Chat header -->
-        <div class="chat-header flex items-center justify-between px-4 py-[10px] bg-telegram-dark-sidebar border-b border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
-          <div class="flex items-center">
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted mr-2" id="back-button">
-              <i class="fas fa-arrow-left"></i>
-            </button>
-            <div class="chat-avatar w-10 h-10 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0">
-              <span class="text-xl">S</span>
-            </div>
-            <div>
-              <div class="chat-name font-medium text-sm transition-all">Shukurulloh Ergashev</div>
-              <div class="chat-status text-xs text-telegram-dark-muted transition-all dark:text-telegram-light-muted">last seen 10 minutes ago</div>
-            </div>
+      <!-- Messages container -->
+      <div
+        class="messages-container flex-1 overflow-y-auto p-4 scrollbar-hide"
+        id="messages-container"
+      >
+        <!-- Date separator -->
+        <div class="flex justify-center my-4">
+          <div
+            class="text-xs text-telegram-dark-muted bg-telegram-dark-sidebar px-3 py-1 rounded-full transition-all dark:text-telegram-light-muted dark:bg-telegram-light-sidebar"
+          >
+            August 28
           </div>
-          <div class="flex items-center">
-            <button class=" call p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
-              <i class="fas fa-phone call"></i>
-            </button>
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
-              <img class="w-6 h-6 user_icon" src="{% static 'img/icons8-columns-48 (1).png' %}" alt=""/>
+        </div>
 
-            </button>
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted">
-              <i class="fas fa-search"></i>
-            </button>
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="menu-button">
-              <i class="fas fa-ellipsis-v info_icon"></i>
-            </button>
+        <!-- Incoming messages (on the left) -->
+        <div class="flex mb-4">
+          <div
+            class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2"
+          >
+            <span class="text-sm">S</span>
           </div>
-        </div>
-        
-        <!-- Messages container -->
-        <div class="messages-container flex-1 overflow-y-auto p-4 scrollbar-hide" id="messages-container">
-          <!-- Date separator -->
-          <div class="flex justify-center my-4">
-            <div class="text-xs text-telegram-dark-muted bg-telegram-dark-sidebar px-3 py-1 rounded-full transition-all dark:text-telegram-light-muted dark:bg-telegram-light-sidebar">
-              August 28
+          <div class="flex flex-col">
+            <div
+              class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar"
+            >
+              <p class="text-sm">Menga ham tel qildi</p>
             </div>
-          </div>
-          
-          <!-- Incoming messages (on the left) -->
-          <div class="flex mb-4">
-            <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
-              <span class="text-sm">S</span>
-            </div>
-            <div class="flex flex-col">
-              <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
-                <p class="text-sm">Menga ham tel qildi</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:20</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4">
-            <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
-              <span class="text-sm">S</span>
-            </div>
-            <div class="flex flex-col">
-              <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
-                <p class="text-sm">Ha keldi</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:20</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4">
-            <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
-              <span class="text-sm">S</span>
-            </div>
-            <div class="flex flex-col">
-              <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
-                <p class="text-sm">ha keldi deb yozvodim</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:21</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4">
-            <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
-              <span class="text-sm">S</span>
-            </div>
-            <div class="flex flex-col">
-              <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
-                <p class="text-sm">17:30 da dars lugagan edi</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:22</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4">
-            <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
-              <span class="text-sm">S</span>
-            </div>
-            <div class="flex flex-col">
-              <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
-                <p class="text-sm">Ha yahshi qibsiz</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:22</div>
-            </div>
-          </div>
-          
-          <!-- Outgoing messages (on the right) -->
-          <div class="flex mb-4 justify-end">
-            <div class="flex flex-col items-end">
-              <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
-                <p class="text-sm">2010 ska bitta kreslo kam ekan</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:25</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4 justify-end">
-            <div class="flex flex-col items-end">
-              <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
-                <p class="text-sm">Oshida endi sekin boladi</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:25</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4 justify-end">
-            <div class="flex flex-col items-end">
-              <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
-                <p class="text-sm">ha zor chiqibdi lekin yoniga 2 ta manttor qoshib olset undam zor boladi ekan</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:25</div>
-            </div>
-          </div>
-          
-          <div class="flex mb-4 justify-end">
-            <div class="flex flex-col items-end">
-              <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message">
-                <p class="text-sm">Ha</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:28</div>
-            </div>
-          </div>
-          
-          <!-- New date separator -->
-          <div class="flex justify-center my-4">
-            <div class="text-xs text-telegram-dark-muted bg-telegram-dark-sidebar px-3 py-1 rounded-full transition-all dark:text-telegram-light-muted dark:bg-telegram-light-sidebar">
-              Today
-            </div>
-          </div>
-          
-          <!-- Incoming message (on the left) -->
-          <div class="flex mb-4">
-            <div class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2">
-              <span class="text-sm">S</span>
-            </div>
-            <div class="flex flex-col">
-              <div class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar">
-                <p class="text-sm">Birga deflayin chorshanba kuni saat 14:30 gachay ediya</p>
-              </div>
-              <div class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted">21:04</div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:20
             </div>
           </div>
         </div>
-        
-        <!-- Message input -->
-        <div class="message-input-container p-[2px] bg-telegram-dark-sidebar border-t border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border">
-          <div class="flex items-center">
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="attach-button">
-              <i class="fas fa-paperclip"></i>
-            </button>
-            <div class="flex-1 bg-telegram-dark-search rounded-lg mx-2 transition-all dark:bg-telegram-light-search">
-              <input type="text" placeholder="Write a message..." class="w-full bg-transparent border-none outline-none py-2 px-3 text-telegram-dark-text text-sm transition-all dark:text-telegram-light-text" id="message-input">
+
+        <div class="flex mb-4">
+          <div
+            class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2"
+          >
+            <span class="text-sm">S</span>
+          </div>
+          <div class="flex flex-col">
+            <div
+              class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar"
+            >
+              <p class="text-sm">Ha keldi</p>
             </div>
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="sticker-button">
-              <i class="fas fa-smile"></i>
-            </button>
-            <button class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted" id="voice-message-button">
-              <i class="fas fa-microphone"></i>
-            </button>
-            <button class="p-2 text-telegram-dark-accent transition-all dark:text-telegram-light-accent hidden" id="send-button">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Stickers panel (hidden by default) -->
-        <div class="stickers-panel hidden absolute right-4 bottom-16 bg-telegram-dark-sidebar border border-telegram-dark-border rounded-lg p-4 transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border" id="stickers-panel">
-          <div class="grid grid-cols-6 gap-2">
-            <!-- Stickers will be loaded here -->
-            <div class="sticker p-2 text-center text-2xl">😀</div>
-            <div class="sticker p-2 text-center text-2xl">😂</div>
-            <div class="sticker p-2 text-center text-2xl">😍</div>
-            <div class="sticker p-2 text-center text-2xl">🤔</div>
-            <div class="sticker p-2 text-center text-2xl">😎</div>
-            <div class="sticker p-2 text-center text-2xl">🥳</div>
-            <div class="sticker p-2 text-center text-2xl">😭</div>
-            <div class="sticker p-2 text-center text-2xl">😡</div>
-            <div class="sticker p-2 text-center text-2xl">🤯</div>
-            <div class="sticker p-2 text-center text-2xl">🥶</div>
-            <div class="sticker p-2 text-center text-2xl">🤢</div>
-            <div class="sticker p-2 text-center text-2xl">👋</div>
-          </div>
-        </div>
-        
-        <!-- File attachment panel (hidden by default) -->
-        <div class="file-panel hidden transition-all" id="file-panel">
-          <div class="file-option" data-type="photo">
-            <i class="fas fa-image text-telegram-dark-accent"></i>
-            <span>Photo or Video</span>
-          </div>
-          <div class="file-option" data-type="document">
-            <i class="fas fa-file text-telegram-dark-accent"></i>
-            <span>Document</span>
-          </div>
-          <div class="file-option" data-type="location">
-            <i class="fas fa-map-marker-alt text-telegram-dark-accent"></i>
-            <span>Location</span>
-          </div>
-          <div class="file-option" data-type="contact">
-            <i class="fas fa-user text-telegram-dark-accent"></i>
-            <span>Contact</span>
-          </div>
-        </div>
-        
-        <!-- Voice message recorder (hidden by default) -->
-        <div class="voice-recorder hidden bg-telegram-dark-sidebar border-t border-telegram-dark-border p-4 items-center justify-center transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border" id="voice-recorder">
-          <div class="flex items-center">
-            <div class="waveform text-telegram-dark-accent mr-3 transition-all dark:text-telegram-light-accent">
-              <div class="wave"></div>
-              <div class="wave"></div>
-              <div class="wave"></div>
-              <div class="wave"></div>
-              <div class="wave"></div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:20
             </div>
-            <span class="text-sm text-telegram-dark-text transition-all dark:text-telegram-light-text">Recording... <span id="recording-time">0:00</span></span>
-            <button class="ml-4 p-2 text-red-500" id="stop-recording">
-              <i class="fas fa-stop-circle"></i>
-            </button>
+          </div>
+        </div>
+
+        <div class="flex mb-4">
+          <div
+            class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2"
+          >
+            <span class="text-sm">S</span>
+          </div>
+          <div class="flex flex-col">
+            <div
+              class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar"
+            >
+              <p class="text-sm">ha keldi deb yozvodim</p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:21
+            </div>
+          </div>
+        </div>
+
+        <div class="flex mb-4">
+          <div
+            class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2"
+          >
+            <span class="text-sm">S</span>
+          </div>
+          <div class="flex flex-col">
+            <div
+              class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar"
+            >
+              <p class="text-sm">17:30 da dars lugagan edi</p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:22
+            </div>
+          </div>
+        </div>
+
+        <div class="flex mb-4">
+          <div
+            class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2"
+          >
+            <span class="text-sm">S</span>
+          </div>
+          <div class="flex flex-col">
+            <div
+              class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar"
+            >
+              <p class="text-sm">Ha yahshi qibsiz</p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:22
+            </div>
+          </div>
+        </div>
+
+        <!-- Outgoing messages (on the right) -->
+        <div class="flex mb-4 justify-end">
+          <div class="flex flex-col items-end">
+            <div
+              class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message"
+            >
+              <p class="text-sm">2010 ska bitta kreslo kam ekan</p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:25
+            </div>
+          </div>
+        </div>
+
+        <div class="flex mb-4 justify-end">
+          <div class="flex flex-col items-end">
+            <div
+              class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message"
+            >
+              <p class="text-sm">Oshida endi sekin boladi</p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:25
+            </div>
+          </div>
+        </div>
+
+        <div class="flex mb-4 justify-end">
+          <div class="flex flex-col items-end">
+            <div
+              class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message"
+            >
+              <p class="text-sm">
+                ha zor chiqibdi lekin yoniga 2 ta manttor qoshib olset undam zor
+                boladi ekan
+              </p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:25
+            </div>
+          </div>
+        </div>
+
+        <div class="flex mb-4 justify-end">
+          <div class="flex flex-col items-end">
+            <div
+              class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs message"
+            >
+              <p class="text-sm">Ha</p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:28
+            </div>
+          </div>
+        </div>
+
+        <!-- New date separator -->
+        <div class="flex justify-center my-4">
+          <div
+            class="text-xs text-telegram-dark-muted bg-telegram-dark-sidebar px-3 py-1 rounded-full transition-all dark:text-telegram-light-muted dark:bg-telegram-light-sidebar"
+          >
+            Today
+          </div>
+        </div>
+
+        <!-- Incoming message (on the left) -->
+        <div class="flex mb-4">
+          <div
+            class="chat-avatar w-8 h-8 rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-sm text-white mr-2 flex-shrink-0 mt-2"
+          >
+            <span class="text-sm">S</span>
+          </div>
+          <div class="flex flex-col">
+            <div
+              class="bg-telegram-dark-sidebar rounded-lg p-3 max-w-xs transition-all dark:bg-telegram-light-sidebar"
+            >
+              <p class="text-sm">
+                Birga deflayin chorshanba kuni saat 14:30 gachay ediya
+              </p>
+            </div>
+            <div
+              class="text-xs text-telegram-dark-muted mt-1 transition-all dark:text-telegram-light-muted"
+            >
+              21:04
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="w-[350px] user-panel h-screen bg-telegram-dark-bg flex flex-col transition-all dark:bg-telegram-light-bg absolute top-0 right-0 overflow-y-auto">
-        <div class="profile-panel scrollbar-hide absolute top-0 left-0 w-full h-full bg-telegram-dark-sidebar">
-          <div class="profile-content">
+      <!-- Message input -->
+      <div
+        class="message-input-container p-[2px] bg-telegram-dark-sidebar border-t border-telegram-dark-border transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+      >
+        <div class="flex items-center">
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+            id="attach-button"
+          >
+            <i class="fas fa-paperclip"></i>
+          </button>
+          <div
+            class="flex-1 bg-telegram-dark-search rounded-lg mx-2 transition-all dark:bg-telegram-light-search"
+          >
+            <input
+              type="text"
+              placeholder="Write a message..."
+              class="w-full bg-transparent border-none outline-none py-2 px-3 text-telegram-dark-text text-sm transition-all dark:text-telegram-light-text"
+              id="message-input"
+            />
+          </div>
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+            id="sticker-button"
+          >
+            <i class="fas fa-smile"></i>
+          </button>
+          <button
+            class="p-2 text-telegram-dark-muted transition-all dark:text-telegram-light-muted"
+            id="voice-message-button"
+          >
+            <i class="fas fa-microphone"></i>
+          </button>
+          <button
+            class="p-2 text-telegram-dark-accent transition-all dark:text-telegram-light-accent hidden"
+            id="send-button"
+          >
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stickers panel (hidden by default) -->
+      <div
+        class="stickers-panel hidden absolute right-4 bottom-16 bg-telegram-dark-sidebar border border-telegram-dark-border rounded-lg p-4 transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+        id="stickers-panel"
+      >
+        <div class="grid grid-cols-6 gap-2">
+          <!-- Stickers will be loaded here -->
+          <div class="sticker p-2 text-center text-2xl">😀</div>
+          <div class="sticker p-2 text-center text-2xl">😂</div>
+          <div class="sticker p-2 text-center text-2xl">😍</div>
+          <div class="sticker p-2 text-center text-2xl">🤔</div>
+          <div class="sticker p-2 text-center text-2xl">😎</div>
+          <div class="sticker p-2 text-center text-2xl">🥳</div>
+          <div class="sticker p-2 text-center text-2xl">😭</div>
+          <div class="sticker p-2 text-center text-2xl">😡</div>
+          <div class="sticker p-2 text-center text-2xl">🤯</div>
+          <div class="sticker p-2 text-center text-2xl">🥶</div>
+          <div class="sticker p-2 text-center text-2xl">🤢</div>
+          <div class="sticker p-2 text-center text-2xl">👋</div>
+        </div>
+      </div>
+
+      <!-- File attachment panel (hidden by default) -->
+      <div class="file-panel hidden transition-all" id="file-panel">
+        <div class="file-option" data-type="photo">
+          <i class="fas fa-image text-telegram-dark-accent"></i>
+          <span>Photo or Video</span>
+        </div>
+        <div class="file-option" data-type="document">
+          <i class="fas fa-file text-telegram-dark-accent"></i>
+          <span>Document</span>
+        </div>
+        <div class="file-option" data-type="location">
+          <i class="fas fa-map-marker-alt text-telegram-dark-accent"></i>
+          <span>Location</span>
+        </div>
+        <div class="file-option" data-type="contact">
+          <i class="fas fa-user text-telegram-dark-accent"></i>
+          <span>Contact</span>
+        </div>
+      </div>
+
+      <!-- Voice message recorder (hidden by default) -->
+      <div
+        class="voice-recorder hidden bg-telegram-dark-sidebar border-t border-telegram-dark-border p-4 items-center justify-center transition-all dark:bg-telegram-light-sidebar dark:border-telegram-light-border"
+        id="voice-recorder"
+      >
+        <div class="flex items-center">
+          <div
+            class="waveform text-telegram-dark-accent mr-3 transition-all dark:text-telegram-light-accent"
+          >
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+          </div>
+          <span
+            class="text-sm text-telegram-dark-text transition-all dark:text-telegram-light-text"
+            >Recording... <span id="recording-time">0:00</span></span
+          >
+          <button class="ml-4 p-2 text-red-500" id="stop-recording">
+            <i class="fas fa-stop-circle"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="w-[350px] user-panel h-screen bg-telegram-dark-bg flex flex-col transition-all dark:bg-telegram-light-bg absolute top-0 right-0 overflow-y-auto"
+    >
+      <div
+        class="profile-panel scrollbar-hide absolute top-0 left-0 w-full h-full bg-telegram-dark-sidebar"
+      >
+        <div class="profile-content">
+          <!-- Profile header -->
+          <div class="profile-header">
+            <h1 class="text-lg font-semibold">Foydalanuvchi ma'lumoti</h1>
+            <button class="text-telegram-dark-accent text-2xl">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <!-- Profile Section -->
+          <div
+            class="profile-panel scrollbar-hide absolute top-0 left-0 w-full h-full bg-telegram-dark-sidebar"
+          >
+            <div class="profile-content h-full overflow-y-auto">
               <!-- Profile header -->
-              <div class="profile-header">
-                  <h1 class="text-lg font-semibold">Foydalanuvchi ma'lumoti</h1>
-                  <button class="text-telegram-dark-accent text-2xl">
-                      <i class="fas fa-times "></i>
-                  </button>
+              <div
+                class="profile-header flex justify-between items-center p-4 border-b border-telegram-dark-bg bg-telegram-dark-sidebar sticky top-0 z-10"
+              >
+                <h1 class="text-lg font-semibold">Foydalanuvchi ma'lumoti</h1>
+                <button class="xmaek text-telegram-dark-accent text-2xl">
+                  <i class="fas fa-times xmaek"></i>
+                </button>
               </div>
-              
+
               <!-- Profile Section -->
-              <div class="profile-panel scrollbar-hide absolute top-0 left-0 w-full h-full bg-telegram-dark-sidebar">
-                <div class="profile-content h-full overflow-y-auto">
-                    <!-- Profile header -->
-                    <div class="profile-header flex justify-between items-center p-4 border-b border-telegram-dark-bg bg-telegram-dark-sidebar sticky top-0 z-10">
-                        <h1 class="text-lg font-semibold">Foydalanuvchi ma'lumoti</h1>
-                        <button class="xmaek text-telegram-dark-accent text-2xl">
-                            <i class="fas fa-times xmaek"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Profile Section -->
-                    <div class="profile-section flex items-center gap-4 p-4 border-b border-telegram-dark-bg">
-                        <div class="avatar w-16 h-16 rounded-full bg-telegram-dark-accent flex items-center justify-center">
-                            <i class="fas fa-user text-white text-2xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-semibold">Shukurulloh Ergashev</h2>
-                            <p class="text-telegram-dark-muted text-sm">oxirgi marta bugun 07:15 da ko'rilgan</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Contact Information -->
-                    <div class="contact-info p-4 border-b border-telegram-dark-bg">
-                        <div class="info-item flex items-start gap-4 mb-5">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div>
-                                <p>+998 33 144 36 26</p>
-                                <p class="text-telegram-dark-muted text-sm">Mobil</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item flex items-start gap-4 mb-5">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-link"></i>
-                            </div>
-                            <div>
-                                <p>https://shukurullohdev.omender.com/</p>
-                                <p class="text-telegram-dark-muted text-sm">Bio</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item flex items-start gap-4 mb-5">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-at"></i>
-                            </div>
-                            <div>
-                                <p>@FullstackITMaster</p>
-                                <p class="text-telegram-dark-muted text-sm">Username</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item flex items-start gap-4">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-birthday-cake"></i>
-                            </div>
-                            <div>
-                                <p>22-avgust, 2007 (18 yosh)</p>
-                                <p class="text-telegram-dark-muted text-sm">Tug'ilgan sana</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Notifications -->
-                    <div class="notifications p-4 border-b border-telegram-dark-bg">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <div class="text-telegram-dark-accent text-xl">
-                                    <i class="fas fa-bell"></i>
-                                </div>
-                                <span>Bildirishnomalar</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- Statistics -->
-                    <div class="stats p-4 border-b border-telegram-dark-bg">
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <span>29 postlar</span>
-                        </div>
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <span>22 rasmlar</span>
-                        </div>
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-video"></i>
-                            </div>
-                            <span>15 videolar</span>
-                        </div>
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-file"></i>
-                            </div>
-                            <span>18 fayllar</span>
-                        </div>
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-link"></i>
-                            </div>
-                            <span>31 ulashilgan havolalar</span>
-                        </div>
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-microphone"></i>
-                            </div>
-                            <span>11 ovozli xabarlar</span>
-                        </div>
-                        <div class="stat-item flex items-center gap-4 py-3">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <span>10 umumiy guruhlar</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Actions -->
-                    <div class="actions p-4">
-                        <button class="action-btn flex items-center gap-4 w-full p-4 hover:bg-[#222e3a] rounded-lg transition-colors">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-share-alt"></i>
-                            </div>
-                            <span>Ushbu kontaktni ulashish</span>
-                        </button>
-                        <button class="action-btn flex items-center gap-4 w-full p-4 hover:bg-[#222e3a] rounded-lg transition-colors">
-                            <div class="text-telegram-dark-accent text-xl">
-                                <i class="fas fa-user-edit"></i>
-                            </div>
-                            <span>Kontaktni tahrirlash</span>
-                        </button>
-                        <button class="action-btn flex items-center gap-4 w-full p-4 hover:bg-[#222e3a] rounded-lg transition-colors">
-                            <div class="text-[#eb5757] text-xl">
-                                <i class="fas fa-trash-alt"></i>
-                            </div>
-                            <span class="text-[#eb5757]">Kontaktni o'chirish</span>
-                        </button>
-                    </div>
+              <div
+                class="profile-section flex items-center gap-4 p-4 border-b border-telegram-dark-bg"
+              >
+                <div
+                  class="avatar w-16 h-16 rounded-full bg-telegram-dark-accent flex items-center justify-center"
+                >
+                  <i class="fas fa-user text-white text-2xl"></i>
                 </div>
+                <div>
+                  <h2 class="text-lg font-semibold">Shukurulloh Ergashev</h2>
+                  <p class="text-telegram-dark-muted text-sm">
+                    oxirgi marta bugun 07:15 da ko'rilgan
+                  </p>
+                </div>
+              </div>
+
+              <!-- Contact Information -->
+              <div class="contact-info p-4 border-b border-telegram-dark-bg">
+                <div class="info-item flex items-start gap-4 mb-5">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div>
+                    <p>+998 33 144 36 26</p>
+                    <p class="text-telegram-dark-muted text-sm">Mobil</p>
+                  </div>
+                </div>
+
+                <div class="info-item flex items-start gap-4 mb-5">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-link"></i>
+                  </div>
+                  <div>
+                    <p>https://shukurullohdev.omender.com/</p>
+                    <p class="text-telegram-dark-muted text-sm">Bio</p>
+                  </div>
+                </div>
+
+                <div class="info-item flex items-start gap-4 mb-5">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-at"></i>
+                  </div>
+                  <div>
+                    <p>@FullstackITMaster</p>
+                    <p class="text-telegram-dark-muted text-sm">Username</p>
+                  </div>
+                </div>
+
+                <div class="info-item flex items-start gap-4">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-birthday-cake"></i>
+                  </div>
+                  <div>
+                    <p>22-avgust, 2007 (18 yosh)</p>
+                    <p class="text-telegram-dark-muted text-sm">
+                      Tug'ilgan sana
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="notifications p-4 border-b border-telegram-dark-bg">
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center gap-4">
+                    <div class="text-telegram-dark-accent text-xl">
+                      <i class="fas fa-bell"></i>
+                    </div>
+                    <span>Bildirishnomalar</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="stats p-4 border-b border-telegram-dark-bg">
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-file-alt"></i>
+                  </div>
+                  <span>29 postlar</span>
+                </div>
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-image"></i>
+                  </div>
+                  <span>22 rasmlar</span>
+                </div>
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-video"></i>
+                  </div>
+                  <span>15 videolar</span>
+                </div>
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-file"></i>
+                  </div>
+                  <span>18 fayllar</span>
+                </div>
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-link"></i>
+                  </div>
+                  <span>31 ulashilgan havolalar</span>
+                </div>
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-microphone"></i>
+                  </div>
+                  <span>11 ovozli xabarlar</span>
+                </div>
+                <div class="stat-item flex items-center gap-4 py-3">
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <span>10 umumiy guruhlar</span>
+                </div>
+              </div>
+
+              <div class="actions p-4">
+                <button
+                  class="action-btn flex items-center gap-4 w-full p-4 hover:bg-[#222e3a] rounded-lg transition-colors"
+                >
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-share-alt"></i>
+                  </div>
+                  <span>Ushbu kontaktni ulashish</span>
+                </button>
+                <button
+                  class="action-btn flex items-center gap-4 w-full p-4 hover:bg-[#222e3a] rounded-lg transition-colors"
+                >
+                  <div class="text-telegram-dark-accent text-xl">
+                    <i class="fas fa-user-edit"></i>
+                  </div>
+                  <span>Kontaktni tahrirlash</span>
+                </button>
+                <button
+                  class="action-btn flex items-center gap-4 w-full p-4 hover:bg-[#222e3a] rounded-lg transition-colors"
+                >
+                  <div class="text-[#eb5757] text-xl">
+                    <i class="fas fa-trash-alt"></i>
+                  </div>
+                  <span class="text-[#eb5757]">Kontaktni o'chirish</span>
+                </button>
+              </div>
             </div>
-              
-            
           </div>
-      </div>
-      </div>
-
-
-      <div class="fullscreen-modal    w-[791px] border-[1px] border-[#222e3a] p-[20px] h-[585px] bg-telegram-dark-bg absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg flex flex-col" style="display: none;">
-
-        <div class="gap-[25px] justify-end items-center flex">
-          <i class="fa-solid fa-minus hover:cursor-pointer hover:scale-[1.2]"></i>
-          <i class="fa-solid fa-expand hover:cursor-pointer hover:scale-[1.2]"></i>
-          <i class="fa-solid fa-xmark p-[10px]  rounded-full  hover:cursor-pointer hover:scale-[1.2]"></i>
         </div>
-        <div class="flex items-center flex-col justify-center mt-[100px]">
-          <img class="chat-avatar w-[150px] h-[150px] rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0" src="{% static 'img/shukrulloh-aka.png' %}" alt="">
-          <h1 class="text-lg font-bold mt-[50px]">Shukurullo Ergashev</h1>
-          <p class="text-sm mt-[10px] text-center">Click on the Camera icon if you want to  <br> start a video call</p>
-        </div>
-        
-  <div class="flex space-x-8 items-center justify-center mt-[50px]">
-    <!-- Start Video -->
-    <div class="flex flex-col items-center">
-      <button class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-600">
-        <i class="fas fa-video text-lg pt-[5px] pl-[3px]"></i>
-      </button>
-      <span class="text-white text-sm mt-1">Start Video</span>
+      </div>
     </div>
 
-    <!-- Cancel -->
-    <div class="flex flex-col items-center x">
-      <button class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-black hover:bg-gray-400">
-        <i class="fas fa-times text-lg pt-[5px] "></i>
-      </button>
-      <span class="text-white text-sm mt-1">Cancel</span>
-    </div>
-
-    <!-- Start Call -->
-    <div class="flex flex-col items-center">
-      <button class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-600">
-        <i class="fas fa-phone text-lg pt-[5px] "></i>
-      </button>
-      <span class="text-white text-sm mt-1">Start Call</span>
-    </div>
-  </div>
-
+    <div
+      class="fullscreen-modal w-[791px] border-[1px] border-[#222e3a] p-[20px] h-[585px] bg-telegram-dark-bg absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg flex flex-col"
+      style="display: none"
+    >
+      <div class="gap-[25px] justify-end items-center flex">
+        <i class="fa-solid fa-minus hover:cursor-pointer hover:scale-[1.2]"></i>
+        <i
+          class="fa-solid fa-expand hover:cursor-pointer hover:scale-[1.2]"
+        ></i>
+        <i
+          class="fa-solid fa-xmark p-[10px] rounded-full hover:cursor-pointer hover:scale-[1.2]"
+        ></i>
+      </div>
+      <div class="flex items-center flex-col justify-center mt-[100px]">
+        <img
+          class="chat-avatar w-[150px] h-[150px] rounded-full bg-telegram-dark-accent flex items-center justify-center font-bold text-lg text-white mr-3 flex-shrink-0"
+          src="{% static 'img/shukrulloh-aka.png' %}"
+          alt=""
+        />
+        <h1 class="text-lg font-bold mt-[50px]">Shukurullo Ergashev</h1>
+        <p class="text-sm mt-[10px] text-center">
+          Click on the Camera icon if you want to <br />
+          start a video call
+        </p>
       </div>
 
-      <div class="info transition-all   w-[200px] h-[256px] absolute right-[30px] top-[40px] bg-[#0f172a] text-white rounded-md p-2 text-sm flex flex-col justify-start"v style="opacity: 0;">
-    
-        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
-          <i class="fa-solid fa-bell-slash"></i>
-          <span>Mute notifications</span>
+      <div class="flex space-x-8 items-center justify-center mt-[50px]">
+        <div class="flex flex-col items-center">
+          <button
+            class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-600"
+          >
+            <i class="fas fa-video text-lg pt-[5px] pl-[3px]"></i>
+          </button>
+          <span class="text-white text-sm mt-1">Start Video</span>
         </div>
-        
-        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
-          <i class="fa-solid fa-user"></i>
-          <span>View profile</span>
+
+        <div class="flex flex-col items-center x">
+          <button
+            class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-black hover:bg-gray-400"
+          >
+            <i class="fas fa-times text-lg pt-[5px]"></i>
+          </button>
+          <span class="text-white text-sm mt-1">Cancel</span>
         </div>
-        
-        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
-          <i class="fa-solid fa-paint-roller"></i>
-          <span>Set Wallpaper</span>
-        </div>
-        
-        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
-          <i class="fa-solid fa-file-export"></i>
-          <span>Export chat history</span>
-        </div>
-        
-        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2">
-          <i class="fa-solid fa-broom"></i>
-          <span>Clear history</span>
-        </div>
-        
-        <div class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2 text-red-500">
-          <i class="fa-solid fa-trash"></i>
-          <span>Delete chat</span>
+
+        <div class="flex flex-col items-center">
+          <button
+            class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-600"
+          >
+            <i class="fas fa-phone text-lg pt-[5px]"></i>
+          </button>
+          <span class="text-white text-sm mt-1">Start Call</span>
         </div>
       </div>
+    </div>
 
-      <script>
-        const stickerButton = document.getElementById('sticker-button');
-        const stickersPanel = document.getElementById('stickers-panel');
-        const voiceMessageButton = document.getElementById('voice-message-button');
-        const voiceRecorder = document.getElementById('voice-recorder');
-        const stopRecording = document.getElementById('stop-recording');
-        const messageInput = document.getElementById('message-input');
-        const messagesContainer = document.getElementById('messages-container');
-        const sendButton = document.getElementById('send-button');
-        const recordingTime = document.getElementById('recording-time');
-        const backButton = document.getElementById('back-button');
-        const attachButton = document.getElementById('attach-button');
-        const filePanel = document.getElementById('file-panel');
-        const menuButton = document.getElementById('menu-button');
-        let user = document.querySelector('.user-panel');
-        let user_icon = document.querySelector('.user_icon');
-        let xmark = document.querySelector('.xmaek');
-        let expand = document.querySelector('.fa-expand'); 
-let minus = document.querySelector('.fa-minus');
-let close = document.querySelector('.fa-xmark');
-let fullscreen = document.querySelector('.fullscreen-modal');
-let call = document.querySelector('.call')
-let x = document.querySelector('.x')
-let info = document.querySelector('.info');
-let info_icon = document.querySelector('.info_icon');
+    <div
+      class="info transition-all w-[200px] h-[256px] absolute right-[30px] top-[40px] bg-[#0f172a] text-white rounded-md p-2 text-sm flex flex-col justify-start"
+      v
+      style="opacity: 0"
+    >
+      <div
+        class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2"
+      >
+        <i class="fa-solid fa-bell-slash"></i>
+        <span>Mute notifications</span>
+      </div>
 
-let isOpen = false;
+      <div
+        class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>View profile</span>
+      </div>
 
-info_icon.addEventListener('click', function () {
-  isOpen = true;
-  info.style.opacity = 1;
-  info.style.pointerEvents = "auto"; // hover ishlashi uchun
-});
+      <div
+        class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2"
+      >
+        <i class="fa-solid fa-paint-roller"></i>
+        <span>Set Wallpaper</span>
+      </div>
 
-// Agar info ichiga kirsa yopilmaydi
-info.addEventListener('mouseenter', () => {
-  isOpen = true;
-});
+      <div
+        class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2"
+      >
+        <i class="fa-solid fa-file-export"></i>
+        <span>Export chat history</span>
+      </div>
 
-// Agar info dan chiqib ketsa yopiladi
-info.addEventListener('mouseleave', () => {
-  info.style.opacity = 0;
-  info.style.pointerEvents = "none";
-  isOpen = false;
-});
+      <div
+        class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2"
+      >
+        <i class="fa-solid fa-broom"></i>
+        <span>Clear history</span>
+      </div>
 
-// Agar iconni bosgandan keyin info ichiga kirmay boshqa joyga chiqsa ham yopilsin
-document.addEventListener('click', function (e) {
-  if (isOpen && !info.contains(e.target) && !info_icon.contains(e.target)) {
-    info.style.opacity = 0;
-    info.style.pointerEvents = "none";
-    isOpen = false;
-  }
-});
+      <div
+        class="hover:bg-[#1e293b] rounded px-2 py-2 cursor-pointer flex items-center gap-2 text-red-500"
+      >
+        <i class="fa-solid fa-trash"></i>
+        <span>Delete chat</span>
+      </div>
+    </div>
 
+    <script>
+      const stickerButton = document.getElementById("sticker-button");
+      const stickersPanel = document.getElementById("stickers-panel");
+      const voiceMessageButton = document.getElementById(
+        "voice-message-button"
+      );
+      const voiceRecorder = document.getElementById("voice-recorder");
+      const stopRecording = document.getElementById("stop-recording");
+      const messageInput = document.getElementById("message-input");
+      const messagesContainer = document.getElementById("messages-container");
+      const sendButton = document.getElementById("send-button");
+      const recordingTime = document.getElementById("recording-time");
+      const backButton = document.getElementById("back-button");
+      const attachButton = document.getElementById("attach-button");
+      const filePanel = document.getElementById("file-panel");
+      const menuButton = document.getElementById("menu-button");
+      let user = document.querySelector(".user-panel");
+      let user_icon = document.querySelector(".user_icon");
+      let xmark = document.querySelector(".xmaek");
+      let expand = document.querySelector(".fa-expand");
+      let minus = document.querySelector(".fa-minus");
+      let close = document.querySelector(".fa-xmark");
+      let fullscreen = document.querySelector(".fullscreen-modal");
+      let call = document.querySelector(".call");
+      let x = document.querySelector(".x");
+      let info = document.querySelector(".info");
+      let info_icon = document.querySelector(".info_icon");
 
+      let isOpen = false;
 
+      info_icon.addEventListener("click", function () {
+        isOpen = true;
+        info.style.opacity = 1;
+        info.style.pointerEvents = "auto";
+      });
 
-// Fullscreen qilish
-expand.addEventListener('click', () => {
-  if (fullscreen.requestFullscreen) {
-    fullscreen.requestFullscreen();
-  } else if (fullscreen.webkitRequestFullscreen) {
-    fullscreen.webkitRequestFullscreen();
-  } else if (fullscreen.msRequestFullscreen) {
-    fullscreen.msRequestFullscreen();
-  }
-});
+      info.addEventListener("mouseenter", () => {
+        isOpen = true;
+      });
+      info.addEventListener("mouseleave", () => {
+        info.style.opacity = 0;
+        info.style.pointerEvents = "none";
+        isOpen = false;
+      });
+      document.addEventListener("click", function (e) {
+        if (
+          isOpen &&
+          !info.contains(e.target) &&
+          !info_icon.contains(e.target)
+        ) {
+          info.style.opacity = 0;
+          info.style.pointerEvents = "none";
+          isOpen = false;
+        }
+      });
+      expand.addEventListener("click", () => {
+        if (fullscreen.requestFullscreen) {
+          fullscreen.requestFullscreen();
+        } else if (fullscreen.webkitRequestFullscreen) {
+          fullscreen.webkitRequestFullscreen();
+        } else if (fullscreen.msRequestFullscreen) {
+          fullscreen.msRequestFullscreen();
+        }
+      });
+      call.addEventListener("click", () => {
+        fullscreen.style.display = "block";
+      });
 
-// Call ochish
-call.addEventListener('click', () => {
-  fullscreen.style.display = "block";
-})
+      close.addEventListener("click", () => {
+        fullscreen.style.display = "none";
+      });
+      x.addEventListener("click", () => {
+        fullscreen.style.display = "none";
+      });
+      minus.addEventListener("click", () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+        fullscreen.classList.add("minimized");
+      });
+      let isDragging = false;
+      let offsetX, offsetY;
 
-// Yopish (X bosilganda)
-close.addEventListener('click', () => {
-  fullscreen.style.display = "none"; // butunlay yopadi
-});
-x.addEventListener('click', () => {
-  fullscreen.style.display = "none"; // butunlay yopadi
-});
-// Minimize (− bosilganda)
-minus.addEventListener('click', () => {
-  // Agar fullscreen rejimida bo'lsa chiqib ketadi
-  if (document.fullscreenElement) {
-    document.exitFullscreen();
-  }
-  fullscreen.classList.add("minimized"); // oddiy holatda qoladi
-});
+      fullscreen.addEventListener("mousedown", (e) => {
+        if (!fullscreen.classList.contains("minimized")) {
+          isDragging = true;
+          offsetX = e.clientX - fullscreen.offsetLeft;
+          offsetY = e.clientY - fullscreen.offsetTop;
+        }
+      });
 
-// Drag qilish
-let isDragging = false;
-let offsetX, offsetY;
+      document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          fullscreen.style.left = e.clientX - offsetX + "px";
+          fullscreen.style.top = e.clientY - offsetY + "px";
+        }
+      });
 
-fullscreen.addEventListener("mousedown", (e) => {
-  if (!fullscreen.classList.contains("minimized")) { // faqat katta holatda yuradi
-    isDragging = true;
-    offsetX = e.clientX - fullscreen.offsetLeft;
-    offsetY = e.clientY - fullscreen.offsetTop;
-  }
-});
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
 
-document.addEventListener("mousemove", (e) => {
-  if (isDragging) {
-    fullscreen.style.left = (e.clientX - offsetX) + "px";
-    fullscreen.style.top = (e.clientY - offsetY) + "px";
-  }
-});
+      user_icon.addEventListener("click", () => {
+        user.classList.add("user_icon_active");
+        user.classList.remove("user_icon_active_n");
+      });
 
-document.addEventListener("mouseup", () => {
-  isDragging = false;
-});
+      xmark.addEventListener("click", () => {
+        user.classList.remove("user_icon_active");
+        user.classList.add("user_icon_active_n");
+      });
+      // Yashirin file input
+      const hiddenFileInput = document.createElement("input");
+      hiddenFileInput.type = "file";
+      hiddenFileInput.classList.add("hidden");
+      document.body.appendChild(hiddenFileInput);
 
-// Ochiq qilish
-user_icon.addEventListener('click', () => {
-    user.classList.add('user_icon_active');
-    user.classList.remove('user_icon_active_n');
-});
+      let playbackIntervals = {};
+      let mediaRecorder;
+      let audioChunks = [];
 
-// Yopish
-xmark.addEventListener('click', () => {
-    user.classList.remove('user_icon_active');
-    user.classList.add('user_icon_active_n');
-});
-        // Yashirin file input
-        const hiddenFileInput = document.createElement("input");
-        hiddenFileInput.type = "file";
-        hiddenFileInput.classList.add("hidden");
-        document.body.appendChild(hiddenFileInput);
-        
-        let playbackIntervals = {};
-        let mediaRecorder;
-        let audioChunks = [];
-        
-        // Init
-        function init() {
-          messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        
-          // Input bo‘lsa send ko‘rinadi
-          messageInput.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-              sendButton.classList.remove('hidden');
-              voiceMessageButton.classList.add('hidden');
-            } else {
-              sendButton.classList.add('hidden');
-              voiceMessageButton.classList.remove('hidden');
-            }
+      // Init
+      function init() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Input bo‘lsa send ko‘rinadi
+        messageInput.addEventListener("input", function () {
+          if (this.value.trim() !== "") {
+            sendButton.classList.remove("hidden");
+            voiceMessageButton.classList.add("hidden");
+          } else {
+            sendButton.classList.add("hidden");
+            voiceMessageButton.classList.remove("hidden");
+          }
+        });
+
+        // Send bosilganda
+        sendButton.addEventListener("click", sendMessage);
+
+        // Sticker bosilganda panel
+        stickerButton.addEventListener("click", () => {
+          stickersPanel.classList.toggle("hidden");
+          filePanel.classList.add("hidden");
+        });
+
+        // Sticker tanlanganda inputga qo‘shilsin (jo‘natilmasin!)
+        document.querySelectorAll(".sticker").forEach((sticker) => {
+          sticker.addEventListener("click", function () {
+            messageInput.value += this.textContent;
+            sendButton.classList.remove("hidden");
+            voiceMessageButton.classList.add("hidden");
           });
-        
-          // Send bosilganda
-          sendButton.addEventListener('click', sendMessage);
-        
-          // Sticker bosilganda panel
-          stickerButton.addEventListener('click', () => {
-            stickersPanel.classList.toggle('hidden');
-            filePanel.classList.add('hidden');
-          });
-        
-          // Sticker tanlanganda inputga qo‘shilsin (jo‘natilmasin!)
-          document.querySelectorAll('.sticker').forEach(sticker => {
-            sticker.addEventListener('click', function() {
-              messageInput.value += this.textContent;
-              sendButton.classList.remove('hidden');
-              voiceMessageButton.classList.add('hidden');
+        });
+
+        // Attach bosilganda
+        attachButton.addEventListener("click", () => {
+          hiddenFileInput.click();
+        });
+
+        hiddenFileInput.addEventListener("change", () => {
+          if (hiddenFileInput.files.length > 0) {
+            const file = hiddenFileInput.files[0];
+            messageInput.value = `[📎 ${file.name}]`;
+            sendButton.classList.remove("hidden");
+            voiceMessageButton.classList.add("hidden");
+          }
+        });
+
+        // Voice bosilganda yozishni boshlash
+        voiceMessageButton.addEventListener("click", async () => {
+          if (!mediaRecorder || mediaRecorder.state === "inactive") {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              audio: true,
             });
-          });
-        
-          // Attach bosilganda
-          attachButton.addEventListener('click', () => {
-            hiddenFileInput.click();
-          });
-        
-          hiddenFileInput.addEventListener('change', () => {
-            if (hiddenFileInput.files.length > 0) {
-              const file = hiddenFileInput.files[0];
-              messageInput.value = `[📎 ${file.name}]`;
-              sendButton.classList.remove('hidden');
-              voiceMessageButton.classList.add('hidden');
-            }
-          });
-        
-          // Voice bosilganda yozishni boshlash
-          voiceMessageButton.addEventListener('click', async () => {
-            if (!mediaRecorder || mediaRecorder.state === "inactive") {
-              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-              mediaRecorder = new MediaRecorder(stream);
-              audioChunks = [];
-              mediaRecorder.start();
-        
-              voiceRecorder.classList.remove('hidden');
-              recordingTime.textContent = "0:00";
-              let seconds = 0;
-              const timer = setInterval(() => {
-                if (mediaRecorder.state === "inactive") {
-                  clearInterval(timer);
-                  return;
-                }
-                seconds++;
-                const m = Math.floor(seconds / 60);
-                const s = (seconds % 60).toString().padStart(2, '0');
-                recordingTime.textContent = `${m}:${s}`;
-              }, 1000);
-        
-              mediaRecorder.addEventListener("dataavailable", e => {
-                audioChunks.push(e.data);
-              });
-        
-              mediaRecorder.addEventListener("stop", () => {
-                const audioBlob = new Blob(audioChunks);
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const msg = document.createElement("div");
-                msg.className = "flex mb-4 justify-end message";
-                msg.innerHTML = `
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.start();
+
+            voiceRecorder.classList.remove("hidden");
+            recordingTime.textContent = "0:00";
+            let seconds = 0;
+            const timer = setInterval(() => {
+              if (mediaRecorder.state === "inactive") {
+                clearInterval(timer);
+                return;
+              }
+              seconds++;
+              const m = Math.floor(seconds / 60);
+              const s = (seconds % 60).toString().padStart(2, "0");
+              recordingTime.textContent = `${m}:${s}`;
+            }, 1000);
+
+            mediaRecorder.addEventListener("dataavailable", (e) => {
+              audioChunks.push(e.data);
+            });
+
+            mediaRecorder.addEventListener("stop", () => {
+              const audioBlob = new Blob(audioChunks);
+              const audioUrl = URL.createObjectURL(audioBlob);
+              const msg = document.createElement("div");
+              msg.className = "flex mb-4 justify-end message";
+              msg.innerHTML = `
                   <div class="flex flex-col items-end">
                     <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs">
                       <audio controls src="${audioUrl}"></audio>
                     </div>
                     <div class="text-xs text-telegram-dark-muted mt-1">${getCurrentTime()}</div>
                   </div>`;
-                messagesContainer.appendChild(msg);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                voiceRecorder.classList.add('hidden');
-              });
-            }
-          });
-        
-          // Stop bosilganda yozishni tugatish
-          stopRecording.addEventListener('click', () => {
-            if (mediaRecorder && mediaRecorder.state !== "inactive") {
-              mediaRecorder.stop();
-            }
-          });
-        }
-        
-        function sendMessage() {
-          const message = messageInput.value.trim();
-          if (!message) return;
-          const msg = document.createElement("div");
-          msg.className = "flex mb-4 justify-end message";
-          msg.innerHTML = `
+              messagesContainer.appendChild(msg);
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+              voiceRecorder.classList.add("hidden");
+            });
+          }
+        });
+
+        // Stop bosilganda yozishni tugatish
+        stopRecording.addEventListener("click", () => {
+          if (mediaRecorder && mediaRecorder.state !== "inactive") {
+            mediaRecorder.stop();
+          }
+        });
+      }
+
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (!message) return;
+        const msg = document.createElement("div");
+        msg.className = "flex mb-4 justify-end message";
+        msg.innerHTML = `
             <div class="flex flex-col items-end">
               <div class="bg-telegram-dark-accent text-white rounded-lg p-3 max-w-xs">
                 <p class="text-sm">${message}</p>
               </div>
               <div class="text-xs text-telegram-dark-muted mt-1">${getCurrentTime()}</div>
             </div>`;
-          messagesContainer.appendChild(msg);
-          messagesContainer.scrollTop = messagesContainer.scrollHeight;
-          messageInput.value = "";
-          sendButton.classList.add('hidden');
-          voiceMessageButton.classList.remove('hidden');
-        }
-        
-        function getCurrentTime() {
-          const now = new Date();
-          return now.getHours().toString().padStart(2, '0') + ':' +
-                now.getMinutes().toString().padStart(2, '0');
-        }
-        
-        document.addEventListener("DOMContentLoaded", init);
-        </script>
-        
+        messagesContainer.appendChild(msg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        messageInput.value = "";
+        sendButton.classList.add("hidden");
+        voiceMessageButton.classList.remove("hidden");
+      }
 
-    </body>
-    </html>
+      function getCurrentTime() {
+        const now = new Date();
+        return (
+          now.getHours().toString().padStart(2, "0") +
+          ":" +
+          now.getMinutes().toString().padStart(2, "0")
+        );
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>

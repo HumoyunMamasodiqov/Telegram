@@ -1,0 +1,6 @@
+<h2>Email orqali kelgan kodni kiriting</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Tasdiqlash</button>
+</form>
